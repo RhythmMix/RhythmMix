@@ -1,7 +1,6 @@
 package com.example.rhythmix.Adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -11,16 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.rhythmix.Data;
-import com.example.rhythmix.MainActivity;
 import com.example.rhythmix.Music;
 import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -38,7 +32,7 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
     @NonNull
     @Override
     public DataListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View musicFragment= LayoutInflater.from(parent.getContext()).inflate(R.layout.each_item, parent, false);
+        View musicFragment = LayoutInflater.from(parent.getContext()).inflate(R.layout.each_item, parent, false);
         return new DataListViewHolder(musicFragment);
     }
 
@@ -50,13 +44,11 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
             // Use Picasso to load the image into the ImageView
             String imageUrl = music.getAlbum().getCover();
             Log.d(TAG, "IMAGE URL" + imageUrl);
-            // Initialize the ImageView, TextView, and ImageButtons using the holder
+
             ImageView musicImage = holder.itemView.findViewById(R.id.musicImage);
             TextView musicTitle = holder.itemView.findViewById(R.id.musicTitle);
-            ImageButton playBtn = holder.itemView.findViewById(R.id.playButton);
-            ImageButton pauseBtn = holder.itemView.findViewById(R.id.pauseButton);
+            ImageButton toggleButton = holder.itemView.findViewById(R.id.toggleButton);
 
-            // Load album cover image with Picasso
             Picasso.get().load(imageUrl).into(musicImage);
 
             MediaPlayer mediaPlayer = new MediaPlayer();
@@ -67,25 +59,18 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
                 throw new RuntimeException(e);
             }
 
-            // Set other data, assuming you have appropriate methods in your Music or Data class
-            musicTitle.setText(music.getTitle());
+            // Display title & Artist name
+            String titleArtist = music.getTitle() + " \n \n " + music.getArtist().getName();
+            musicTitle.setText(titleArtist);
 
-            // Set click listeners or perform any other operations as needed
-//            holder.itemView.setOnClickListener(view -> {
-//                Intent detailIntent = new Intent(context, MainActivity.class); // when we click on the image of the music
-//                // Pass any relevant data to the detail activity
-//                context.startActivity(detailIntent);
-//            });
 
-            playBtn.setOnClickListener(v -> {
-                if (!mediaPlayer.isPlaying()) {
-                    mediaPlayer.start();
-                }
-            });
-
-            pauseBtn.setOnClickListener(v -> {
+            toggleButton.setOnClickListener(v -> {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
+                    toggleButton.setImageResource(android.R.drawable.ic_media_play);
+                } else {
+                    mediaPlayer.start();
+                    toggleButton.setImageResource(android.R.drawable.ic_media_pause);
                 }
             });
         }

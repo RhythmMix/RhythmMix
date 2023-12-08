@@ -27,6 +27,14 @@
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/btn_star_big_on" />
 
+            <!--            <ImageButton-->
+<!--                android:id="@+id/pauseButton"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@android:drawable/ic_media_pause"-->
+<!--                android:contentDescription="TODO" />-->
+
             <TextView
                 android:id="@+id/musicTitle"
                 android:layout_width="80dp"
@@ -35,15 +43,7 @@
                 android:text="TextView" />
 
             <ImageButton
-                android:id="@+id/pauseButton"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@android:drawable/ic_media_pause"
-                android:contentDescription="TODO" />
-
-            <ImageButton
-                android:id="@+id/playButton"
+                android:id="@+id/toggleButton"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
