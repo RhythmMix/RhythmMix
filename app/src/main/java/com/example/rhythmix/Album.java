@@ -7,7 +7,7 @@ public class Album {
 
     private long id;
     private String title;
-    private String trackList;
+    private String tracklist;
 
     private String cover;
 
@@ -15,7 +15,7 @@ public class Album {
     public Album(JSONObject albumObject) throws JSONException {
         this.id = albumObject.getInt("id");
         this.title = albumObject.getString("title");
-        this.trackList=albumObject.getString("tracklist");
+        this.tracklist=albumObject.getString("tracklist");
         this.cover = albumObject.getString("cover");
     }
 
@@ -26,5 +26,13 @@ public class Album {
 
     public String getCover() {
         return cover;
+    }
+
+    public String getTrackList() {
+        return tracklist;
+    }
+
+    public long getId() {
+        return id;
     }
 }
