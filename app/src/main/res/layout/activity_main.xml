@@ -11,14 +11,14 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-        <ImageView
-            android:id="@+id/albumImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="TODO"
-            android:src="@android:drawable/btn_star_big_on" />
+<!--        <ImageView-->
+<!--            android:id="@+id/albumImageView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:contentDescription="TODO"-->
+<!--            android:src="@android:drawable/btn_star_big_on" />-->
 
         <EditText
             android:id="@+id/editTextSearch"
@@ -40,15 +40,16 @@
             android:layout_height="309dp"
             android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/artistNameAlbumTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="TextView" />
+        <!--        <TextView-->
+<!--            android:id="@+id/artistNameAlbumTextView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:text="TextView" />-->
 
     </LinearLayout>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -56,4 +57,5 @@
         android:layout_below="@id/searchButton"
         android:layout_margin="8dp"
         tools:ignore="NotSibling" />
+
 </RelativeLayout>

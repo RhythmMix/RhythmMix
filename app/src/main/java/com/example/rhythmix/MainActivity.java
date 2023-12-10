@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        List<Long> albumIds = Arrays.asList(302127L, 302128L, 302129L);
+        List<Long> albumIds = Arrays.asList(302127L, 302128L, 302129L, 302129L, 302129L, 302129L, 302129L);
         displayMultipleAlbums(albumIds);
     }
 
@@ -117,18 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-    private List<Long> generateRandomAlbumIds(int numberOfAlbums) {
-        List<Long> randomAlbumIds = new ArrayList<>();
-        Random random = new Random();
 
-        for (int i = 0; i < numberOfAlbums; i++) {
-            // Generate a random long value as an album ID
-            long randomAlbumId = Math.abs(random.nextLong());
-            randomAlbumIds.add(randomAlbumId);
-        }
-
-        return randomAlbumIds;
-    }
         private void displayAlbumDetails(long albumId, ArrayAdapter<String> adapter) {
             MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
             Call<Album> retrofitData = musicApiInterface.getAlbum(albumId);
