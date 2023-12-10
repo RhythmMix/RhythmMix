@@ -117,7 +117,7 @@
   - Communication via Slack & WhatsApp when it's time to merge.
 
 ## WireFrames
-![Wireframe](Wireframe.jpeg)
+![Wireframe](/Wireframe.jpeg)
 
 ## User Stories
 
@@ -125,5 +125,5 @@ https://ricepify0.atlassian.net/jira/software/projects/RYT/boards/2
 
 ## Database Schema Diagram
 
-![Schema](Schema.jpeg)
+![Schema](/Schema.jpeg)
 
