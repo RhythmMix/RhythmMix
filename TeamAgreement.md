@@ -115,3 +115,15 @@
   - Team lead merges PRs after approval.
   - Regularly scheduled merges.
   - Communication via Slack & WhatsApp when it's time to merge.
+
+## WireFrames
+![Wireframe]()
+
+## User Stories
+
+https://ricepify0.atlassian.net/jira/software/projects/RYT/boards/2
+
+## Database Schema Diagram
+
+![Schema]()
+
