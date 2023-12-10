@@ -7,13 +7,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rhythmix.Adapter.DataListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,19 +39,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         searchEditText = findViewById(R.id.editTextSearch);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        searchEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        Button searchButton = findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                performSearch();
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event){
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    performSearch();
+                }
+                return false;
             }
         });
     }
@@ -92,4 +100,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Please enter a search query", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

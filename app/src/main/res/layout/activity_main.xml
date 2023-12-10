@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
-
-
+    android:background="#424242"
+    >
 
     <EditText
         android:id="@+id/editTextSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_width="335dp"
+        android:layout_height="41dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/rounded_border"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:hint="Search"
+        android:imeOptions="actionSearch"
         android:inputType="text"
-        android:text="Search" />
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:layout_marginBottom="30dp"/>
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Search" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="56dp"
+        android:layout_height="24dp"
+        android:layout_alignStart="@+id/editTextSearch"
+        android:layout_alignTop="@+id/editTextSearch"
+        android:layout_alignEnd="@+id/editTextSearch"
+        android:layout_alignBottom="@+id/editTextSearch"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="266dp"
+        android:layout_marginBottom="7dp"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/editTextSearch"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
+        />
 
 
-
-</LinearLayout>
-
-
-
-
-
+</RelativeLayout>
