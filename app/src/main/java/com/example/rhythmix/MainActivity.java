@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        searchEditText = findViewById(R.id.editTextSearch);
+        ListView searchEditText = findViewById(R.id.listView);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -58,8 +59,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        List<Long> albumIds = Arrays.asList(302127L, 302128L, 302129L, 302129L, 302129L, 302129L, 302129L);
-        displayMultipleAlbums(albumIds);
+//        fetchingAlbumsId();
+
+//        List<Long> albumIds = Arrays.asList(302127L, 302128L, 302129L, 302129L, 302129L, 302129L, 302129L);
+        displayMultipleAlbums(fetchingAlbumsId());
     }
 
     private void performSearch() {
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         private void displayAlbumDetails(long albumId, ArrayAdapter<String> adapter) {
             MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
             Call<Album> retrofitData = musicApiInterface.getAlbum(albumId);
+            Log.d(TAG, "retrofitData: " + retrofitData);
             Log.d(TAG, "Request URL: " + retrofitData.request().url());
 
             retrofitData.enqueue(new Callback<Album>() {
@@ -154,7 +158,29 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+     List fetchingAlbumsId() {
+         List<Long> ids = new ArrayList<>();
+         // Add the provided IDs to the list
+         Collections.addAll(ids,
+                 7090505L, 916424L, 103248L, 6461440L, 595243L, 1109731L, 119606L, 916426L, 103248L,
+                 6461432L, 595243L, 916427L, 103248L, 1109737L, 119606L, 1109739L, 119606L, 854914322L,
+                 127270232L, 1109730L, 119606L, 1865118037L, 346060987L, 72160314L, 7090505L, 2459657805L,
+                 489410085L, 548348732L, 72000342L, 916414L, 103248L, 436510892L, 52755402L, 1176211L,
+                 125748L, 2454196745L, 487933275L, 1109729L, 119606L, 3729755L, 350198L, 2372912335L,
+                 465874705L, 1109727L, 119606L, 1176202L, 125748L, 125748L, 501928001L
+         );
+         // Shuffle the list
+         Collections.shuffle(ids);
+         // Print 5 shuffled IDs
+         System.out.println("Shuffled IDs:");
+         List<Long> shuffeled= new ArrayList<>();
+         for (int i = 0; i < 15; i++) {
+             System.out.println(ids.get(i));
+             shuffeled.add(ids.get(i));
+         }
 
+         return shuffeled;
+     }
 
 
 
