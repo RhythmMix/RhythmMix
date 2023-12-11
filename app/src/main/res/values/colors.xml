@@ -16,6 +16,8 @@
     <color name="flatPurple">#5856D6</color>
     <color name="FlatPink">#FF2D55</color>
     <color name="flatBlue">#007AFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="black">#000000</color>
 
     <color name="HeavyOrange">#AF8700</color>
     <color name="HeavyRed">#770000</color>

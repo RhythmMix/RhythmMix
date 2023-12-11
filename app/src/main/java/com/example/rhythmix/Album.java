@@ -1,7 +1,11 @@
 package com.example.rhythmix;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Album {
 
@@ -10,7 +14,6 @@ public class Album {
     private String tracklist;
 
     private String cover;
-
 
     public Album(JSONObject albumObject) throws JSONException {
         this.id = albumObject.getInt("id");
@@ -35,4 +38,6 @@ public class Album {
     public long getId() {
         return id;
     }
+
+//
 }

@@ -17,7 +17,6 @@ public class Music {
     private boolean explicitContentLyrics;
     private boolean explicitContentCover;
     private String preview;
-
     private Artist artist;     //Nested Class
     private Album album;      //Nested Class
 

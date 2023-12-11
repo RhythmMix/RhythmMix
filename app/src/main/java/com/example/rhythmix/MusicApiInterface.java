@@ -14,11 +14,16 @@ public interface MusicApiInterface {
     @GET("search")
     Call<Data> getData(@Query("q") String query);
 
-//    @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com" })
-//    @GET("album/{id}")
-//    Call<Album> getAlbum(@Path("id") Long query);
-
     @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com"})
     @GET("album/{albumId}")
     Call<Album> getAlbum(@Path("albumId") long albumId);
+
+    @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com"})
+    @GET("track/{trackIds}")
+    Call<Music> getTracks(@Path("trackIds") long trackId);
+
+    @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com"})
+    @GET("search")
+    Call<Data> getAllData(@Query("q") String query);
+
 }

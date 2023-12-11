@@ -40,9 +40,15 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
     public void onBindViewHolder(@NonNull DataListViewHolder holder, int position) {
         if (dataList != null && position >= 0 && position < dataList.size()) {
             Music music = dataList.get(position);
+           String imageUrl= music.getAlbum().getCover();
+           Log.d(TAG,"iMAGE" + imageUrl);
+//            String imageUrl = "";
 
             // Use Picasso to load the image into the ImageView
-            String imageUrl = music.getAlbum().getCover();
+            if(music.getAlbum().getCover()!=null){
+                imageUrl= music.getAlbum().getCover();
+            }
+
             Log.d(TAG, "IMAGE URL" + imageUrl);
 
             ImageView musicImage = holder.itemView.findViewById(R.id.musicImage);
@@ -84,6 +90,18 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
             return 0;
         }
     }
+
+    public void update(List<Music> newData) {
+        this.dataList = newData;
+        notifyDataSetChanged();
+    }
+
+    // Method to add a single item to the adapter
+    public void add(Music music) {
+        dataList.add(music);
+        notifyItemInserted(dataList.size() - 1);
+    }
+
 
     public class DataListViewHolder extends RecyclerView.ViewHolder {
         public DataListViewHolder(@NonNull View itemView) {
