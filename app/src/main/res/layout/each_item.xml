@@ -43,8 +43,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:textColor="@color/white"
-                android:text="TextView" />
+                android:textColor="@color/black"
+                android:text="TextView"
+                />
 
             <ImageButton
                 android:id="@+id/toggleButton"
