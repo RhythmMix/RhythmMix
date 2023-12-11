@@ -8,19 +8,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rhythmix.R;
+import com.example.rhythmix.adapters.AllSongsAdapter;
 
 import java.util.ArrayList;
 
@@ -28,13 +25,15 @@ public class AllSongsActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION = 100;
     final static String TAG="allSongsActivity";
+    AllSongsAdapter allSongsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_songs);
 
-        ListView listView = findViewById(R.id.listViewSong);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -50,6 +49,7 @@ public class AllSongsActivity extends AppCompatActivity {
     private void displaySongs() {
         ArrayList<String> songList = new ArrayList<>();
         ArrayList<String> songPaths = new ArrayList<>();
+        ArrayList<String> artistNames = new ArrayList<>();
 
         String[] projection = {
                 MediaStore.Audio.Media.TITLE,
@@ -81,6 +81,7 @@ public class AllSongsActivity extends AppCompatActivity {
 
                     songList.add(displayText);
                     songPaths.add(songPath);
+                    artistNames.add(songArtist);
                 }
                 cursor.close();
             }
@@ -88,18 +89,25 @@ public class AllSongsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        customAdapter adapter = new customAdapter(songList,songPaths);
-        ListView listView = findViewById(R.id.listViewSong);
-        listView.setAdapter(adapter);
+        allSongsAdapter = new AllSongsAdapter(this, songList, songPaths,artistNames);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setAdapter(allSongsAdapter);
 
-        listView.setOnItemClickListener((parent, view, position, id) -> {
+        allSongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
             String selectedSongPath = songPaths.get(position);
             String selectedSongTitle = songList.get(position).split("\n")[0];
+
+            String[] titleAndArtist = selectedSongPath.split(" - ");
+            String songArtist = titleAndArtist.length > 1 ? titleAndArtist[1] : "";
+
+            songArtist = songArtist.replace(".mp3", "");
+
 
             Intent intent = new Intent(AllSongsActivity.this, SongPlayerActivity.class);
             intent.putExtra("SONG_PATHS", songPaths);
             intent.putExtra("SONG_PATH", selectedSongPath);
             intent.putExtra("SONG_NAME", selectedSongTitle);
+            intent.putExtra("ARTIST_NAME", songArtist);
             intent.putExtra("CURRENT_POSITION", position);
             startActivity(intent);
         });
@@ -123,42 +131,6 @@ public class AllSongsActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
             }
-        }
-    }
-
-    class customAdapter extends BaseAdapter {
-
-        private ArrayList<String> songList;
-        private ArrayList<String> songPaths;
-
-        public customAdapter(ArrayList<String> songList, ArrayList<String> songPaths) {
-            this.songList = songList;
-            this.songPaths = songPaths;
-        }
-
-        @Override
-        public int getCount() {
-            return songList.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return songList.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View myView = getLayoutInflater().inflate(R.layout.list_item, null);
-            TextView textSong = myView.findViewById(R.id.songName);
-            textSong.setSelected(true);
-            textSong.setText(songList.get(i));
-            myView.setTag(songPaths.get(i));
-            return myView;
         }
     }
 

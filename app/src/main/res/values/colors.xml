@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <item name="FlatWhite" type="color">#F5F5F5</item>
+    <color name="flatOrange">#FF9500</color>
+    <color name="background_panel_color">#080808</color>
+    <color name="color_aaa">#aaa</color>
 </resources>

@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -40,6 +39,7 @@ public class SongPlayerActivity extends AppCompatActivity {
     private Runnable runnable;
     private TextView txtStart, txtStop;
     TextView songNameTextView;
+    TextView artistNameTextView;
     private boolean isPlaying = false;
     private ArrayList<String> songPaths;
     private String songPath;
@@ -48,7 +48,7 @@ public class SongPlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_song_player);
+        setContentView(R.layout.activity_song_player2);
 
         songPaths = getIntent().getStringArrayListExtra("SONG_PATHS");
         songPath = getIntent().getStringExtra("SONG_PATH");
@@ -70,8 +70,6 @@ public class SongPlayerActivity extends AppCompatActivity {
         // Play the selected song
         playSelectedSong();
 
-        // Start marquee effect
-        startMarquee(songNameTextView);
     }
 
     //==============================
@@ -105,6 +103,7 @@ public class SongPlayerActivity extends AppCompatActivity {
     private void initializeUI() {
         // UI elements initialization
         songNameTextView = findViewById(R.id.playerActivitySongName);
+        artistNameTextView=findViewById(R.id.artistName);
         ImageView songImageView = findViewById(R.id.playerActivitySongImage);
         txtStart = findViewById(R.id.playerActivityTxtStart);
         txtStop = findViewById(R.id.playerActivityTxtStop);
@@ -116,8 +115,10 @@ public class SongPlayerActivity extends AppCompatActivity {
         // Other UI setup
         currentPosition = getIntent().getIntExtra("CURRENT_POSITION", 0);
         String songName = getIntent().getStringExtra("SONG_NAME");
+        String artistName = getIntent().getStringExtra("ARTIST_NAME");
         songNameTextView.setText(songName);
-        songImageView.setImageResource(R.drawable.music);
+        artistNameTextView.setText(artistName);
+
 
         playButton.setOnClickListener(view -> {
             if (isPlaying) {
@@ -221,13 +222,8 @@ public class SongPlayerActivity extends AppCompatActivity {
         stopPlayback();
         songPath = path;
         initializeMediaPlayer();
-        String songName = getSongNameFromPath(path);
+        String songName = getIntent().getStringExtra("SONG_NAME");
         songNameTextView.setText(songName);
-    }
-
-    private String getSongNameFromPath(String path) {
-        String[] pathSegments = path.split(File.separator);
-        return pathSegments[pathSegments.length - 1];
     }
 
     //==============================
@@ -341,13 +337,6 @@ public class SongPlayerActivity extends AppCompatActivity {
 
     private int getDefaultDuration() {
         return 214000;
-    }
-
-    private void startMarquee(TextView textView) {
-        textView.setSelected(true);
-        textView.setSingleLine(true);
-        textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        textView.setMarqueeRepeatLimit(-1);
     }
 
     @Override
