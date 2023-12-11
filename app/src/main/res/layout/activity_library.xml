@@ -22,28 +22,51 @@
         android:layout_marginTop="16dp" />
 
     <!--SearchBar-->
-    <EditText
-        android:id="@+id/searchEditText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchTextInputLayout"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_border"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:hint="Search"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:singleLine="true"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:boxBackgroundMode="outline"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_border"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:hint="Search"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!--Not found message-->
+    <TextView
+        android:id="@+id/noSongsFoundTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No result found."
+        android:visibility="gone"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/navigationBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <!--Songs/Playlist NavBar-->
     <RadioGroup
@@ -58,15 +81,15 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText">
+        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout">
 
         <RadioButton
             android:id="@+id/songsButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:button="@android:color/transparent"
             android:background="@android:color/transparent"
+            android:button="@android:color/transparent"
             android:gravity="center"
             android:text="Songs"
             android:textColor="#FFFFFF"
@@ -95,7 +118,7 @@
         android:paddingTop="13dp"
         android:paddingBottom="13dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText"
+        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout"
         app:srcCompat="@drawable/ic_shuffle"
         app:tint="@color/FlatWhite" />
 

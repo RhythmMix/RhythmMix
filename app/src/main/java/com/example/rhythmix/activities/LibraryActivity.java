@@ -7,6 +7,13 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rhythmix.R;
 import com.example.rhythmix.adapters.LibrarySongsAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -45,6 +53,21 @@ public class LibraryActivity extends AppCompatActivity {
             displaySongs();
         }
 
+        // Songs/Playlist Navbar
+        RadioGroup navigationBar = findViewById(R.id.navigationBar);
+        navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.songsButton) {
+                RecyclerView libraryRecyclerView = findViewById(R.id.libraryRecyclerView);
+                libraryRecyclerView.setVisibility(View.VISIBLE);
+            } else if (checkedId == R.id.playlistsButton) {
+                startActivity(new Intent(LibraryActivity.this, PlaylistsActivity.class));
+            }
+        });
+        // Set the default selection to "Songs"
+        navigationBar.check(R.id.songsButton);
+
+
+        // Main Navbar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(false);
@@ -53,21 +76,18 @@ public class LibraryActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
             if (item.getItemId() == R.id.Home) {
                 startActivity(new Intent(LibraryActivity.this, MainActivity.class));
-                item.setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Search) {
                 startActivity(new Intent(LibraryActivity.this, SearchActivity.class));
-                item.setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Library) {
-                item.setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Profile) {
-                startActivity(new Intent(LibraryActivity.this, ProfileActivity.class));
-                item.setChecked(true);
+                startActivity(new Intent(LibraryActivity.this, ProfileActivity.class));;
                 return true;
             } else return false;
         });
+        bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
     }
 
 
@@ -114,21 +134,48 @@ public class LibraryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths);
+        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths,artistNames);
         RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
         recyclerView.setAdapter(librarySongsAdapter);
 
         librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedSongPath = songPaths.get(position);
-            String selectedSongTitle = songList.get(position).split("\n")[0];
-            String artistName = artistNames.get(position);
+            String selectedSongPath = librarySongsAdapter.songPaths.get(position);
+
+            Log.d(TAG, "Selected Song Path: " + selectedSongPath);
 
             Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
-            intent.putExtra("SONG_PATHS", songPaths);
+            intent.putExtra("SONG_PATHS", librarySongsAdapter.songPaths);
             intent.putExtra("SONG_PATH", selectedSongPath);
             intent.putExtra("CURRENT_POSITION", position);
             startActivity(intent);
         });
+
+        TextInputEditText searchEditText = findViewById(R.id.searchEditText);
+        TextView noSongsFoundTextView = findViewById(R.id.noSongsFoundTextView);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                librarySongsAdapter.filter(charSequence.toString());
+                updateNoSongsFoundVisibility();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+    }
+
+    private void updateNoSongsFoundVisibility() {
+        TextView noSongsFoundTextView = findViewById(R.id.noSongsFoundTextView);
+        if (librarySongsAdapter.getItemCount() == 0) {
+            noSongsFoundTextView.setVisibility(View.VISIBLE);
+        } else {
+            noSongsFoundTextView.setVisibility(View.GONE);
+        }
     }
 
     private String formatDuration(String duration) {

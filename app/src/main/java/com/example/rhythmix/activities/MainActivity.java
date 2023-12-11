@@ -25,23 +25,19 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
 
             if (item.getItemId() == R.id.Home) {
-                item.setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Search) {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                item.setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Library) {
                 startActivity(new Intent(MainActivity.this, LibraryActivity.class));
-                item.setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Profile) {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                item.setChecked(true);
                 return true;
             } else return false;
         });
-
+        bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(true);
         goToLogIn();
     }
 

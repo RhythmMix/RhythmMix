@@ -1,6 +1,7 @@
 package com.example.rhythmix.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,24 +10,30 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.rhythmix.R;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 
 public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapter.ViewHolder>{
-
+    final static String TAG="libraryAdapter";
+    private ArrayList<String> originalSongList;
     private ArrayList<String> songList;
-    private ArrayList<String> songPaths;
+    public ArrayList<String> songPaths;
+    private ArrayList<String> originalArtistList;
+    private ArrayList<String> artistList;
     private LayoutInflater inflater;
     private AdapterView.OnItemClickListener onItemClickListener;
+    private ArrayList<String> originalSongPaths;
 
 
-    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths) {
+    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths,ArrayList<String> artistList) {
+        this.originalSongList = new ArrayList<>(songList);
         this.songList = songList;
         this.songPaths = songPaths;
+        this.originalArtistList = new ArrayList<>(artistList);
+        this.artistList = artistList;
         this.inflater = LayoutInflater.from(context);
+        this.originalSongPaths = new ArrayList<>(songPaths);
     }
 
     @Override
@@ -42,15 +49,14 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         holder.textSong.setSingleLine(true);
         holder.textSong.setText(songList.get(position));
         holder.number.setText(String.valueOf(position + 1));
-        holder.itemView.setTag(songPaths.get(position));
-
-        Glide.with(holder.itemView.getContext())
-                .load(R.drawable.ic_music_style)
-                .into(holder.image);
+        holder.itemView.setTag(position);
 
         holder.itemView.setOnClickListener(v -> {
+            int clickedPosition = (int) v.getTag();
+            String selectedSongPath = songPaths.get(clickedPosition);
+
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(null, holder.itemView, position, position);
+                onItemClickListener.onItemClick(null, holder.itemView, clickedPosition, clickedPosition);
             }
         });
     }
@@ -64,15 +70,36 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         this.onItemClickListener = listener;
     }
 
+    public void filter(String query) {
+        songList.clear();
+        artistList.clear();
+        songPaths.clear();
+        if (query.isEmpty()) {
+            songList.addAll(originalSongList);
+            artistList.addAll(originalArtistList);
+            songPaths.addAll(originalSongPaths);
+        } else {
+            query = query.toLowerCase();
+            for (int i = 0; i < originalSongList.size(); i++) {
+                String song = originalSongList.get(i);
+                String artist = originalArtistList.get(i);
+                if (song.toLowerCase().contains(query) || artist.toLowerCase().contains(query)) {
+                    songList.add(song);
+                    artistList.add(artist);
+                    songPaths.add(originalSongPaths.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textSong;
         TextView number;
-        RoundedImageView image;
         public ViewHolder(View itemView) {
             super(itemView);
             textSong = itemView.findViewById(R.id.songName);
             number = itemView.findViewById(R.id.number);
-            image = itemView.findViewById(R.id.image);
         }
     }
 }

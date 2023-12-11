@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -221,6 +222,8 @@ public class SongPlayerActivity extends AppCompatActivity {
 
     private void playSelectedSong() {
         String selectedSongPath = getIntent().getStringExtra("SONG_PATH");
+
+        Log.i(TAG, "Selected Song Path (SongPlayerActivity): " + selectedSongPath);
 
         if (songPaths != null && !songPaths.isEmpty()) {
             currentPosition = songPaths.indexOf(selectedSongPath);
