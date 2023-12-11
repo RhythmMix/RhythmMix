@@ -15,25 +15,23 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 
-public class AllSongsAdapter  extends RecyclerView.Adapter<AllSongsAdapter.ViewHolder>{
+public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapter.ViewHolder>{
 
     private ArrayList<String> songList;
     private ArrayList<String> songPaths;
-    private ArrayList<String> artistNames;
     private LayoutInflater inflater;
     private AdapterView.OnItemClickListener onItemClickListener;
 
 
-    public AllSongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths,ArrayList<String> artistNames) {
+    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths) {
         this.songList = songList;
         this.songPaths = songPaths;
-        this.artistNames = artistNames;
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.song_item_allsongs, parent, false);
+        View view = inflater.inflate(R.layout.song_item_library, parent, false);
         return new ViewHolder(view);
     }
 

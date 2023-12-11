@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,22 +16,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rhythmix.R;
-import com.example.rhythmix.adapters.AllSongsAdapter;
+import com.example.rhythmix.adapters.LibrarySongsAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class AllSongsActivity extends AppCompatActivity {
+public class LibraryActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION = 100;
     final static String TAG="allSongsActivity";
-    AllSongsAdapter allSongsAdapter;
+    LibrarySongsAdapter librarySongsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_songs);
+        setContentView(R.layout.activity_library);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -44,7 +44,32 @@ public class AllSongsActivity extends AppCompatActivity {
         } else {
             displaySongs();
         }
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
+            if (item.getItemId() == R.id.Home) {
+                startActivity(new Intent(LibraryActivity.this, MainActivity.class));
+                item.setChecked(true);
+                return true;
+            } else if (item.getItemId() == R.id.Search) {
+                startActivity(new Intent(LibraryActivity.this, SearchActivity.class));
+                item.setChecked(true);
+                return true;
+            } else if (item.getItemId() == R.id.Library) {
+                item.setChecked(true);
+                return true;
+            } else if (item.getItemId() == R.id.Profile) {
+                startActivity(new Intent(LibraryActivity.this, ProfileActivity.class));
+                item.setChecked(true);
+                return true;
+            } else return false;
+        });
     }
+
 
     private void displaySongs() {
         ArrayList<String> songList = new ArrayList<>();
@@ -89,29 +114,21 @@ public class AllSongsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        allSongsAdapter = new AllSongsAdapter(this, songList, songPaths,artistNames);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setAdapter(allSongsAdapter);
+        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths);
+        RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
+        recyclerView.setAdapter(librarySongsAdapter);
 
-        allSongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
+        librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
             String selectedSongPath = songPaths.get(position);
             String selectedSongTitle = songList.get(position).split("\n")[0];
+            String artistName = artistNames.get(position);
 
-            String[] titleAndArtist = selectedSongPath.split(" - ");
-            String songArtist = titleAndArtist.length > 1 ? titleAndArtist[1] : "";
-
-            songArtist = songArtist.replace(".mp3", "");
-
-
-            Intent intent = new Intent(AllSongsActivity.this, SongPlayerActivity.class);
+            Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
             intent.putExtra("SONG_PATHS", songPaths);
             intent.putExtra("SONG_PATH", selectedSongPath);
-            intent.putExtra("SONG_NAME", selectedSongTitle);
-            intent.putExtra("ARTIST_NAME", songArtist);
             intent.putExtra("CURRENT_POSITION", position);
             startActivity(intent);
         });
-
     }
 
     private String formatDuration(String duration) {
@@ -129,9 +146,10 @@ public class AllSongsActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 displaySongs();
             } else {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 }

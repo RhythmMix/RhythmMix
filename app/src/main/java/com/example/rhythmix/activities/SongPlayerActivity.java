@@ -3,6 +3,7 @@ package com.example.rhythmix.activities;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -11,8 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -23,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rhythmix.R;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -44,15 +42,21 @@ public class SongPlayerActivity extends AppCompatActivity {
     private ArrayList<String> songPaths;
     private String songPath;
     private int currentPosition;
+    private boolean isShuffleActive;
+    private ImageView shuffleButton;
+    private int lastPlayedPosition = 0;
+    private boolean isFavorite = false;
+    private ImageView heartButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_song_player2);
+        setContentView(R.layout.activity_song_player);
 
         songPaths = getIntent().getStringArrayListExtra("SONG_PATHS");
         songPath = getIntent().getStringExtra("SONG_PATH");
-
+        isShuffleActive = false;
 
         // Permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -111,14 +115,11 @@ public class SongPlayerActivity extends AppCompatActivity {
         Button nextButton = findViewById(R.id.nextButton);
         Button prevButton = findViewById(R.id.prevButton);
         seekBar = findViewById(R.id.seekBar);
+        shuffleButton = findViewById(R.id.shuffleButton);
+        heartButton = findViewById(R.id.heartButton);
 
         // Other UI setup
         currentPosition = getIntent().getIntExtra("CURRENT_POSITION", 0);
-        String songName = getIntent().getStringExtra("SONG_NAME");
-        String artistName = getIntent().getStringExtra("ARTIST_NAME");
-        songNameTextView.setText(songName);
-        artistNameTextView.setText(artistName);
-
 
         playButton.setOnClickListener(view -> {
             if (isPlaying) {
@@ -144,14 +145,25 @@ public class SongPlayerActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // Not needed for your case, but you can add functionality if required
+                // Not needed for your functionality but for override
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // Not needed for your case, but you can add functionality if required
+                // Not needed for your functionality but for override
             }
         });
+        // Set up favorite listener
+        heartButton.setOnClickListener(view -> onHeartButtonClick());
+
+        // Set up shuffle listener
+        shuffleButton.setOnClickListener(view -> toggleShuffle());
+        updateShuffleButtonColor();
+    }
+
+    private void updateShuffleButtonColor() {
+        int shuffleButtonColor = isShuffleActive ? R.color.shuffleColor : R.color.white;
+        shuffleButton.setColorFilter(getResources().getColor(shuffleButtonColor));
     }
 
 
@@ -222,14 +234,42 @@ public class SongPlayerActivity extends AppCompatActivity {
         stopPlayback();
         songPath = path;
         initializeMediaPlayer();
-        String songName = getIntent().getStringExtra("SONG_NAME");
+        String songName = getSongNameFromPath(path);
         songNameTextView.setText(songName);
+        String songArtist =getArtistNameFromPath(path);
+        artistNameTextView.setText(songArtist);
+    }
+    private String getSongNameFromPath(String path) {
+        String fileName = new File(path).getName();
+        int dashIndex = fileName.indexOf(" - ");
+        if (dashIndex != -1) {
+            return fileName.substring(0, dashIndex);
+        } else {
+            return fileName;
+        }
+    }
+    private String getArtistNameFromPath(String path) {
+        String fileName = new File(path).getName();
+        int dashIndex = fileName.indexOf(" - ");
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dashIndex != -1 && dotIndex != -1) {
+            return fileName.substring(dashIndex + 3, dotIndex);
+        } else {
+            return "";
+        }
     }
 
     //==============================
     // Playback Control
     //==============================
     private void playNextSong() {
+        if (isShuffleActive) {
+            playRandomSong();
+        } else {
+            playSequentialNextSong();
+        }
+    }
+    private void playSequentialNextSong() {
         if (currentPosition < songPaths.size() - 1) {
             currentPosition++;
         } else {
@@ -284,6 +324,51 @@ public class SongPlayerActivity extends AppCompatActivity {
             updateSeekBar(); // To refresh the progress
         }
     }
+
+    //==============================
+    // Shuffle Methods
+    //==============================
+    private void toggleShuffle() {
+        isShuffleActive = !isShuffleActive;
+
+        if (!isShuffleActive) {
+            currentPosition = lastPlayedPosition;
+        }
+
+        updateShuffleButtonColor();
+    }
+
+    private void playRandomSong() {
+        if (songPaths != null && songPaths.size() > 1) {
+            ArrayList<String> availableSongs = new ArrayList<>(songPaths);
+            availableSongs.remove(songPath);
+
+            int randomIndex = (int) (Math.random() * availableSongs.size());
+
+            lastPlayedPosition = currentPosition;
+            playSong(availableSongs.get(randomIndex));
+        }
+    }
+
+    //==============================
+    // Favorite Methods
+    //==============================
+
+    private void onHeartButtonClick() {
+        isFavorite = !isFavorite;
+        updateHeartButtonColor();
+
+        String message = isFavorite ? "Added to favorites" : "Removed from favorites";
+        showToast(message);
+    }
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    private void updateHeartButtonColor() {
+        int heartButtonColor = isFavorite ? R.color.red : R.color.white;
+        heartButton.setColorFilter(getResources().getColor(heartButtonColor));
+    }
+
 
     //==============================
     // UI Updates
