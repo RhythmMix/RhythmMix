@@ -135,10 +135,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -268,13 +266,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Handle the selection of an item from the autocomplete dropdown
     private void onSuggestionSelected(String selectedSuggestion) {
-        // Display detailed information for the selected suggestion
-        // This could involve navigating to a new activity or updating another part of the UI
-        // ...
 
-        // Example: Open a new activity with detailed information
         Intent intent = new Intent(this, DetailedActivity.class);
         intent.putExtra("selectedSuggestion", selectedSuggestion);
         startActivity(intent);
