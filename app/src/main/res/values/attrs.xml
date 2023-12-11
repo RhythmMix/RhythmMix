@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BlurImageViewChildConstraintLayout">
+        <attr name="shadowDeltaLeft" format="dimension" />
+        <attr name="imageViewId" format="reference" />
+        <attr name="shadowDeltaRight" format="dimension" />
+        <attr name="shadowDeltaTop" format="dimension" />
+        <!-- Add any other custom attributes here -->
+    </declare-styleable>
+</resources>

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "rhythmmix",
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 60,
+      "apiKeyExpirationDate": "2024-02-08T13:10:58.641Z",
+      "keyDescription": "Final Project RhythmMix "
+    },
+    "conflictResolution": {},
+    "additionalAuthTypes": []
+  }
+}

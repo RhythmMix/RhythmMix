@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.rhythmix"
-        minSdk 34
+        minSdk 31
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -30,10 +30,21 @@ android {
 
 dependencies {
 
+    implementation 'com.amplifyframework:aws-api:1.33.0'
+    implementation 'com.amplifyframework:aws-datastore:1.33.0'
+    implementation 'com.amplifyframework:aws-auth-cognito:1.33.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+//    //Spring Back Layout for over scroll effect
+//    implementation 'com.github.ldt-libs:SpringBackLayout:1.0'
+//
+//    // InsetsView
+//    implementation 'com.github.ldt-libs:InsetsView:1.1'
+    // Round Image View
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }
