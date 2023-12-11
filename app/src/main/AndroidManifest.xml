@@ -13,6 +13,26 @@
         android:theme="@style/Theme.Rhythmix"
         tools:targetApi="31">
         <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".ui.login.LoginActivity111"
+            android:exported="false"
+            android:label="@string/title_activity_login111" />
+        <activity
+            android:name=".Sign_Up_Page"
+            android:exported="false" />
+        <activity
+            android:name=".Sign_Up_page"
+            android:exported="false" />
+        <activity
+            android:name=".Log_In_Page"
+            android:exported="false" />
+        <activity
+            android:name=".Registration_page"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

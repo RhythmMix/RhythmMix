@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.rhythmix.databinding.ActivityMainBinding;
@@ -21,8 +22,9 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 int d=item.getItemId();
 //        switch (item.getItemId()){
-
-if(d==R.id.Library){
+            if(d==R.id.Home){
+                rplacefragment(new HomeFragment());}
+else if(d==R.id.Library){
     rplacefragment(new LibraryFragment());
 } else if (d==R.id.Profile) {
     rplacefragment(new ProfileFragment());
@@ -47,6 +49,7 @@ else if (d==R.id.Search) {
 
         return true;
     });
+
 
     }
     private void rplacefragment(Fragment fragment){
