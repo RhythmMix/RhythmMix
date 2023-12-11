@@ -20,25 +20,25 @@
 <!--            android:contentDescription="TODO"-->
 <!--            android:src="@android:drawable/btn_star_big_on" />-->
 
-        <EditText
-            android:id="@+id/editTextSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Search" />
+<!--        <EditText-->
+<!--            android:id="@+id/editTextSearch"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ems="10"-->
+<!--            android:inputType="text"-->
+<!--            android:text="Search" />-->
 
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search" />
+<!--        <Button-->
+<!--            android:id="@+id/searchButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Search" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="309dp"
-            android:layout_weight="1" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="309dp"-->
+<!--            android:layout_weight="1" />-->
 
         <!--        <TextView-->
 <!--            android:id="@+id/artistNameAlbumTextView"-->
@@ -48,14 +48,24 @@
 <!--            android:layout_marginBottom="16dp"-->
 <!--            android:text="TextView" />-->
 
+
+<!--        <ListView-->
+<!--            android:id="@+id/listView2"-->
+<!--            android:layout_width="231dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            tools:ignore="NotSibling" />-->
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            tools:ignore="NotSibling" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/searchButton"
-        android:layout_margin="8dp"
-        tools:ignore="NotSibling" />
 
 </RelativeLayout>
