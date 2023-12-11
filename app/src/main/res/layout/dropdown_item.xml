@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_dropdown_item_background">
+
+    <!-- Customize the layout of your dropdown item, for example, a TextView -->
+    <TextView
+        android:id="@+id/dropdown_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textColor="#000000" />
+</LinearLayout>
