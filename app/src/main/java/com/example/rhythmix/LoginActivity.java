@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
+import com.example.rhythmix.activities.ProfileActivity;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";

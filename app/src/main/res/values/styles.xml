@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowShowWallpaper">true</item>
-        <item name="android:windowBackground">@color/SplashColor</item>
+<!--        <item name="android:windowBackground">@color/SplashColor</item>-->
         <item name="colorPrimaryDark">@color/FlatWhite</item>
         <item name="colorPrimary">@color/FlatWhite</item>
         <item name="colorAccent">@color/flatOrange</item>
@@ -36,12 +35,12 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="SplashThemeX" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+<!--    <style name="SplashThemeX" parent="Theme.MaterialComponents.Light.DarkActionBar">-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+<!--    </style>-->
     <!-- Splash Screen theme. -->
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
@@ -140,5 +139,16 @@
         <item name="cornerSizeTopLeft">18dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="CustomSeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressDrawable">@drawable/custom_seekbar_progress</item>
+        <item name="android:thumb">@drawable/custom_seekbar_thumb</item>
     </style>
 </resources>
