@@ -28,7 +28,6 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                 if (authUser != null) {
                     String userId = authUser.getUserId();
                     String playlistName = playlistNameEditText.getText().toString();
-
                     Log.i("Amplify", "User ID: " + userId);
                     Log.i("Amplify", "Playlist Name: " + playlistName);
 

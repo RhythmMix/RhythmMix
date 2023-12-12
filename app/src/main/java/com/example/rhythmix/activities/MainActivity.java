@@ -16,6 +16,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button press=findViewById(R.id.button3);
+        press.setOnClickListener(view -> {
+            Intent nn=new Intent(MainActivity.this, MainActivity2.class);
+            startActivity(nn);
+        });
+
+
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
@@ -48,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToLogIn(){
         Button logIn = findViewById(R.id.button4);
         logIn.setOnClickListener(view -> {
-            Intent goToAllSongs = new Intent(MainActivity.this, LogInActivity.class);
+            Intent goToAllSongs = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(goToAllSongs);
         });
     }

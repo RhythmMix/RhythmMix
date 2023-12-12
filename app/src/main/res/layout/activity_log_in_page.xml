@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LogInActivity">
+    tools:context=".activities.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -38,7 +38,7 @@
         app:startIconDrawable="@drawable/baseline_email_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fullname"
+            android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/buttons"

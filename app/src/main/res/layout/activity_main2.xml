@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SignUpActivity">
+    tools:context=".activities.MainActivity2">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -68,7 +68,6 @@
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout22"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -93,6 +92,7 @@
             android:background="@drawable/buttons"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/signUp"
@@ -122,34 +122,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/codeEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="veirfication code"
-        android:inputType="text"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/signUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout22"
-        tools:ignore="NotSibling" />
-
-    <Button
-        android:id="@+id/verify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.86" />
-
     <TextView
         android:id="@+id/textsignin"
         android:layout_width="wrap_content"
