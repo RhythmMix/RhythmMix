@@ -1,12 +1,15 @@
 package com.example.rhythmix;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.rhythmix.Adapter.AlbumRecyclerViewAdapter;
 import com.example.rhythmix.Adapter.DataListAdapter;
 
 import java.util.ArrayList;
@@ -23,14 +26,19 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String BASE_URL = "https://deezerdevs-deezer.p.rapidapi.com/";
     private static Retrofit retrofit;
-    DataListAdapter adapter;
+    private DataListAdapter adapter;
+    private RecyclerView horizontalView;
+    private List<Album> albumList = new ArrayList<>();
+    private LinearLayoutManager linearLayoutManager;
+    private AlbumRecyclerViewAdapter albumHorizontalRecyclerViewAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView searchListView = findViewById(R.id.listView);
+//        ListView searchListView = findViewById(R.id.listView);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -38,30 +46,33 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-//        displayMultipleAlbums(fetchingAlbumsId());
+
+
+        displayMultipleAlbums(fetchingAlbumsId());
 //        displayMultipleTracks(fetchingTracksId());
 
 //        fetchAllTracks();
+
+
     }
+
 
     private void displayMultipleAlbums(List<Long> albumIds) {
-        ListView listView = findViewById(R.id.listView);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        listView.setAdapter(adapter);
+        recyclerView = findViewById(R.id.horizontalRecyclerView);
+        List<Album> albumList = new ArrayList<>();
+        AlbumRecyclerViewAdapter recyclerViewAdapter = new AlbumRecyclerViewAdapter(this,albumList);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
         for (Long albumId : albumIds) {
-            displayAlbumDetails(albumId, adapter);
+            displayAlbumDetails(albumId, recyclerViewAdapter);
         }
-
-
     }
 
-    private void displayAlbumDetails(long albumId, ArrayAdapter<String> adapter) {
+    private void displayAlbumDetails(long albumId, AlbumRecyclerViewAdapter recyclerViewAdapter) {
         MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
         Call<Album> retrofitData = musicApiInterface.getAlbum(albumId);
-        Log.d(TAG, "retrofitData: " + retrofitData);
-        Log.d(TAG, "Request URL: " + retrofitData.request().url());
+        Log.d(TAG, "retrofitData of albums: " + retrofitData);
+        Log.d(TAG, "Request URL of albums: " + retrofitData.request().url());
 
         retrofitData.enqueue(new Callback<Album>() {
             @Override
@@ -70,15 +81,9 @@ public class MainActivity extends AppCompatActivity {
                     Album album = response.body();
 
                     if (album != null) {
-                        // Display album details here
-                        String imageUrl = album.getCover();
-                        if (imageUrl != null) {
-                            // Add album information to the adapter for the ListView
-                            adapter.add("Album Title: " + album.getTitle() + "\n"
-                                    + "Album Tracklist: " + album.getTrackList() + "\n\n");
-                        } else {
-                            Log.e(TAG, "Album cover URL is null");
-                        }
+
+                        displayMultipleAlbums(fetchingAlbumsId());
+
                     } else {
                         Log.e(TAG, "Album or album.getAlbum() is null");
                     }
@@ -135,10 +140,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayMultipleTracks(List<Long> tracksId) {
-        ListView listView = findViewById(R.id.listView);
+//        ListView listView = findViewById(R.id.listView);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        listView.setAdapter(adapter);
+//        listView.setAdapter(adapter);
 
         for (Long trackId : tracksId) {
             displayTrackDetails(trackId, adapter);
