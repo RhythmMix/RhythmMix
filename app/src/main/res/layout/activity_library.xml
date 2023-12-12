@@ -108,21 +108,48 @@
             android:textSize="16sp" />
     </RadioGroup>
 
-    <!--Shuffle Icon-->
-    <ImageView
-        android:id="@+id/shuffle_button"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:paddingTop="13dp"
-        android:paddingBottom="13dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout"
-        app:srcCompat="@drawable/ic_shuffle"
-        app:tint="@color/FlatWhite" />
+    <!-- Play All -->
 
     <!--RecycleView-->
+    <LinearLayout
+        android:id="@+id/controlsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="72dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayout">
+
+        <!-- Play Icon -->
+        <ImageView
+            android:id="@+id/shuffle_button"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="20dp"
+            app:srcCompat="@drawable/round_play_circle_24"
+            app:tint="@color/FlatWhite" />
+
+        <TextView
+            android:id="@+id/playAllText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Play All"
+            android:textColor="@color/FlatWhite"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/numberOfSongsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="(10)"
+            android:textColor="@color/FlatWhite"
+            android:textSize="20sp" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/libraryRecyclerView"
         android:layout_width="0dp"
@@ -135,7 +162,7 @@
         app:layout_constraintBottom_toBottomOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shuffle_button"
+        app:layout_constraintTop_toBottomOf="@id/controlsLayout"
         app:layout_constraintVertical_bias="0.0"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/song_item_library"

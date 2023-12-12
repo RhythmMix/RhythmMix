@@ -10,15 +10,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,13 +36,16 @@ import java.util.ArrayList;
 public class LibraryActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION = 100;
-    final static String TAG="allSongsActivity";
+    final static String LOG_TAG ="LibraryActivity";
+    private static final String LOG_TAG_MEDIA_PLAYER = "MediaPlayer";
     LibrarySongsAdapter librarySongsAdapter;
-    private String selectedSongPath;
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
-    private Handler handler;
-    private boolean isShuffleActive;
+    private ArrayList<String> songPaths;
+    String selectedSongInLibraryPath;
+    private int currentPosition;
+    boolean isItemClickListenerActive=false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,14 +54,10 @@ public class LibraryActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        isShuffleActive = false;
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
-            } else {
-                displaySongs();
-            }
+            handleLibraryPermissions();
         } else {
             displaySongs();
         }
@@ -102,16 +97,43 @@ public class LibraryActivity extends AppCompatActivity {
             } else return false;
         });
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
+
+
     }
+
+    //==============================
+    // Permissions
+    //==============================
+    private void handleLibraryPermissions(){
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+        } else {
+            displaySongs();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                displaySongs();
+            } else {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    //================================================================================================================================
 
     //==============================
     // DisplaySongs
     //==============================
     private void displaySongs() {
         ArrayList<String> songList = new ArrayList<>();
-        ArrayList<String> songPaths = new ArrayList<>();
+        songPaths = new ArrayList<>();
         ArrayList<String> artistNames = new ArrayList<>();
-
         String[] projection = {
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ARTIST,
@@ -155,19 +177,21 @@ public class LibraryActivity extends AppCompatActivity {
         recyclerView.setAdapter(librarySongsAdapter);
 
         librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
-             selectedSongPath = librarySongsAdapter.songPaths.get(position);
+            isItemClickListenerActive = true;
+            String selectedSongPath = librarySongsAdapter.songPaths.get(position);
 
             Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
             intent.putExtra("SONG_PATHS", librarySongsAdapter.songPaths);
             intent.putExtra("SONG_PATH", selectedSongPath);
             intent.putExtra("CURRENT_POSITION", position);
             startActivity(intent);
+            stopPlayback();
+            isItemClickListenerActive = false;
         });
 
 
         // Search Bar
         TextInputEditText searchEditText = findViewById(R.id.searchEditText);
-        TextView noSongsFoundTextView = findViewById(R.id.noSongsFoundTextView);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -183,6 +207,31 @@ public class LibraryActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
+
+        // Play/Pause Button
+        librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
+            if (!isItemClickListenerActive) {
+                if (currentPosition != -1 && currentPosition != position) {
+                    librarySongsAdapter.setPlaying(false, currentPosition);
+                    Log.d(LOG_TAG, "Play/Pause button clicked for position: " + position + ". Current isPlaying status: " + librarySongsAdapter.isPlayingArray[position]);
+                }
+
+                String clickedSongPath = librarySongsAdapter.songPaths.get(position);
+                if (!clickedSongPath.equals(selectedSongInLibraryPath) || !isPlaying) {
+                    selectedSongInLibraryPath = clickedSongPath;
+                    currentPosition = position;
+                    initializeMediaPlayer();
+                    playSelectedSong();
+                    librarySongsAdapter.setPlaying(true, currentPosition);
+                    Log.d(LOG_TAG, "Starting playback for new position: " + currentPosition);
+                } else {
+                    stopPlayback();
+                    librarySongsAdapter.setPlaying(false, currentPosition);
+                    Log.d(LOG_TAG, "Stopping playback for current position: " + currentPosition);
+                    currentPosition = -1;
+                }
+            }
+        });
     }
 
     //==========================================================================================
@@ -191,100 +240,65 @@ public class LibraryActivity extends AppCompatActivity {
     // MediaPlayer Initialization
     //==============================
     private void initializeMediaPlayer() {
-            if (mediaPlayer == null) {
-                mediaPlayer = new MediaPlayer();
-            } else {
-                mediaPlayer.stop();
-                mediaPlayer.reset();
-            }
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        } else {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+        }
+        try {
+            mediaPlayer.setOnCompletionListener(mp -> {
+//                playNextSong();
+            });
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                isPlaying = true;
+            });
+            if (selectedSongInLibraryPath != null) {
+                ContentResolver resolver = getContentResolver();
+                Uri contentUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+                String selection = MediaStore.Audio.Media.DATA + "=?";
+                String[] selectionArgs = {selectedSongInLibraryPath};
+                Cursor cursor = resolver.query(contentUri, null, selection, selectionArgs, null);
 
-            handler = new Handler();
+                if (cursor != null && cursor.moveToFirst()) {
+                    int idColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
 
-            try {
-                mediaPlayer.setOnCompletionListener(mp -> {
-//                    playSequentialNextSong();
-                });
-                mediaPlayer.setOnPreparedListener(mp -> {
-                    startPlayback();
-                });
-                if (selectedSongPath != null) {
-                    ContentResolver resolver = getContentResolver();
-                    Uri contentUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
-                    String selection = MediaStore.Audio.Media.DATA + "=?";
-                    String[] selectionArgs = {selectedSongPath};
-                    Cursor cursor = resolver.query(contentUri, null, selection, selectionArgs, null);
+                    if (idColumnIndex != -1) {
+                        long id = cursor.getLong(idColumnIndex);
+                        Uri uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+                        cursor.close();
 
-                    if (cursor != null && cursor.moveToFirst()) {
-                        int idColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
-
-                        if (idColumnIndex != -1) {
-                            long id = cursor.getLong(idColumnIndex);
-                            Uri uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
-                            cursor.close();
-
-                            mediaPlayer.setDataSource(this, uri);
-                            mediaPlayer.prepareAsync();
-                        } else cursor.close();
-                    } else {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
+                        mediaPlayer.setDataSource(this, uri);
+                        mediaPlayer.prepareAsync();
+                    } else cursor.close();
+                } else {
+                    if (cursor != null) {
+                        cursor.close();
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-    //========================================================================================================================
+    }
+    //==============================================================================================================
 
     //==============================
-    // Playback Control
+    // Play Song Controls
     //==============================
+    private void playSelectedSong() {
+        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty()) {
+            currentPosition = songPaths.indexOf(selectedSongInLibraryPath);
+            playSong(selectedSongInLibraryPath);
+        }
+    }
     private void playSong(String path) {
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-                isPlaying = false;
-            } else {
-                initializeMediaPlayer();
-                mediaPlayer.start();
-                isPlaying = true;
-            }
-            updatePlayButton();
-        } else {
-            selectedSongPath = path;
-            initializeMediaPlayer();
-        }
+        // Implement the logic to stop the current playback and start the playback of the new song
+        stopPlayback();
+        selectedSongInLibraryPath = path;
+        initializeMediaPlayer();
     }
-    private void startPlayback() {
-        if (mediaPlayer != null) {
-            mediaPlayer.start();
-            isPlaying = true;
-            updatePlayButton();
-        }
-    }
-
-//    private void playNextSong() {
-//        if (isShuffleActive) {
-//            playRandomSong();
-//        } else {
-//            playSequentialNextSong();
-//        }
-//    }
-//    private void playSequentialNextSong() {
-//        if (currentPosition < songPaths.size() - 1) {
-//            currentPosition++;
-//        } else {
-//            // This is the last song, stop playback
-//            stopPlayback();
-//            return;
-//        }
-//        String nextSongPath = songPaths.get(currentPosition);
-//        playSong(nextSongPath);
-//        isPlaying = true;
-//        updatePlayButton();
-//    }
 
     private void stopPlayback() {
         if (mediaPlayer != null) {
@@ -293,27 +307,14 @@ public class LibraryActivity extends AppCompatActivity {
             }
             mediaPlayer.reset();
             isPlaying = false;
-            updatePlayButton();
         }
     }
 
-    //====================================================================================================================
+    //======================================================================================
 
     //==============================
     // UI Updates
     //==============================
-    private void updatePlayButton() {
-        ImageButton playButton = findViewById(R.id.preview_button);
-
-        playButton.setOnClickListener(v -> {
-            playSong(selectedSongPath);
-        });
-
-        playButton.setBackgroundResource(isPlaying ? R.drawable.ic_pause_24 : R.drawable.round_play_circle_24);
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            isPlaying = true;
-        }
-    }
     private void updateNoSongsFoundVisibility() {
         TextView noSongsFoundTextView = findViewById(R.id.noSongsFoundTextView);
         if (librarySongsAdapter.getItemCount() == 0) {
@@ -333,27 +334,14 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                displaySongs();
-            } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        releaseMediaPlayer();
+    }
+    private void releaseMediaPlayer() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
     }
-
 }
