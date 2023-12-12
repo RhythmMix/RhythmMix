@@ -6,6 +6,7 @@
     <string name="start_marker">Start marker</string>
     <string name="end_marker">End marker</string>
     <string name="rewind">Rewind</string>
+    <string name="accessibility_overflow">Accessibility Overflow</string>
     <string name="play">Play</string>
     <string name="stop">Stop</string>
     <string name="ffwd">Fast forward</string>
