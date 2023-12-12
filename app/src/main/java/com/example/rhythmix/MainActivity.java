@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.bumptech.glide.Glide;
 import com.example.rhythmix.Adapter.AlbumRecyclerViewAdapter;
 import com.example.rhythmix.Adapter.DataListAdapter;
+import com.example.rhythmix.Adapter.TrackRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,39 +32,38 @@ public class MainActivity extends AppCompatActivity {
     private DataListAdapter adapter;
     private RecyclerView horizontalView;
     private List<Album> albumList = new ArrayList<>();
+    private List<Music> musicList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private AlbumRecyclerViewAdapter albumHorizontalRecyclerViewAdapter;
-    private RecyclerView recyclerView;
+    private TrackRecyclerViewAdapter trackRecyclerViewAdapter;
+    private RecyclerView albumRecyclerView;
+    private RecyclerView trackRecyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        ListView searchListView = findViewById(R.id.listView);
-
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-
-
-
+        init();
         displayMultipleAlbums(fetchingAlbumsId());
 //        displayMultipleTracks(fetchingTracksId());
-
-//        fetchAllTracks();
-
 
     }
 
 
     private void displayMultipleAlbums(List<Long> albumIds) {
-        recyclerView = findViewById(R.id.horizontalRecyclerView);
+        albumRecyclerView = findViewById(R.id.horizontalRecyclerView);
         List<Album> albumList = new ArrayList<>();
-        AlbumRecyclerViewAdapter recyclerViewAdapter = new AlbumRecyclerViewAdapter(this,albumList);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        albumRecyclerView.setLayoutManager(layoutManager);
+        AlbumRecyclerViewAdapter recyclerViewAdapter = new AlbumRecyclerViewAdapter(this, albumList);
+        albumRecyclerView.setAdapter(recyclerViewAdapter);
 
         for (Long albumId : albumIds) {
             displayAlbumDetails(albumId, recyclerViewAdapter);
@@ -79,13 +81,15 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Album> call, Response<Album> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Album album = response.body();
+                    Log.d(TAG, "Album details: " + album);
+                    Log.d(TAG, "imageUrl=" + album.getCover());
+                    Log.d(TAG, "Album Id=" + album.getId());
 
-                    if (album != null) {
-
-                        displayMultipleAlbums(fetchingAlbumsId());
-
+                    if (album != null && album.getCover() != null && album.getTitle() != null) {
+                        recyclerViewAdapter.addAlbum(album);
+                        Log.d(TAG, "album after is being added" + album);
                     } else {
-                        Log.e(TAG, "Album or album.getAlbum() is null");
+                        Log.e(TAG, "Album is null");
                     }
                 } else {
                     Log.e(TAG, "Unsuccessful response");
@@ -103,22 +107,15 @@ public class MainActivity extends AppCompatActivity {
     private List<Long> fetchingAlbumsId() {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
-                7090505L, 916424L, 103248L, 6461440L, 595243L, 1109731L, 119606L, 916426L, 103248L,
-                6461432L, 595243L, 916427L, 103248L, 1109737L, 119606L, 1109739L, 119606L, 854914322L,
-                127270232L, 1109730L, 119606L, 1865118037L, 346060987L, 72160314L, 7090505L, 2459657805L,
-                489410085L, 548348732L, 72000342L, 916414L, 103248L, 436510892L, 52755402L, 1176211L,
-                125748L, 2454196745L, 487933275L, 1109729L, 119606L, 3729755L, 350198L, 2372912335L,
-                465874705L, 1109727L, 119606L, 1176202L, 125748L, 125748L, 501928001L
+                595243L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 315512547L, 12231484L, 117053822L, 306544897L, 129186032L, 8113734L, 280436792L, 6475501L
         );
         Collections.shuffle(ids);
-        System.out.println("Shuffled IDs:");
-        List<Long> shuffeled = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            System.out.println(ids.get(i));
-            shuffeled.add(ids.get(i));
+        List<Long> shuffled = new ArrayList<>();
+        for (int i = 0; i < ids.size(); i++) {
+            shuffled.add(ids.get(i));
         }
 
-        return shuffeled;
+        return shuffled;
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -127,31 +124,32 @@ public class MainActivity extends AppCompatActivity {
 
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
-                7090505L, 916424L, 103248L, 6461432L, 916427L, 1109737L, 1109739L, 854914322L);
+                1842063587L, 2372912335L, 1093313332L, 11747937L,  1409072752L, 117797212L,
+                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L);
         Collections.shuffle(ids);
-        System.out.println("Shuffled IDs:");
-        List<Long> shuffeled = new ArrayList<>();
+        List<Long> shuffled = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {
-            System.out.println(ids.get(i));
-            shuffeled.add(ids.get(i));
+            shuffled.add(ids.get(i));
         }
 
-        return shuffeled;
+        return shuffled;
     }
 
     private void displayMultipleTracks(List<Long> tracksId) {
-//        ListView listView = findViewById(R.id.listView);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-//        listView.setAdapter(adapter);
+        trackRecyclerView = findViewById(R.id.verticalRecyclerView);
+        List<Music> musicList = new ArrayList<>();
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
+        trackRecyclerView.setLayoutManager(layoutManager);
+        TrackRecyclerViewAdapter trackRecyclerViewAdapter = new TrackRecyclerViewAdapter(this, musicList);
+        trackRecyclerView.setAdapter(trackRecyclerViewAdapter);
 
         for (Long trackId : tracksId) {
-            displayTrackDetails(trackId, adapter);
+            displayTrackDetails(trackId, trackRecyclerViewAdapter);
         }
 
     }
 
-    private void displayTrackDetails(long trackId, ArrayAdapter<String> adapter) {
+    private void displayTrackDetails(long trackId, TrackRecyclerViewAdapter trackRecyclerViewAdapter) {
         MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
         Call<Music> retrofitData = musicApiInterface.getTracks(trackId);
         Log.d(TAG, "retrofitData of tracks: " + retrofitData);
@@ -168,17 +166,13 @@ public class MainActivity extends AppCompatActivity {
 
                     if (music != null) {
                         if (music.getArtist() != null && music.getTitle() != null && music.getPreview() != null) {
-                            adapter.add("song Title: " + music.getTitle() + "\n"
-                                    + "song preview: " + music.getPreview() + "\n\n"
-                                    + "artist name:" + music.getArtist().getName());
+                            trackRecyclerViewAdapter.addTrack(music);
+                        } else {
+                            Log.e(TAG, "Album is null");
                         }
-//                        else {   // to not get null
-//                            adapter.add("song Title: " + music.getTitle() + "\n"
-//                                    + "song preview: " + music.getPreview() + "\n\n");
-//                        }
+                    } else {
+                        Log.e(TAG, "Unsuccessful response");
                     }
-                } else {
-                    Log.e(TAG, "Unsuccessful response");
                 }
             }
 
@@ -193,25 +187,11 @@ public class MainActivity extends AppCompatActivity {
     /////////////////////////////////////////////////////////////////////////
 
 
-//    private void fetchAllTracks() {
-//        MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
-//        Call<Data> retrofitData = musicApiInterface.getAllTracks();
-//
-//        retrofitData.enqueue(new Callback<Music>() {
-//            @Override
-//            public void onResponse(Call<Music> call, Response<Music> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    Music music = response.body();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Music> call, Throwable t) {
-//                Log.e(TAG, "OnFailure: " + t.getMessage());
-//            }
-//        });
-//    }
+    public void init(){
+        ImageView staticImage= findViewById(R.id.staticImage);
+        String imagePath = "https://wjct.org/wp-content/uploads/2022/12/Artiststowatch-Square2-scaled.jpg";
+        Glide.with(this).load(imagePath).into(staticImage);
+    }
 
 
 }

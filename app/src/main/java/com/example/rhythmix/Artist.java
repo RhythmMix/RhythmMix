@@ -8,7 +8,7 @@ public class Artist {
     private String name;
     private String link;
     private String trackList;
-    private String pictureSmall;
+    private String picture;
 
 
     public Artist(JSONObject artistObject) throws JSONException {
@@ -16,14 +16,14 @@ public class Artist {
         this.name = artistObject.getString("name");
         this.link = artistObject.getString("link");
         this.trackList = artistObject.getString("tracklist");
-        this.pictureSmall = artistObject.getString("picture_small");
+        this.picture = artistObject.getString("picture");
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPictureSmall() {
-        return pictureSmall;
+    public String getPicture() {
+        return picture;
     }
 }
