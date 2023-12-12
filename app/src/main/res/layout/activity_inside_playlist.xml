@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backward_color"
-    tools:context=".PlaylistActivity">
+    tools:context=".InsidePlaylistActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                         android:layout_marginBottom="18dp"
                         android:background="@drawable/white_rounded"
                         android:padding="3dp"
-                        android:src="@drawable/default_image_round"
+                        android:src="@drawable/head"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,7 +86,7 @@
                         android:maxLines="2"
                         android:minHeight="30dp"
                         android:text="@string/songs"
-                        android:textColor="@color/flatOrange"
+                        android:textColor="#852746"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/play_option_panel"
@@ -125,7 +125,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/play_all_button"
                         app:srcCompat="@drawable/ic_play_arrow_black_24dp"
-                        app:tint="#BBFF9500" />
+                        app:tint="#852746" />
 
                     <TextView
                         android:id="@+id/play_all_button"
@@ -135,7 +135,7 @@
                         android:paddingStart="0dp"
                         android:paddingEnd="14dp"
                         android:text="@string/play_all_songs"
-                        android:textColor="#BBFF9500"
+                        android:textColor="#852746"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/play_option_panel"
                         app:layout_constraintStart_toEndOf="@id/play_all_icon"
@@ -152,7 +152,7 @@
                         android:paddingStart="14dp"
                         android:paddingEnd="14dp"
                         android:text="@string/play_random"
-                        android:textColor="#BBFF9500"
+                        android:textColor="#852746"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/play_option_panel"
                         app:layout_constraintStart_toEndOf="@id/play_all_button"

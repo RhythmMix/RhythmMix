@@ -14,6 +14,7 @@ import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
 import com.amplifyframework.core.model.ModelOperation;
 import com.amplifyframework.core.model.annotations.AuthRule;
+import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
 import com.amplifyframework.core.model.query.predicate.QueryField;
@@ -168,10 +169,6 @@ public final class Playlist implements Model {
   }
   public interface PlaylistIdStep {
     PlaylistNameStep playlistId(String playlistId);
-
-      Object playlistName(String toString);
-
-      PlaylistNameStep userID(String userId);
   }
   
 
@@ -180,96 +177,86 @@ public final class Playlist implements Model {
   }
   
 
-//  public interface BuildStep {
-//    Playlist build();
-//    BuildStep id(String id);
-//    BuildStep playlistBackground(String playlistBackground);
-//    BuildStep user(User user);
-//  }
-
-    public interface BuildStep {
-        Playlist build();
-
-        BuildStep playlistBackground(String playlistBackground);
-        BuildStep user(User user);
-
-        BuildStep id(String id);
-        BuildStep playlistName(String playlistName);
-
-        PlaylistNameStep playlistId(String playlistId);
-    }
-  
-
-  public static class Builder implements PlaylistIdStep, PlaylistNameStep, BuildStep {
-    private String id;
-    private String playlistID;
-    private String playlistName;
-    private String playlistBackground;
-    private User user;
-    public Builder() {
-      
-    }
-    
-    private Builder(String id, String playlistID, String playlistName, String playlistBackground, User user) {
-      this.id = id;
-      this.playlistID = playlistID;
-      this.playlistName = playlistName;
-      this.playlistBackground = playlistBackground;
-      this.user = user;
-    }
-    
-    @Override
-     public Playlist build() {
-        String id = this.id != null ? this.id : UUID.randomUUID().toString();
-        
-        return new Playlist(
-          id,
-          playlistID,
-          playlistName,
-          playlistBackground,
-          user);
-    }
-    
-    @Override
-     public PlaylistNameStep playlistId(String playlistId) {
-        Objects.requireNonNull(playlistId);
-        this.playlistID = playlistId;
-        return this;
-    }
-    
-    @Override
-     public BuildStep playlistName(String playlistName) {
-        Objects.requireNonNull(playlistName);
-        this.playlistName = playlistName;
-        return this;
-    }
-
-      @Override
-      public PlaylistNameStep userID(String userId) {
-          return null;
-      }
-
-      @Override
-     public BuildStep playlistBackground(String playlistBackground) {
-        this.playlistBackground = playlistBackground;
-        return this;
-    }
-    
-    @Override
-     public BuildStep user(User user) {
-        this.user = user;
-        return this;
-    }
-    
-    /**
-     * @param id id
-     * @return Current Builder instance, for fluent method chaining
-     */
-    public BuildStep id(String id) {
-        this.id = id;
-        return this;
-    }
+  public interface BuildStep {
+    Playlist build();
+    BuildStep id(String id);
+    BuildStep playlistBackground(String playlistBackground);
+    BuildStep user(User user);
+    BuildStep userID(String userId);
   }
+
+
+    public static class Builder implements PlaylistIdStep, PlaylistNameStep, BuildStep {
+        private String id;
+        private String playlistID;
+        private String playlistName;
+        private String playlistBackground;
+        private User user;
+
+        public Builder() {
+        }
+
+        private Builder(String id, String playlistID, String playlistName, String playlistBackground, User user) {
+            this.id = id;
+            this.playlistID = playlistID;
+            this.playlistName = playlistName;
+            this.playlistBackground = playlistBackground;
+            this.user = user;
+        }
+
+        @Override
+        public Playlist build() {
+            String id = this.id != null ? this.id : UUID.randomUUID().toString();
+
+            return new Playlist(
+                    id,
+                    playlistID,
+                    playlistName,
+                    playlistBackground,
+                    user);
+        }
+
+        @Override
+        public PlaylistNameStep playlistId(String playlistId) {
+            Objects.requireNonNull(playlistId);
+            this.playlistID = playlistId;
+            return this;
+        }
+
+        @Override
+        public BuildStep playlistName(String playlistName) {
+            Objects.requireNonNull(playlistName);
+            this.playlistName = playlistName;
+            return this;
+        }
+
+        @Override
+        public BuildStep playlistBackground(String playlistBackground) {
+            this.playlistBackground = playlistBackground;
+            return this;
+        }
+
+        @Override
+        public BuildStep user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        @Override
+        public BuildStep userID(String userId) {
+            // If needed, implement logic for setting the user ID
+            return this;
+        }
+
+        /**
+         * @param id id
+         * @return Current Builder instance, for fluent method chaining
+         */
+        public BuildStep id(String id) {
+            this.id = id;
+            return this;
+        }
+    }
   
 
   public final class CopyOfBuilder extends Builder {
@@ -280,7 +267,7 @@ public final class Playlist implements Model {
     }
     
     @Override
-     public PlaylistNameStep playlistId(String playlistId) {
+     public CopyOfBuilder playlistId(String playlistId) {
       return (CopyOfBuilder) super.playlistId(playlistId);
     }
     
@@ -288,13 +275,8 @@ public final class Playlist implements Model {
      public CopyOfBuilder playlistName(String playlistName) {
       return (CopyOfBuilder) super.playlistName(playlistName);
     }
-
-      @Override
-      public PlaylistNameStep userID(String userId) {
-          return null;
-      }
-
-      @Override
+    
+    @Override
      public CopyOfBuilder playlistBackground(String playlistBackground) {
       return (CopyOfBuilder) super.playlistBackground(playlistBackground);
     }

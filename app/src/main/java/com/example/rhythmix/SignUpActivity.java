@@ -52,8 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
                     verificationCode,
                     god -> {
                         Log.i(TAG, "Verification succeeded: " + god.toString());
-
-                        // Get user attributes after successful verification
+                        Intent goToLogin =new Intent(SignUpActivity.this,LoginActivity.class);
+                        startActivity(goToLogin);
                         fetchUserAttributesAndNavigate(username);
                     },
                     failure -> {

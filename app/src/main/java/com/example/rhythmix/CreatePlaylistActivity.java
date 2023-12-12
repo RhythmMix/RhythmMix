@@ -1,20 +1,16 @@
 package com.example.rhythmix;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.datastore.generated.model.Playlist;
 import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.datastore.generated.model.Playlist;
 
 import java.util.UUID;
-
 public class CreatePlaylistActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +32,16 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                     Log.i("Amplify", "Playlist Name: " + playlistName);
 
                     if (playlistName != null && !playlistName.isEmpty()) {
-                        Playlist playlist = Playlist.builder()
-                                .userID(userId)
+                        Playlist.Builder playlistBuilder = (Playlist.Builder) Playlist.builder()
+                                .playlistId(UUID.randomUUID().toString())
                                 .playlistName(playlistName)
-                                .build();
+                                .userID(userId);
+
+                        Log.i("Amplify", "Playlist Builder: " + playlistBuilder);
+
+                        Playlist playlist = playlistBuilder.build();
+
+                        Log.i("Amplify", "Playlist: " + playlist);
 
                         if (playlist != null) {
                             Amplify.DataStore.save(playlist,
@@ -61,6 +63,5 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 }

@@ -26,7 +26,7 @@ public final class PlaylistMusic implements Model {
   public static final QueryField MUSIC = field("PlaylistMusic", "musicID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="Playlist") @BelongsTo(targetName = "playlistID", type = Playlist.class) Playlist playlist;
-  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID", type = Music.class) Music music;
+  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID",  type = Music.class) Music music;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */
@@ -198,6 +198,8 @@ public final class PlaylistMusic implements Model {
       return (CopyOfBuilder) super.music(music);
     }
   }
+  
+
 
   
 }

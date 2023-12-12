@@ -4,42 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/overlay"
     tools:context=".CreatePlaylistActivity">
 
+    <EditText
+        android:id="@+id/playlistNameEditText"
+        android:layout_width="376dp"
+        android:layout_height="58dp"
+        android:layout_below="@id/playlistTitleTextView"
+        android:layout_marginBottom="104dp"
+        android:backgroundTint="#852746"
+        android:hint="Playlist Name"
+        android:inputType="text"
+        android:textColor="#FFAABBCC"
+        android:textColorHint="#FFAABBCC"
+        app:layout_constraintBottom_toTopOf="@+id/createPlaylistButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+    <Button
+        android:id="@+id/createPlaylistButton"
+        android:layout_width="187dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/playlistNameEditText"
+        android:layout_marginBottom="188dp"
+        android:backgroundTint="#852746"
+        android:fontFamily="@font/ios_bold"
+        android:text=" Playlist name"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.443"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/playlistTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Playlist"
-            android:textSize="20sp"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"/>
-
-        <EditText
-            android:id="@+id/playlistNameEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/playlistTitleTextView"
-            android:layout_marginTop="16dp"
-            android:hint="Playlist Name"
-            android:inputType="text"/>
-
-        <Button
-            android:id="@+id/createPlaylistButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/playlistNameEditText"
-            android:layout_marginTop="16dp"
-            android:text="Create Playlist"
-            android:layout_centerHorizontal="true"/>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/playlistTitleTextView"
+        android:layout_width="301dp"
+        android:layout_height="54dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/ios_bold"
+        android:text="@string/add_to_playlist"
+        android:textColor="#852746"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/playlistNameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.766" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,10 +20,10 @@
             android:name=".AddPlaylistDialog"
             android:exported="false" />
         <activity
-            android:name=".ListsActivity"
+            android:name=".PlaylistsActivity"
             android:exported="false" />
         <activity
-            android:name=".PlaylistActivity"
+            android:name=".InsidePlaylistActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
