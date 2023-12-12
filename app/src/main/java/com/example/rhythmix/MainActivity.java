@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.rhythmix.Adapter.DataListAdapter;
@@ -39,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-        displayMultipleAlbums(fetchingAlbumsId());
-        displayMultipleTracks(fetchingTracksId());
+//        displayMultipleAlbums(fetchingAlbumsId());
+//        displayMultipleTracks(fetchingTracksId());
 
+//        fetchAllTracks();
     }
 
     private void displayMultipleAlbums(List<Long> albumIds) {
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Music list" + musicList);
 
                     if (music != null) {
-                        if (music.getArtist() != null && music.getTitle()!=null &&  music.getPreview()!=null) {
+                        if (music.getArtist() != null && music.getTitle() != null && music.getPreview() != null) {
                             adapter.add("song Title: " + music.getTitle() + "\n"
                                     + "song preview: " + music.getPreview() + "\n\n"
                                     + "artist name:" + music.getArtist().getName());
@@ -183,12 +183,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-}
 
 
     /////////////////////////////////////////////////////////////////////////
 
 
+//    private void fetchAllTracks() {
+//        MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
+//        Call<Data> retrofitData = musicApiInterface.getAllTracks();
+//
+//        retrofitData.enqueue(new Callback<Music>() {
+//            @Override
+//            public void onResponse(Call<Music> call, Response<Music> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    Music music = response.body();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Music> call, Throwable t) {
+//                Log.e(TAG, "OnFailure: " + t.getMessage());
+//            }
+//        });
+//    }
 
 
-
+}
