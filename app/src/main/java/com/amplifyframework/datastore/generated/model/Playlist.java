@@ -169,6 +169,8 @@ public final class Playlist implements Model {
   }
   public interface PlaylistIdStep {
     PlaylistNameStep playlistId(String playlistId);
+
+      BuildStep playlistName(String playlistName);
   }
   
 

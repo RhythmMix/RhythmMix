@@ -1,7 +1,5 @@
 package com.example.rhythmix;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -9,13 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.auth.options.AuthSignUpOptions;
 import com.amplifyframework.core.Amplify;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = SignUpActivity.class.getSimpleName();
@@ -30,15 +28,19 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        TextView textView5=findViewById(R.id.textView5);
+        textView5.setOnClickListener(view -> {
+            Intent moveToSignUp=new Intent(SignUpActivity.this,LoginActivity.class);
+            startActivity(moveToSignUp);
+        });
+
         Button verifyButton = findViewById(R.id.verify);
         EditText verifyCode = findViewById(R.id.codeEdit);
         Button signupSubmitButton = findViewById(R.id.signUp);
         passwordEditText = findViewById(R.id.passwordEditText);
+        TextInputLayout textInputLayout=findViewById(R.id.textInputLayoutcode);
 
         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        ImageButton showPasswordButton = findViewById(R.id.showPasswordButton);
-        showPasswordButton.setOnClickListener(this::togglePasswordVisibility);
-
         verifyButton.setOnClickListener(view -> {
             String username = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
             String verificationCode = verifyCode.getText().toString();
@@ -64,10 +66,10 @@ public class SignUpActivity extends AppCompatActivity {
                     }
             );
         });
-
         signupSubmitButton.setOnClickListener(v -> {
             verifyCode.setVisibility(View.VISIBLE);
             verifyButton.setVisibility(View.VISIBLE);
+            textInputLayout.setVisibility(View.VISIBLE);
             signupSubmitButton.setVisibility(View.INVISIBLE);
             String username = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
             String password = ((EditText) findViewById(R.id.passwordEditText)).getText().toString();

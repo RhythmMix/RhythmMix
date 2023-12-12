@@ -1,14 +1,12 @@
 package com.example.rhythmix;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.amplifyframework.core.Amplify;
 
 public class LoginActivity extends AppCompatActivity {
@@ -18,6 +16,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        TextView textView5=findViewById(R.id.textView5);
+        textView5.setOnClickListener(view -> {
+            Intent moveToSignUp=new Intent(LoginActivity.this,SignUpActivity.class);
+            startActivity(moveToSignUp);
+        });
 
         Intent callingIntent= getIntent();
         String email = callingIntent.getStringExtra(SignUpActivity.VERIFY_ACCOUNT_EMAIL_TAG);
@@ -49,11 +54,5 @@ public class LoginActivity extends AppCompatActivity {
             );
         });
 
-        Button signUpButton = (Button) findViewById(R.id.signUpButton);
-        signUpButton.setOnClickListener(v ->
-        {
-            Intent goToSignUpIntent = new Intent(LoginActivity.this, SignUpActivity.class);
-            startActivity(goToSignUpIntent);
-        });
     }
 }
