@@ -33,13 +33,13 @@ public class SongPlayerActivity extends AppCompatActivity {
     final static String TAG="songPlayerActivity";
     private static final int REQUEST_PERMISSION = 100;
     private MediaPlayer mediaPlayer;
+    private boolean isPlaying = false;
     private SeekBar seekBar;
     private Handler handler;
     private Runnable runnable;
     private TextView txtStart, txtStop;
     TextView songNameTextView;
     TextView artistNameTextView;
-    private boolean isPlaying = false;
     private ArrayList<String> songPaths;
     private String songPath;
     private int currentPosition;
@@ -154,6 +154,7 @@ public class SongPlayerActivity extends AppCompatActivity {
                 // Not needed for your functionality but for override
             }
         });
+
         // Set up favorite listener
         heartButton.setOnClickListener(view -> onHeartButtonClick());
 
