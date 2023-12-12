@@ -1,6 +1,5 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Rhythmix</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Home">home sweet home</string>
     <string name="title_activity_login111">LoginActivity111</string>
@@ -13,4 +12,10 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="songs">PLaylist Name</string>
+    <string name="play_all_songs">Play all</string>
+    <string name="play_random">Shuffle play</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="accessibility_overflow">Accessibility Overflow</string>
+
 </resources>

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.example.rhythmix.R;
@@ -16,6 +17,15 @@ public class PlaylistsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
+
+        ImageView addListImageView = findViewById(R.id.add_list);
+        addListImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PlaylistsActivity.this, CreatePlaylistActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Songs/Playlist Navbar
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);

@@ -31,6 +31,4 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
         // Set the GradientDrawable as the background for the button
-
-
 }

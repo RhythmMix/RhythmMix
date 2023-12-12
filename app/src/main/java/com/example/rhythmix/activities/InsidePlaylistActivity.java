@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.rhythmix.R;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class InsidePlaylistActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration_page);
+        setContentView(R.layout.activity_inside_playlist);
     }
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/overlay"
+    android:background="@drawable/libraryoverlay"
     tools:context=".activities.PlaylistsActivity">
 
     <!--Playlists Text-->
@@ -94,20 +94,6 @@
             android:textSize="16sp" />
     </RadioGroup>
 
-    <!--Shuffle Icon-->
-    <ImageView
-        android:id="@+id/shuffle_button"
-        android:layout_width="30dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:paddingTop="13dp"
-        android:paddingBottom="13dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchTextInputLayoutPlaylists"
-        app:srcCompat="@drawable/ic_shuffle"
-        app:tint="@color/FlatWhite" />
-
     <ImageView
         android:id="@+id/add_list"
         android:layout_width="169dp"
@@ -135,3 +121,4 @@
         app:layout_constraintTop_toBottomOf="@+id/navigationBarPlaylist" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

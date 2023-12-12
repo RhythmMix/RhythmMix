@@ -202,7 +202,7 @@ public class LibraryActivity extends AppCompatActivity {
 
             try {
                 mediaPlayer.setOnCompletionListener(mp -> {
-                    playSequentialNextSong();
+//                    playSequentialNextSong();
                 });
                 mediaPlayer.setOnPreparedListener(mp -> {
                     startPlayback();
@@ -272,19 +272,19 @@ public class LibraryActivity extends AppCompatActivity {
 //            playSequentialNextSong();
 //        }
 //    }
-    private void playSequentialNextSong() {
-        if (currentPosition < songPaths.size() - 1) {
-            currentPosition++;
-        } else {
-            // This is the last song, stop playback
-            stopPlayback();
-            return;
-        }
-        String nextSongPath = songPaths.get(currentPosition);
-        playSong(nextSongPath);
-        isPlaying = true;
-        updatePlayButton();
-    }
+//    private void playSequentialNextSong() {
+//        if (currentPosition < songPaths.size() - 1) {
+//            currentPosition++;
+//        } else {
+//            // This is the last song, stop playback
+//            stopPlayback();
+//            return;
+//        }
+//        String nextSongPath = songPaths.get(currentPosition);
+//        playSong(nextSongPath);
+//        isPlaying = true;
+//        updatePlayButton();
+//    }
 
     private void stopPlayback() {
         if (mediaPlayer != null) {
