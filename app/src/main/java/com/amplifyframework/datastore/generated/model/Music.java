@@ -394,7 +394,6 @@ public final class Music implements Model {
       return (CopyOfBuilder) super.musicMp3(musicMp3);
     }
   }
-  
 
   
 }

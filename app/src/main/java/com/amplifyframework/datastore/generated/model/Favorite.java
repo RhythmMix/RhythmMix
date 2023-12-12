@@ -22,7 +22,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Favorite type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Favorites", authRules = {
+@ModelConfig(pluralName = "Favorites",  authRules = {
   @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
 public final class Favorite implements Model {
@@ -318,6 +318,7 @@ public final class Favorite implements Model {
       return (CopyOfBuilder) super.userId(userId);
     }
   }
+  
 
   
 }

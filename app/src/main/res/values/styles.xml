@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+        <!-- set the rounded drawable as background to your bottom sheet -->
+        <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+            <item name="android:background">@drawable/rounded_bottom_sheet_drawable</item>
+        </style>
+
+
+
+
+
         <item name="android:windowShowWallpaper">true</item>
 <!--        <item name="android:windowBackground">@color/SplashColor</item>-->
         <item name="colorPrimaryDark">@color/FlatWhite</item>
@@ -76,13 +88,6 @@
         <item name="android:background">#000022</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <!-- set the rounded drawable as background to your bottom sheet -->
-    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/rounded_bottom_sheet_drawable</item>
-    </style>
 
     <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>

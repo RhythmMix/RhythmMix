@@ -25,8 +25,8 @@ public final class FavoriteMusic implements Model {
   public static final QueryField FAVORITE = field("FavoriteMusic", "favoriteID");
   public static final QueryField MUSIC = field("FavoriteMusic", "musicID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="Favorite") @BelongsTo(targetName = "favoriteID", type = Favorite.class) Favorite favorite;
-  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID",  type = Music.class) Music music;
+  private final @ModelField(targetType="Favorite") @BelongsTo(targetName = "favoriteID",  type = Favorite.class) Favorite favorite;
+  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID", type = Music.class) Music music;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */

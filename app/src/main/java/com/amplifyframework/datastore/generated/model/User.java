@@ -13,6 +13,7 @@ import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
 import com.amplifyframework.core.model.ModelOperation;
 import com.amplifyframework.core.model.annotations.AuthRule;
+import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
 import com.amplifyframework.core.model.query.predicate.QueryField;
@@ -21,7 +22,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the User type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Users",  authRules = {
+@ModelConfig(pluralName = "Users", authRules = {
   @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
 public final class User implements Model {
@@ -29,11 +30,13 @@ public final class User implements Model {
   public static final QueryField USER_ID = field("User", "userID");
   public static final QueryField EMAIL = field("User", "email");
   public static final QueryField USERNAME = field("User", "username");
+  public static final QueryField USER_IMAGE_S3_KEY = field("User", "userImageS3Key");
   public static final QueryField PASSWORD = field("User", "password");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="ID", isRequired = true) String userID;
   private final @ModelField(targetType="String", isRequired = true) String email;
   private final @ModelField(targetType="String") String username;
+  private final @ModelField(targetType="String") String userImageS3Key;
   private final @ModelField(targetType="String", isRequired = true) String password;
   private final @ModelField(targetType="Playlist") @HasMany(associatedWith = "user", type = Playlist.class) List<Playlist> playlists = null;
   private final @ModelField(targetType="FavoriteMusic") @HasMany(associatedWith = "id", type = FavoriteMusic.class) List<FavoriteMusic> favorites = null;
@@ -61,6 +64,10 @@ public final class User implements Model {
       return username;
   }
   
+  public String getUserImageS3Key() {
+      return userImageS3Key;
+  }
+  
   public String getPassword() {
       return password;
   }
@@ -81,11 +88,12 @@ public final class User implements Model {
       return updatedAt;
   }
   
-  private User(String id, String userID, String email, String username, String password) {
+  private User(String id, String userID, String email, String username, String userImageS3Key, String password) {
     this.id = id;
     this.userID = userID;
     this.email = email;
     this.username = username;
+    this.userImageS3Key = userImageS3Key;
     this.password = password;
   }
   
@@ -101,6 +109,7 @@ public final class User implements Model {
               ObjectsCompat.equals(getUserId(), user.getUserId()) &&
               ObjectsCompat.equals(getEmail(), user.getEmail()) &&
               ObjectsCompat.equals(getUsername(), user.getUsername()) &&
+              ObjectsCompat.equals(getUserImageS3Key(), user.getUserImageS3Key()) &&
               ObjectsCompat.equals(getPassword(), user.getPassword()) &&
               ObjectsCompat.equals(getCreatedAt(), user.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), user.getUpdatedAt());
@@ -114,6 +123,7 @@ public final class User implements Model {
       .append(getUserId())
       .append(getEmail())
       .append(getUsername())
+      .append(getUserImageS3Key())
       .append(getPassword())
       .append(getCreatedAt())
       .append(getUpdatedAt())
@@ -129,6 +139,7 @@ public final class User implements Model {
       .append("userID=" + String.valueOf(getUserId()) + ", ")
       .append("email=" + String.valueOf(getEmail()) + ", ")
       .append("username=" + String.valueOf(getUsername()) + ", ")
+      .append("userImageS3Key=" + String.valueOf(getUserImageS3Key()) + ", ")
       .append("password=" + String.valueOf(getPassword()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
@@ -154,6 +165,7 @@ public final class User implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -163,6 +175,7 @@ public final class User implements Model {
       userID,
       email,
       username,
+      userImageS3Key,
       password);
   }
   public interface UserIdStep {
@@ -184,6 +197,7 @@ public final class User implements Model {
     User build();
     BuildStep id(String id);
     BuildStep username(String username);
+    BuildStep userImageS3Key(String userImageS3Key);
   }
   
 
@@ -193,15 +207,17 @@ public final class User implements Model {
     private String email;
     private String password;
     private String username;
+    private String userImageS3Key;
     public Builder() {
       
     }
     
-    private Builder(String id, String userID, String email, String username, String password) {
+    private Builder(String id, String userID, String email, String username, String userImageS3Key, String password) {
       this.id = id;
       this.userID = userID;
       this.email = email;
       this.username = username;
+      this.userImageS3Key = userImageS3Key;
       this.password = password;
     }
     
@@ -214,6 +230,7 @@ public final class User implements Model {
           userID,
           email,
           username,
+          userImageS3Key,
           password);
     }
     
@@ -244,6 +261,12 @@ public final class User implements Model {
         return this;
     }
     
+    @Override
+     public BuildStep userImageS3Key(String userImageS3Key) {
+        this.userImageS3Key = userImageS3Key;
+        return this;
+    }
+    
     /**
      * @param id id
      * @return Current Builder instance, for fluent method chaining
@@ -256,8 +279,8 @@ public final class User implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String userId, String email, String username, String password) {
-      super(id, userID, email, username, password);
+    private CopyOfBuilder(String id, String userId, String email, String username, String userImageS3Key, String password) {
+      super(id, userID, email, username, userImageS3Key, password);
       Objects.requireNonNull(userID);
       Objects.requireNonNull(email);
       Objects.requireNonNull(password);
@@ -282,7 +305,13 @@ public final class User implements Model {
      public CopyOfBuilder username(String username) {
       return (CopyOfBuilder) super.username(username);
     }
+    
+    @Override
+     public CopyOfBuilder userImageS3Key(String userImageS3Key) {
+      return (CopyOfBuilder) super.userImageS3Key(userImageS3Key);
+    }
   }
+  
 
   
 }

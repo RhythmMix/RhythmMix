@@ -43,6 +43,7 @@ type User @model @auth(rules: [{ allow: public }]) {
   userID: ID!
   email: String!
   username: String
+  userImageS3Key: String
   password: String!
   playlists: [Playlist] @hasMany(fields: ["userID"])
   favorites: [FavoriteMusic] @hasMany(fields: ["userID"])
