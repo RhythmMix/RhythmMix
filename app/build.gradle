@@ -44,7 +44,7 @@ dependencies {
     // Convert Data to JSON && Convert JSON to Data (Class Object)
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    // picassso for converting image link into API
+    // picasso for converting image link into API
     implementation 'com.squareup.picasso:picasso:2.8'
    // retrofit (HTTP client library for Android and Java that simplifies the process of making network requests and handling APIs)
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

@@ -1,26 +1,19 @@
 package com.example.rhythmix.Adapter;
 
-
 import android.app.Activity;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.rhythmix.Album;
-import com.example.rhythmix.Music;
+import com.example.rhythmix.AlbumTracksActivity;
 import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 import java.util.List;
 
 public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecyclerViewAdapter.AlbumListViewHolder> {
@@ -28,13 +21,10 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
     private Activity context;
     private static final String TAG = "Horizontal_HOLDER";
 
-
     public AlbumRecyclerViewAdapter(Activity context, List<Album> albumList) {
         this.context = context;
         this.albumList = albumList;
-
     }
-
 
     @NonNull
     @Override
@@ -51,18 +41,22 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
                 String imageUrl = album.getCover();
                 Log.d(TAG, "Album Image in HRV" + imageUrl);
 
-                ImageView albumCover = holder.itemView.findViewById(R.id.HRImageViewRecyclerView);
-//                TextView albumTitle = holder.itemView.findViewById(R.id.HRAlbumTitle);
+                ImageButton albumCoverButton = holder.itemView.findViewById(R.id.HRImageButtonRecyclerView);
+                albumCoverButton.setOnClickListener(view -> {
+                    Intent albumTracksActivity = new Intent(view.getContext(), AlbumTracksActivity.class);
+                    view.getContext().startActivity(albumTracksActivity);
+                    albumTracksActivity.putExtra("Album Cover", album.getCover());
+                    albumTracksActivity.putExtra("Album tracks", album.getTrackList());
+                    albumTracksActivity.putExtra("Album title", album.getTitle());
+                    albumTracksActivity.putExtra("Album ID", album.getId());
+                    view.getContext().startActivity(albumTracksActivity);
+                });
 
-                Picasso.get().load(imageUrl).into(albumCover);
+                Picasso.get().load(imageUrl).into(albumCoverButton);
                 String albumTitle1 = album.getTitle();
-//                albumTitle.setText(albumTitle1);
-
-//                holder.albumTitle.setText(albumTitle1);
             }
 
             holder.bind(album);
-
         }
     }
 
@@ -72,27 +66,24 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
     }
 
     public class AlbumListViewHolder extends RecyclerView.ViewHolder {
-        private ImageView albumCover;
+        private ImageButton albumCoverButton;
         private TextView albumTitle;
 
         public AlbumListViewHolder(@NonNull View itemView) {
             super(itemView);
-            albumCover = itemView.findViewById(R.id.HRImageViewRecyclerView);
+//            albumCover = itemView.findViewById(R.id.HRImageViewRecyclerView);
 //            albumTitle = itemView.findViewById(R.id.HRAlbumTitle);
         }
 
         public void bind(Album album) {
             String imageUrl = album.getCover();
-            Picasso.get().load(imageUrl).into(albumCover);
-
-//            String albumTitle1 = album.getTitle();
-//            albumTitle.setText(albumTitle1);
         }
-
     }
 
     public void addAlbum(Album album) {
         albumList.add(album);
         notifyDataSetChanged();
     }
+
+
 }

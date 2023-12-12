@@ -23,7 +23,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
     private List<Music> musicList;
     private Activity context;
-    private static final String TAG = "Horizontal_HOLDER";
+    private static final String TAG = "Vertical_HOLDER";
 
 
     public TrackRecyclerViewAdapter(Activity context, List<Music> musicList) {
@@ -56,7 +56,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
                     mediaPlayer.setDataSource(context, Uri.parse(music.getPreview()));
-                    mediaPlayer.prepareAsync(); // Use prepareAsync to avoid blocking UI thread
+                    mediaPlayer.prepareAsync();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

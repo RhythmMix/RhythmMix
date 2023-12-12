@@ -83,7 +83,7 @@ public class Music {
     }
 
 
-
-
-
+    public long getId() {
+        return id;
+    }
 }

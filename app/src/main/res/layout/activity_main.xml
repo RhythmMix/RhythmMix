@@ -1,93 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/staticImage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="342dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="35dp"
-        app:srcCompat="@android:drawable/btn_star" />
+        android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/staticImage"
+            android:layout_width="match_parent"
+            android:layout_height="342dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="35dp"
+            app:srcCompat="@android:drawable/btn_star" />
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        tools:context=".MainActivity">
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/horizontalRecyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="400dp"
-            android:scrollbars="horizontal" />
+            android:orientation="horizontal"
+            tools:context=".MainActivity">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/verticalRecyclerView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/horizontalRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="400dp"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="550dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:context=".MainActivity">
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/albumImageView"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:layout_marginBottom="16dp"-->
-        <!--            android:contentDescription="TODO"-->
-        <!--            android:src="@android:drawable/btn_star_big_on" />-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/horizontalRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="400dp"
+                android:scrollbars="horizontal"
+                tools:ignore="DuplicateIds" />
+        </LinearLayout>
 
-        <!--        <EditText-->
-        <!--            android:id="@+id/editTextSearch"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:ems="10"-->
-        <!--            android:inputType="text"-->
-        <!--            android:text="Search" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
-        <!--        <Button-->
-        <!--            android:id="@+id/searchButton"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Search" />-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/verticalRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="550dp"
+                android:layout_weight="1"
+                android:visibility="visible" />
+        </LinearLayout>
 
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/artistNameAlbumTextView"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:layout_marginBottom="16dp"-->
-        <!--            android:text="TextView" />-->
-
-
-        <!--        <ListView-->
-        <!--            android:id="@+id/listView2"-->
-        <!--            android:layout_width="231dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="8dp"-->
-        <!--            android:layout_marginTop="8dp"-->
-        <!--            android:layout_marginEnd="8dp"-->
-        <!--            android:layout_marginBottom="8dp"-->
-        <!--            tools:ignore="NotSibling" />-->
-
-        <!--        <ListView-->
-        <!--            android:id="@+id/listView"-->
-        <!--            android:layout_width="227dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="8dp"-->
-        <!--            tools:ignore="NotSibling" />-->
-    </LinearLayout>
-
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
