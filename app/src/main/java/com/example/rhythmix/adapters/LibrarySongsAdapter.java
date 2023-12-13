@@ -66,22 +66,6 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
                 onItemClickListener.onItemClick(null, holder.itemView, clickedPosition, clickedPosition);
             }
         });
-//
-//        holder.playPauseButton.setOnClickListener(v -> {
-//            int clickedPosition = (int) v.getTag();
-//            togglePlayPause(clickedPosition);
-//            if (libraryActivity != null) {
-//                libraryActivity.onPlayPauseClick(clickedPosition);
-//            }
-//        });
-//
-//        holder.playPauseButton.setOnClickListener(v -> {
-//            int clickedPosition = (int) v.getTag();
-//            togglePlayPause(clickedPosition);
-//            if (playPauseButtonClickListener != null) {
-//                playPauseButtonClickListener.onItemClick(null,holder.itemView, clickedPosition, clickedPosition);
-//            }
-//        });
 
         holder.playPauseButton.setOnClickListener(v -> {
             int clickedPosition = (int) v.getTag();
@@ -95,6 +79,7 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
             }
         });
 
+
         int playPauseIcon = isPlayingArray[position] ? R.drawable.ic_pause_24 : R.drawable.round_play_circle_24;
         holder.playPauseButton.setImageResource(playPauseIcon);
     }
@@ -104,6 +89,7 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         isPlayingArray[position] = !isPlayingArray[position];
         notifyItemChanged(position);
     }
+
 
 
     public void setPlaying(boolean isPlaying, int position) {

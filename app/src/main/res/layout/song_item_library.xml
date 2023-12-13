@@ -129,5 +129,8 @@
         app:srcCompat="@drawable/ic_more_horiz_black_24dp"
         android:scaleType="centerInside"
         android:background="@drawable/ripple_oval"
-        app:tint="#DDF5F5F5" />
+        app:tint="#DDF5F5F5"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="showPopupMenu"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

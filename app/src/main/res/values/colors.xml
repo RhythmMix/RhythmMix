@@ -11,5 +11,5 @@
     <color name="SplashColor">@android:color/black</color>
     <item name="SplashBackground" type ="color">#f0f0f0</item>
     <color name="backward_color">#DD000000</color>
-
+    <color name="playlist_menu_text_color">#DDB51F1F</color>
 </resources>

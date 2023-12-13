@@ -23,7 +23,8 @@
             android:name=".activities.InsidePlaylistActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.LibraryActivity" />
+        <activity
+            android:name=".activities.LibraryActivity"/>
 
         <activity
             android:name=".activities.LoginActivity"

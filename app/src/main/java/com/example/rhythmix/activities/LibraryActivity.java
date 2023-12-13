@@ -3,6 +3,7 @@ package com.example.rhythmix.activities;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,8 +17,16 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,17 +49,17 @@ import java.util.ArrayList;
 public class LibraryActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION = 100;
-    final static String LOG_TAG ="LibraryActivity";
+    private static final String LOG_TAG = "LibraryActivity";
     private static final String LOG_TAG_MEDIA_PLAYER = "MediaPlayer";
-    LibrarySongsAdapter librarySongsAdapter;
+    private LibrarySongsAdapter librarySongsAdapter;
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
-    public ArrayList<String> songPaths;
-    String selectedSongInLibraryPath;
+    private ArrayList<String> songPaths;
+    private String selectedSongInLibraryPath;
     private int currentPosition;
-    boolean isItemClickListenerActive=false;
+    private boolean isItemClickListenerActive = false;
     private boolean isPlayAllClicked = false;
-
+    private PopupMenu popupMenu;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +76,29 @@ public class LibraryActivity extends AppCompatActivity {
             displaySongs();
         }
 
-        // Songs/Playlist Navbar
+        setupNavigationBar();
+        setupBottomNavigationView();
+        searchBar();
+        initializePopupMenu();
+
+        // Play All layout
+        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
+        playAllLayout.setOnClickListener(v -> {
+            if (!isPlayAllClicked) {
+                isPlayAllClicked = true;
+                playAllSongs();
+            }
+        });
+
+        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
+        numberOfSongsText.setText("(" + songPaths.size() + ")");
+    }
+
+
+    //==============================
+    // Songs/Playlist Navbar
+    //==============================
+    private void setupNavigationBar() {
         RadioGroup navigationBar = findViewById(R.id.navigationBar);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.songsButton) {
@@ -76,11 +108,14 @@ public class LibraryActivity extends AppCompatActivity {
                 startActivity(new Intent(LibraryActivity.this, PlaylistsActivity.class));
             }
         });
-        // Set the default selection to "Songs"
         navigationBar.check(R.id.songsButton);
+    }
+   //================================================================================================================================
 
-
-        // Main Navbar
+    //==============================
+    // Main Navbar
+    //==============================
+    private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(false);
@@ -101,21 +136,9 @@ public class LibraryActivity extends AppCompatActivity {
             } else return false;
         });
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
-
-
-        // Play All layout
-
-        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
-        playAllLayout.setOnClickListener(v -> {
-            if (!isPlayAllClicked) {
-                isPlayAllClicked = true;
-                playAllSongs();
-            }
-        });
-
-        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
-        numberOfSongsText.setText("(" + songPaths.size() + ")");
     }
+    //================================================================================================================================
+
 
     //==============================
     // Permissions
@@ -127,6 +150,7 @@ public class LibraryActivity extends AppCompatActivity {
             displaySongs();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -142,6 +166,30 @@ public class LibraryActivity extends AppCompatActivity {
         }
     }
     //================================================================================================================================
+
+    //==============================
+    // Search Bar
+    //==============================
+    private void searchBar() {
+        TextInputEditText searchEditText = findViewById(R.id.searchEditText);searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                librarySongsAdapter.filter(charSequence.toString());
+                updateNoSongsFoundVisibility();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+    }
+    //==========================================================================================
+
+
 
     //==============================
     // DisplaySongs
@@ -205,25 +253,6 @@ public class LibraryActivity extends AppCompatActivity {
             isItemClickListenerActive = false;
         });
 
-
-        // Search Bar
-        TextInputEditText searchEditText = findViewById(R.id.searchEditText);
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                librarySongsAdapter.filter(charSequence.toString());
-                updateNoSongsFoundVisibility();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
         // Play/Pause Button
         librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
 
@@ -240,15 +269,16 @@ public class LibraryActivity extends AppCompatActivity {
                     playSelectedSong();
                     librarySongsAdapter.setPlaying(true, currentPosition);
                 } else {
-                    isItemClickListenerActive = true;
-                    stopPlayback();
-                    librarySongsAdapter.setPlaying(false, currentPosition);
-                    currentPosition = -1;
+                    if (isPlaying) {
+                        isItemClickListenerActive = true;
+                        stopPlayback();
+                        librarySongsAdapter.setPlaying(false, currentPosition);
+                        currentPosition = -1;
+                    }
                 }
             }
         });
     }
-
     //==========================================================================================
 
     //==============================
@@ -323,9 +353,6 @@ public class LibraryActivity extends AppCompatActivity {
 
     }
 
-    public boolean isPlayAllClicked() {
-        return isPlayAllClicked;
-    }
 
     //======================================================================================
 
@@ -376,7 +403,7 @@ public class LibraryActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         }
-        updatePlayPauseButtonState(position);
+        updatePlayAllButtonState(position);
     }
 
 
@@ -384,10 +411,93 @@ public class LibraryActivity extends AppCompatActivity {
         return 5000;
     }
 
+    public boolean isPlayAllClicked() {
+        return isPlayAllClicked;
+    }
+    //======================================================================================
+
+    //==============================
+    // Add To Playlist functionality
+    //==============================
+
+    public void initializePopupMenu() {
+        ImageView menuButton = findViewById(R.id.menu_button);
+
+        if (menuButton != null) {
+            menuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(view);
+                }
+            });
+        }
+    }
+
+    public void showPopupMenu(View view) {
+        if (popupMenu != null) {
+            popupMenu.dismiss();
+            return;
+        }
+
+        // Apply the custom style to the PopupMenu
+        Context wrapper = new ContextThemeWrapper(this, R.style.PopupMenuStyle);
+        popupMenu = new PopupMenu(wrapper, view);
+
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.add_to_playlist_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_add_to_playlist) {
+                    Toast.makeText(LibraryActivity.this, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // Set a custom view for the PopupMenu items
+        for (int i = 0; i < popupMenu.getMenu().size(); i++) {
+            MenuItem menuItem = popupMenu.getMenu().getItem(i);
+            MenuItemCompat.setActionView(menuItem, R.layout.custom_popup_menu_item);
+            View actionView = MenuItemCompat.getActionView(menuItem);
+
+            // Set the custom layout for the PopupMenu item
+            TextView menuText = actionView.findViewById(R.id.menu_text);
+            menuText.setText(menuItem.getTitle());
+
+            // Handle item click as before
+            actionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Handle item click
+                    popupMenu.dismiss();
+                    onMenuItemClick(menuItem);
+                }
+            });
+        }
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                popupMenu = null;
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    private void onMenuItemClick(MenuItem item) {
+        // Handle item click as needed
+    }
+
+    //======================================================================================
+
     //==============================
     // UI Updates
     //==============================
-    private void updatePlayPauseButtonState(int position) {
+    private void updatePlayAllButtonState(int position) {
         boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
         librarySongsAdapter.setPlaying(isPlaying, position);
     }
