@@ -10,11 +10,14 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,10 +44,11 @@ public class LibraryActivity extends AppCompatActivity {
     LibrarySongsAdapter librarySongsAdapter;
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
-    private ArrayList<String> songPaths;
+    public ArrayList<String> songPaths;
     String selectedSongInLibraryPath;
     private int currentPosition;
     boolean isItemClickListenerActive=false;
+    private boolean isPlayAllClicked = false;
 
 
     @Override
@@ -99,6 +103,18 @@ public class LibraryActivity extends AppCompatActivity {
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
 
 
+        // Play All layout
+
+        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
+        playAllLayout.setOnClickListener(v -> {
+            if (!isPlayAllClicked) {
+                isPlayAllClicked = true;
+                playAllSongs();
+            }
+        });
+
+        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
+        numberOfSongsText.setText("(" + songPaths.size() + ")");
     }
 
     //==============================
@@ -172,7 +188,7 @@ public class LibraryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths,artistNames);
+        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths,artistNames,this);
         RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
         recyclerView.setAdapter(librarySongsAdapter);
 
@@ -210,10 +226,10 @@ public class LibraryActivity extends AppCompatActivity {
 
         // Play/Pause Button
         librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
+
             if (!isItemClickListenerActive) {
                 if (currentPosition != -1 && currentPosition != position) {
                     librarySongsAdapter.setPlaying(false, currentPosition);
-                    Log.d(LOG_TAG, "Play/Pause button clicked for position: " + position + ". Current isPlaying status: " + librarySongsAdapter.isPlayingArray[position]);
                 }
 
                 String clickedSongPath = librarySongsAdapter.songPaths.get(position);
@@ -223,11 +239,10 @@ public class LibraryActivity extends AppCompatActivity {
                     initializeMediaPlayer();
                     playSelectedSong();
                     librarySongsAdapter.setPlaying(true, currentPosition);
-                    Log.d(LOG_TAG, "Starting playback for new position: " + currentPosition);
                 } else {
+                    isItemClickListenerActive = true;
                     stopPlayback();
                     librarySongsAdapter.setPlaying(false, currentPosition);
-                    Log.d(LOG_TAG, "Stopping playback for current position: " + currentPosition);
                     currentPosition = -1;
                 }
             }
@@ -247,9 +262,6 @@ public class LibraryActivity extends AppCompatActivity {
             mediaPlayer.reset();
         }
         try {
-            mediaPlayer.setOnCompletionListener(mp -> {
-//                playNextSong();
-            });
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 isPlaying = true;
@@ -308,13 +320,78 @@ public class LibraryActivity extends AppCompatActivity {
             mediaPlayer.reset();
             isPlaying = false;
         }
+
+    }
+
+    public boolean isPlayAllClicked() {
+        return isPlayAllClicked;
     }
 
     //======================================================================================
 
     //==============================
+    // PlayAll functionality
+    //==============================
+    private void playAllSongs() {
+        if (librarySongsAdapter != null && librarySongsAdapter.getItemCount() > 0) {
+            ArrayList<String> songPaths = librarySongsAdapter.songPaths;
+
+            if (currentPosition != -1) {
+                librarySongsAdapter.setPlaying(false, currentPosition);
+            }
+            playSongAtIndex(songPaths, 0);
+        }
+    }
+
+    public void playSongAtIndex(ArrayList<String> songPaths, int index) {
+        if (index < songPaths.size() && isPlayAllClicked) {
+            librarySongsAdapter.setPlaying(true, index);
+            String songPath = songPaths.get(index);
+            playSong(songPath);
+
+            long duration = getDurationOfSong(songPath);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (isPlayAllClicked) {
+                    librarySongsAdapter.setPlaying(false, index);
+                    playSongAtIndex(songPaths, index + 1);
+                }
+            }, duration);
+        } else {
+            if (isPlayAllClicked) {
+                isPlayAllClicked = false;
+                stopPlayback();
+            }
+        }
+    }
+
+    public void onPlayPauseClick(int position) {
+        if (isPlayAllClicked) {
+            isPlayAllClicked = false;
+            stopPlayback();
+        } else {
+            if (mediaPlayer == null) {
+                initializeMediaPlayer();
+                playSelectedSong();
+            } else {
+                mediaPlayer.start();
+            }
+        }
+        updatePlayPauseButtonState(position);
+    }
+
+
+    private long getDurationOfSong(String songPath) {
+        return 5000;
+    }
+
+    //==============================
     // UI Updates
     //==============================
+    private void updatePlayPauseButtonState(int position) {
+        boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
+        librarySongsAdapter.setPlaying(isPlaying, position);
+    }
+
     private void updateNoSongsFoundVisibility() {
         TextView noSongsFoundTextView = findViewById(R.id.noSongsFoundTextView);
         if (librarySongsAdapter.getItemCount() == 0) {

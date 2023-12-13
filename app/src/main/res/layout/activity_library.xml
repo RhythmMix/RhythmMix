@@ -109,8 +109,6 @@
     </RadioGroup>
 
     <!-- Play All -->
-
-    <!--RecycleView-->
     <LinearLayout
         android:id="@+id/controlsLayout"
         android:layout_width="wrap_content"
@@ -150,6 +148,7 @@
             android:textSize="20sp" />
     </LinearLayout>
 
+    <!--RecycleView-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/libraryRecyclerView"
         android:layout_width="0dp"

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToLogIn(){
         Button logIn = findViewById(R.id.button4);
         logIn.setOnClickListener(view -> {
-            Intent goToAllSongs = new Intent(MainActivity.this, LogInActivity.class);
+            Intent goToAllSongs = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(goToAllSongs);
         });
     }

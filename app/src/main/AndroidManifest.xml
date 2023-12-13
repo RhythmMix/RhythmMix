@@ -26,7 +26,7 @@
         <activity android:name=".activities.LibraryActivity" />
 
         <activity
-            android:name=".activities.LogInActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
 
         <activity

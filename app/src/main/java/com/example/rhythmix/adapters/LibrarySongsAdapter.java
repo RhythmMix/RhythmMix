@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rhythmix.R;
+import com.example.rhythmix.activities.LibraryActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +30,8 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
     public boolean[] isPlayingArray;
     private AdapterView.OnItemClickListener onItemClickListener;
     private AdapterView.OnItemClickListener playPauseButtonClickListener;
-
-
-    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths, ArrayList<String> artistList) {
+    private LibraryActivity libraryActivity;
+    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths, ArrayList<String> artistList,LibraryActivity libraryActivity) {
         this.originalSongList = new ArrayList<>(songList);
         this.songList = songList;
         this.originalSongPaths = new ArrayList<>(songPaths);
@@ -41,6 +41,7 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         this.inflater = LayoutInflater.from(context);
         this.isPlayingArray = new boolean[songList.size()];
         Arrays.fill(isPlayingArray, false);
+        this.libraryActivity = libraryActivity;
     }
 
     @Override
@@ -65,12 +66,32 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
                 onItemClickListener.onItemClick(null, holder.itemView, clickedPosition, clickedPosition);
             }
         });
+//
+//        holder.playPauseButton.setOnClickListener(v -> {
+//            int clickedPosition = (int) v.getTag();
+//            togglePlayPause(clickedPosition);
+//            if (libraryActivity != null) {
+//                libraryActivity.onPlayPauseClick(clickedPosition);
+//            }
+//        });
+//
+//        holder.playPauseButton.setOnClickListener(v -> {
+//            int clickedPosition = (int) v.getTag();
+//            togglePlayPause(clickedPosition);
+//            if (playPauseButtonClickListener != null) {
+//                playPauseButtonClickListener.onItemClick(null,holder.itemView, clickedPosition, clickedPosition);
+//            }
+//        });
 
         holder.playPauseButton.setOnClickListener(v -> {
             int clickedPosition = (int) v.getTag();
-            togglePlayPause(clickedPosition);
-            if (playPauseButtonClickListener != null) {
-                playPauseButtonClickListener.onItemClick(null,holder.itemView, clickedPosition, clickedPosition);
+            if (libraryActivity != null && libraryActivity.isPlayAllClicked()) {
+                libraryActivity.onPlayPauseClick(clickedPosition);
+            } else {
+                togglePlayPause(clickedPosition);
+                if (playPauseButtonClickListener != null) {
+                    playPauseButtonClickListener.onItemClick(null, holder.itemView, clickedPosition, clickedPosition);
+                }
             }
         });
 
@@ -80,16 +101,15 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
 
 
     private void togglePlayPause(int position) {
-        isPlaying = !isPlaying;
-        Log.d(TAG, "Toggled play/pause for position " + position + ". Status: " + isPlayingArray[position]);
+        isPlayingArray[position] = !isPlayingArray[position];
         notifyItemChanged(position);
     }
+
 
     public void setPlaying(boolean isPlaying, int position) {
         this.isPlayingArray[position] = isPlaying;
         notifyItemChanged(position);
     }
-
 
 
     @Override
@@ -103,8 +123,6 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
     public void setOnPlayPauseButtonClickListener(AdapterView.OnItemClickListener listener) {
         this.playPauseButtonClickListener = listener;
     }
-
-
 
     public void filter(String query) {
         songList.clear();
