@@ -30,10 +30,10 @@
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".SignUpActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".RhythmMixAmplify" -->
         <!-- android:exported="false" /> -->
@@ -48,10 +48,10 @@
             android:name=".activities.SongPlayerActivity"
             android:exported="false" />
         <activity android:name=".activities.LibraryActivity" />
-        <activity
-            android:name=".activities.SignUpActivity"
-            android:exported="false"
-            tools:ignore="DuplicateActivity" />
+<!--        <activity-->
+<!--            android:name=".activities.SignUpActivity"-->
+<!--            android:exported="false"-->
+<!--            tools:ignore="DuplicateActivity" />-->
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">

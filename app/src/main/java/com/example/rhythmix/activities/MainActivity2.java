@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.auth.options.AuthSignUpOptions;
 import com.amplifyframework.core.Amplify;
+import com.example.rhythmix.LoginActivity;
 import com.example.rhythmix.R;
 
 public class MainActivity2 extends AppCompatActivity {

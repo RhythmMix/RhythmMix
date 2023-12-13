@@ -7,6 +7,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rhythmix.LoginActivity;
 import com.example.rhythmix.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
