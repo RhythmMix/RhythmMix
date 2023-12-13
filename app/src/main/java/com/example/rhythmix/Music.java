@@ -21,50 +21,25 @@ public class Music {
     private Album album;      //Nested Class
 
 
-    public static List<Music> parseMusicJson(String jsonString) {
-        List<Music> musicList = new ArrayList<>();
-        try {
-            // Parsing the JSON string into a JSONObject
-            JSONObject json = new JSONObject(jsonString);
+    public Music(JSONObject musicObject) throws JSONException {
+        id = musicObject.getInt("id");
+        title = musicObject.getString("title");
+        link = musicObject.getString("link");
+        duration = musicObject.getInt("duration");
+        rank = musicObject.getInt("rank");
+        explicitLyrics = musicObject.getBoolean("explicit_lyrics");
+        explicitContentLyrics = musicObject.getBoolean("explicit_content_lyrics");
+        explicitContentCover = musicObject.getBoolean("explicit_content_cover");
+        preview = musicObject.getString("preview");
 
-            // Extracting the "dataArray" from the JSON object
-            JSONArray dataArray = json.getJSONArray("data");
+        // Extracting and assigning values to the associated Artist and Album objects
+        JSONObject artistObject = musicObject.getJSONObject("artist");
+        artist = new Artist(artistObject);
 
-            // Iterating through each element in the "data" array
-            for (int i = 0; i < dataArray.length(); i++) {
-                // Getting a JSON object representing a music track
-                JSONObject musicObject = dataArray.getJSONObject(i);
-
-                // Creating a new Music object
-                Music music = new Music();
-
-                // Extracting and assigning values to the fields of the Music object
-                music.id = musicObject.getInt("id");
-                music.title = musicObject.getString("title");
-                music.link = musicObject.getString("link");
-                music.duration = musicObject.getInt("duration");
-                music.rank = musicObject.getInt("rank");
-                music.explicitLyrics = musicObject.getBoolean("explicit_lyrics");
-                music.explicitContentLyrics = musicObject.getBoolean("explicit_content_lyrics");
-                music.explicitContentCover = musicObject.getBoolean("explicit_content_cover");
-                music.preview = musicObject.getString("preview");
-
-                // Extracting and assigning values to the associated Artist and Album objects
-                JSONObject artistObject = musicObject.getJSONObject("artist");
-                music.artist = new Artist(artistObject);
-
-                JSONObject albumObject = musicObject.getJSONObject("album");
-                music.album = new Album(albumObject);
-
-                // Adding the Music object to the list
-                musicList.add(music);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return musicList;
+        JSONObject albumObject = musicObject.getJSONObject("album");
+        album = new Album(albumObject);
     }
+
 
     public String getTitle() {
         return title;
@@ -86,4 +61,6 @@ public class Music {
     public long getId() {
         return id;
     }
+
+
 }

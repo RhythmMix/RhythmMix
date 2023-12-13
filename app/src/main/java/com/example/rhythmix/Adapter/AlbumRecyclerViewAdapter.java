@@ -44,7 +44,6 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
                 ImageButton albumCoverButton = holder.itemView.findViewById(R.id.HRImageButtonRecyclerView);
                 albumCoverButton.setOnClickListener(view -> {
                     Intent albumTracksActivity = new Intent(view.getContext(), AlbumTracksActivity.class);
-                    view.getContext().startActivity(albumTracksActivity);
                     albumTracksActivity.putExtra("Album Cover", album.getCover());
                     albumTracksActivity.putExtra("Album tracks", album.getTrackList());
                     albumTracksActivity.putExtra("Album title", album.getTitle());
@@ -71,8 +70,8 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
 
         public AlbumListViewHolder(@NonNull View itemView) {
             super(itemView);
-//            albumCover = itemView.findViewById(R.id.HRImageViewRecyclerView);
-//            albumTitle = itemView.findViewById(R.id.HRAlbumTitle);
+            albumCoverButton = itemView.findViewById(R.id.HRImageButtonRecyclerView);
+//            albumTitle = itemView.findViewById(R.id.albumTitle);
         }
 
         public void bind(Album album) {

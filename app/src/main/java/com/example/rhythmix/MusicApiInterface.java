@@ -26,5 +26,10 @@ public interface MusicApiInterface {
     @GET("search")
     Call<Data> getAllData(@Query("q") String query);
 
+    @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com"})
+    @GET("album/{albumIds}/tracks")
+    Call<Data> getAlbumTracks(@Path("albumIds") long trackId);
+
+//    https://api.deezer.com/album/265655342/tracks
 
 }
