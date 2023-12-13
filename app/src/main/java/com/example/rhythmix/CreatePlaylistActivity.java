@@ -10,6 +10,7 @@ import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.datastore.generated.model.Playlist;
+import com.example.rhythmix.R;
 
 import java.util.UUID;
 public class CreatePlaylistActivity extends AppCompatActivity {
@@ -17,8 +18,10 @@ public class CreatePlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_playlist);
+
         final EditText playlistNameEditText = findViewById(R.id.playlistNameEditText);
         Button createPlaylistButton = findViewById(R.id.createPlaylistButton);
+
         createPlaylistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,6 +31,7 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                     Log.i("Amplify", "Playlist Name: " + playlistName);
                     if (!playlistName.isEmpty()) {
                         Playlist playlist = Playlist.builder()
+                                .playlistId(UUID.randomUUID().toString())
                                 .playlistName(playlistName)
                                 .build();
                         if (playlist != null) {
@@ -51,5 +55,4 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-}
+    }}
