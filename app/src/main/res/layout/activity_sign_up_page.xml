@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".Sign_Up_Page">
 
 
@@ -33,6 +34,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="1dp"
         android:hint="Email"
+        android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="#FC00F0"
         app:endIconMode="clear_text"
@@ -60,6 +62,7 @@
         android:layout_marginEnd="36dp"
         android:hint="Full Name"
 
+        android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="#FC00F0"
         app:endIconMode="clear_text"
@@ -70,10 +73,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fullname"
-            android:inputType="textPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttons" />
+            android:background="@drawable/buttons"
+            android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -86,6 +89,7 @@
         android:layout_marginTop="38dp"
         android:layout_marginEnd="37dp"
         android:hint="Password"
+        android:textColorHint="#FFFFFF"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="#FC00F0"
         app:endIconMode="password_toggle"
@@ -125,6 +129,7 @@
         android:layout_marginBottom="44dp"
 
         android:text="Already have an account? "
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textsignin"
         app:layout_constraintHorizontal_bias="0.5"
