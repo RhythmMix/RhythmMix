@@ -32,7 +32,7 @@ public class SearchBarResultsActivity extends AppCompatActivity {
     private static Retrofit retrofit;
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> autoCompleteAdapter;
-    private     DataListAdapter adapter;
+    private DataListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +57,13 @@ public class SearchBarResultsActivity extends AppCompatActivity {
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedSuggestion = (String) parent.getItemAtPosition(position);
             autoCompleteTextView.setText(selectedSuggestion);
+            autoCompleteTextView.setSelection(selectedSuggestion.length());
             performSearch();
         });
 
         autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-                // Not used in this example
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) { // Not Used
             }
 
             @Override
@@ -72,8 +72,7 @@ public class SearchBarResultsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-                // Not used in this example
+            public void afterTextChanged(Editable editable) { // Not Used
             }
         });
 
@@ -97,12 +96,12 @@ public class SearchBarResultsActivity extends AppCompatActivity {
                     List<Music> musicList = response.body().getData();
 
                     List<String> suggestions = new ArrayList<>();
-                    if (musicList !=null) {
+                    if (musicList != null) {
                         for (Music music : musicList) {
                             String musicDetails = music.getTitle() + "\n" + music.getArtist().getName();
                             suggestions.add(musicDetails);
                         }
-                    }else {
+                    } else {
                         Log.e(TAG, "musicList is null");
 
                     }
@@ -111,7 +110,6 @@ public class SearchBarResultsActivity extends AppCompatActivity {
                         autoCompleteAdapter = new ArrayAdapter<>(SearchBarResultsActivity.this, R.layout.dropdown_item, R.id.dropdown_text, suggestions);
                         autoCompleteTextView.setAdapter(autoCompleteAdapter);
                     } else {
-                        // Clear and update the adapter with new suggestions
                         autoCompleteAdapter.clear();
                         autoCompleteAdapter.addAll(suggestions);
                         autoCompleteAdapter.notifyDataSetChanged();
@@ -138,6 +136,8 @@ public class SearchBarResultsActivity extends AppCompatActivity {
             MusicApiInterface musicApiInterface = retrofit.create(MusicApiInterface.class);
             Call<Data> retrofitData = musicApiInterface.getData(searchQuery);
             Log.d(TAG, "Request URL: " + retrofitData.request().url());
+
+
             retrofitData.enqueue(new Callback<Data>() {
                 @Override
                 public void onResponse(Call<Data> call, Response<Data> response) {
@@ -152,7 +152,6 @@ public class SearchBarResultsActivity extends AppCompatActivity {
 
                             adapter = new DataListAdapter(SearchBarResultsActivity.this, musicList);
                             musicListRecyclerView.setAdapter(adapter);
-
                             Log.d(TAG, "OnSuccess:" + response.body());
 
                         } else {

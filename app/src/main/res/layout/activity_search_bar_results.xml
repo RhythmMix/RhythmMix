@@ -13,10 +13,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="36dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/rounded_border"
+        android:backgroundTint="@color/transparent"
         android:drawablePadding="8dp"
         android:gravity="center"
         android:hint="Search"
@@ -27,24 +30,27 @@
         android:singleLine="true"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:layout_marginBottom="30dp"
+        app:dropDownBackgroundTint="@color/transparent"
+        android:popupBackground="@android:color/transparent"
+        android:dropDownVerticalOffset="20dp"
         tools:ignore="MissingConstraints" />
-
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="56dp"
         android:layout_height="24dp"
+        android:layout_marginRight="5dp"
         android:layout_alignStart="@+id/autoCompleteTextView"
         android:layout_alignTop="@+id/autoCompleteTextView"
         android:layout_alignEnd="@+id/autoCompleteTextView"
         android:layout_alignBottom="@+id/autoCompleteTextView"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="261dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="248dp"
+        android:layout_marginBottom="10dp"
         app:srcCompat="@android:drawable/ic_menu_search"
         tools:ignore="MissingConstraints" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
