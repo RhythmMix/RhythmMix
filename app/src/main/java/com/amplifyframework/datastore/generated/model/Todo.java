@@ -202,8 +202,4 @@ public final class Todo implements Model {
       return (CopyOfBuilder) super.description(description);
     }
   }
-  
-
-
-  
 }

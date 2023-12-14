@@ -16,9 +16,7 @@
         <activity
             android:name=".CreatePlaylistActivity"
             android:exported="false" />
-        <activity
-            android:name=".AddPlaylistDialog"
-            android:exported="false" />
+
         <activity
             android:name=".PlaylistsActivity"
             android:exported="false" />
@@ -31,9 +29,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".VerifyAccountActivity"
-            android:exported="false" />
+
         <activity
             android:name=".SignUpActivity"
             android:exported="false" /> <!-- <activity -->

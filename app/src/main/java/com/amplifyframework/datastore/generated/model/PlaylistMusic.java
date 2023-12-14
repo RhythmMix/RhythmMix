@@ -9,7 +9,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -19,13 +22,15 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the PlaylistMusic type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "PlaylistMusics")
+@ModelConfig(pluralName = "PlaylistMusics", authRules = {
+  @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
 public final class PlaylistMusic implements Model {
   public static final QueryField ID = field("PlaylistMusic", "id");
   public static final QueryField PLAYLIST = field("PlaylistMusic", "playlistID");
   public static final QueryField MUSIC = field("PlaylistMusic", "musicID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="Playlist") @BelongsTo(targetName = "playlistID", type = Playlist.class) Playlist playlist;
+  private final @ModelField(targetType="Playlist") @BelongsTo(targetName = "playlistID",  type = Playlist.class) Playlist playlist;
   private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID",  type = Music.class) Music music;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;

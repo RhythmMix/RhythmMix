@@ -28,10 +28,6 @@ public class PlaylistsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
-
         // Songs/Playlist Navbar
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {

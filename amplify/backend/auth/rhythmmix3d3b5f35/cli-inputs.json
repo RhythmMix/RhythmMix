@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "rhythmmix2d606791_identitypool_2d606791",
+    "identityPoolName": "rhythmmix3d3b5f35_identitypool_3d3b5f35",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "rhythm2d606791",
-    "userPoolName": "rhythmmix2d606791_userpool_2d606791",
+    "resourceNameTruncated": "rhythm3d3b5f35",
+    "userPoolName": "rhythmmix3d3b5f35_userpool_3d3b5f35",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,14 +31,14 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "rhythm2d606791_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "rhythm3d3b5f35_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "2d606791",
-    "resourceName": "rhythmmix2d606791",
+    "sharedId": "3d3b5f35",
+    "resourceName": "rhythmmix3d3b5f35",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "usernameAttributes": [
-      "email, phone_number"
+      "email"
     ],
     "userPoolGroupList": [],
     "serviceName": "Cognito",

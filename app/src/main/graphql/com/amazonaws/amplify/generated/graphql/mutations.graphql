@@ -51,24 +51,22 @@ mutation CreatePlaylistMusic(
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
     music {
-      musicID
+      id
       musicTitle
       musicArtist
       musicAlbum
       musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -88,24 +86,22 @@ mutation UpdatePlaylistMusic(
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
     music {
-      musicID
+      id
       musicTitle
       musicArtist
       musicAlbum
       musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -125,24 +121,22 @@ mutation DeletePlaylistMusic(
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
     music {
-      musicID
+      id
       musicTitle
       musicArtist
       musicAlbum
       musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -158,16 +152,15 @@ mutation CreatePlaylist(
   $condition: ModelPlaylistConditionInput
 ) {
   createPlaylist(input: $input, condition: $condition) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -180,7 +173,6 @@ mutation CreatePlaylist(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -192,16 +184,15 @@ mutation UpdatePlaylist(
   $condition: ModelPlaylistConditionInput
 ) {
   updatePlaylist(input: $input, condition: $condition) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -214,7 +205,6 @@ mutation UpdatePlaylist(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -226,16 +216,15 @@ mutation DeletePlaylist(
   $condition: ModelPlaylistConditionInput
 ) {
   deletePlaylist(input: $input, condition: $condition) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -248,7 +237,6 @@ mutation DeletePlaylist(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -260,7 +248,7 @@ mutation CreateMusic(
   $condition: ModelMusicConditionInput
 ) {
   createMusic(input: $input, condition: $condition) {
-    musicID
+    id
     musicTitle
     musicArtist
     musicAlbum
@@ -279,7 +267,6 @@ mutation CreateMusic(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -291,7 +278,7 @@ mutation UpdateMusic(
   $condition: ModelMusicConditionInput
 ) {
   updateMusic(input: $input, condition: $condition) {
-    musicID
+    id
     musicTitle
     musicArtist
     musicAlbum
@@ -310,7 +297,6 @@ mutation UpdateMusic(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -322,7 +308,7 @@ mutation DeleteMusic(
   $condition: ModelMusicConditionInput
 ) {
   deleteMusic(input: $input, condition: $condition) {
-    musicID
+    id
     musicTitle
     musicArtist
     musicAlbum
@@ -341,7 +327,6 @@ mutation DeleteMusic(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -353,10 +338,10 @@ mutation CreateUser(
   $condition: ModelUserConditionInput
 ) {
   createUser(input: $input, condition: $condition) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -365,7 +350,6 @@ mutation CreateUser(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -377,10 +361,10 @@ mutation UpdateUser(
   $condition: ModelUserConditionInput
 ) {
   updateUser(input: $input, condition: $condition) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -389,7 +373,6 @@ mutation UpdateUser(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -401,10 +384,10 @@ mutation DeleteUser(
   $condition: ModelUserConditionInput
 ) {
   deleteUser(input: $input, condition: $condition) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -413,7 +396,6 @@ mutation DeleteUser(
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -430,9 +412,9 @@ mutation CreateFavoriteMusic(
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
       userID
       id
       createdAt
@@ -440,14 +422,13 @@ mutation CreateFavoriteMusic(
       __typename
     }
     music {
-      musicID
+      id
       musicTitle
       musicArtist
       musicAlbum
       musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -468,9 +449,9 @@ mutation UpdateFavoriteMusic(
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
       userID
       id
       createdAt
@@ -478,14 +459,13 @@ mutation UpdateFavoriteMusic(
       __typename
     }
     music {
-      musicID
+      id
       musicTitle
       musicArtist
       musicAlbum
       musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -506,9 +486,9 @@ mutation DeleteFavoriteMusic(
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
       userID
       id
       createdAt
@@ -516,14 +496,13 @@ mutation DeleteFavoriteMusic(
       __typename
     }
     music {
-      musicID
+      id
       musicTitle
       musicArtist
       musicAlbum
       musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -540,9 +519,9 @@ mutation CreateFavorite(
 ) {
   createFavorite(input: $input, condition: $condition) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
     userID
     favoriteMusics {
       nextToken
@@ -561,9 +540,9 @@ mutation UpdateFavorite(
 ) {
   updateFavorite(input: $input, condition: $condition) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
     userID
     favoriteMusics {
       nextToken
@@ -582,9 +561,9 @@ mutation DeleteFavorite(
 ) {
   deleteFavorite(input: $input, condition: $condition) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
     userID
     favoriteMusics {
       nextToken
