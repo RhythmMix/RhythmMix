@@ -28,7 +28,7 @@
 
 
             <ImageView
-                android:id="@+id/musicImage"
+                android:id="@+id/trackImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
 
@@ -36,7 +36,7 @@
 
 
             <TextView
-                android:id="@+id/musicTitle"
+                android:id="@+id/trackTitle"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -46,7 +46,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/toggleButton"
+                android:id="@+id/trackToggleButton"
                 android:layout_width="2dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

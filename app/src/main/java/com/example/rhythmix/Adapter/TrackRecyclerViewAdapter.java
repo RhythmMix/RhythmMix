@@ -23,7 +23,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
     private List<Music> musicList;
     private Activity context;
-    private static final String TAG = "Vertical_HOLDER";
+    private static final String TAG = "TrackRecyclerViewAdapter";
 
 
     public TrackRecyclerViewAdapter(Activity context, List<Music> musicList) {

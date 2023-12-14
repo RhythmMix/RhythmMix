@@ -1,7 +1,6 @@
 package com.example.rhythmix.Adapter;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.media.MediaPlayer;
@@ -14,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.rhythmix.AlbumTracksActivity;
 import com.example.rhythmix.Music;
 import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
@@ -33,9 +31,9 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
 
     @NonNull
     @Override
-    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_track, parent, false);
-        return new TrackViewHolder(view);
+    public AlbumTracksAdapter.TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_item, parent, false);
+        return new  AlbumTracksAdapter.TrackViewHolder(view);
     }
 
     @Override
@@ -43,12 +41,16 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
         if (trackList != null && position >= 0 && position < trackList.size()) {
             Music music = trackList.get(position);
             if (music != null && music.getArtist() != null && music.getArtist().getName() != null && music.getArtist().getPicture() != null) {
-                String imageUrl = music.getAlbum().getCover();
 
-                holder.trackTitle.setText(music.getTitle());
+                String imageUrl = music.getAlbum().getCover();
+                ImageView trackImage = holder.trackImage;
+                TextView trackTitle = holder.trackTitle;
+                ImageButton trackToggleButton = holder.trackToggleButton;
+
+//                holder.trackTitle.setText(music.getTitle());
                 // Set other views as needed
                 // Load image using Picasso
-                Picasso.get().load(imageUrl).into(holder.trackImage);
+                Picasso.get().load(imageUrl).into(trackImage);
 
                 // Set up media player and toggle button
                 MediaPlayer mediaPlayer = new MediaPlayer();
@@ -60,13 +62,16 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
                     mediaPlayer.release();
                 }
 
-                holder.trackToggleButton.setOnClickListener(v -> {
+                String titleArtist = music.getTitle() + " \n \n " + music.getArtist().getName();
+                trackTitle.setText(titleArtist);
+
+                trackToggleButton.setOnClickListener(v -> {
                     if (mediaPlayer.isPlaying()) {
                         mediaPlayer.pause();
-                        holder.trackToggleButton.setImageResource(android.R.drawable.ic_media_play);
+                        trackToggleButton.setImageResource(android.R.drawable.ic_media_play);
                     } else {
                         mediaPlayer.start();
-                        holder.trackToggleButton.setImageResource(android.R.drawable.ic_media_pause);
+                        trackToggleButton.setImageResource(android.R.drawable.ic_media_pause);
                     }
                 });
             }
@@ -79,17 +84,27 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
     }
 
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
-        ImageView trackImage;
-        TextView trackTitle;
-        ImageButton trackToggleButton;
+        public ImageView trackImage;
 
-        public TrackViewHolder(@NonNull View itemView) {
-            super(itemView);
-            trackImage = itemView.findViewById(R.id.musicImage);
-            trackTitle = itemView.findViewById(R.id.musicTitle);
-            trackToggleButton = itemView.findViewById(R.id.toggleButton);
+        public TextView trackTitle;
+
+        public ImageButton trackToggleButton;
+
+
+        public TrackViewHolder(View view) {
+
+            super(view);
+
+            trackImage = view.findViewById(R.id.trackImage);
+
+            trackTitle = view.findViewById(R.id.trackTitle);
+
+            trackToggleButton = view.findViewById(R.id.trackToggleButton);
+
         }
     }
+
+
 }
 
 
