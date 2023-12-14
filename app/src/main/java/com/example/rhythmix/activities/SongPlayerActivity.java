@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -75,6 +76,9 @@ public class SongPlayerActivity extends AppCompatActivity {
         // Play the selected song
         playSelectedSong();
 
+        // Back button functionality
+        backButton();
+
     }
 
     //==============================
@@ -100,6 +104,19 @@ public class SongPlayerActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+
+    //==============================
+    // backButton
+    //==============================
+    private void backButton(){
+        ImageButton backButton=findViewById(R.id.backButton);
+        backButton.setOnClickListener(view -> {
+            Intent intent = new Intent(SongPlayerActivity.this, LibraryActivity.class);
+            stopPlayback();
+            startActivity(intent);
+        });
     }
 
     //==============================

@@ -12,11 +12,6 @@
         <item name="android:thumb">@drawable/custom_seekbar_thumb</item>
     </style>
 
-    <style name="PopupMenuStyle" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@drawable/popup_menu_background</item>
-        <item name="android:textColor">@color/playlist_menu_text_color</item>
-    </style>
-
 
     <!--Farah Styles-->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">

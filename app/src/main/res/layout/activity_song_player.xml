@@ -13,6 +13,15 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/cover" />
 
+    <!-- ImageButton for Back -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/arrow_back" />
+
     <!-- Song Information (Centered on the Image) -->
     <LinearLayout
         android:id="@+id/layoutSongInfo"

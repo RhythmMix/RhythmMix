@@ -3,10 +3,12 @@ package com.example.rhythmix.activities;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -17,12 +19,11 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -55,11 +56,14 @@ public class LibraryActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
     private ArrayList<String> songPaths;
+    private ArrayList<String> songList;
+    private ArrayList<String> artistNames;
     private String selectedSongInLibraryPath;
     private int currentPosition;
     private boolean isItemClickListenerActive = false;
     private boolean isPlayAllClicked = false;
-    private PopupMenu popupMenu;
+    private boolean isPlayAllStopped   = false;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,18 +84,8 @@ public class LibraryActivity extends AppCompatActivity {
         setupBottomNavigationView();
         searchBar();
         initializePopupMenu();
+        setListeners();
 
-        // Play All layout
-        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
-        playAllLayout.setOnClickListener(v -> {
-            if (!isPlayAllClicked) {
-                isPlayAllClicked = true;
-                playAllSongs();
-            }
-        });
-
-        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
-        numberOfSongsText.setText("(" + songPaths.size() + ")");
     }
 
 
@@ -110,7 +104,7 @@ public class LibraryActivity extends AppCompatActivity {
         });
         navigationBar.check(R.id.songsButton);
     }
-   //================================================================================================================================
+    //================================================================================================================================
 
     //==============================
     // Main Navbar
@@ -131,7 +125,8 @@ public class LibraryActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.Library) {
                 return true;
             } else if (item.getItemId() == R.id.Profile) {
-                startActivity(new Intent(LibraryActivity.this, ProfileActivity.class));;
+                startActivity(new Intent(LibraryActivity.this, ProfileActivity.class));
+                ;
                 return true;
             } else return false;
         });
@@ -143,7 +138,7 @@ public class LibraryActivity extends AppCompatActivity {
     //==============================
     // Permissions
     //==============================
-    private void handleLibraryPermissions(){
+    private void handleLibraryPermissions() {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
         } else {
@@ -171,7 +166,8 @@ public class LibraryActivity extends AppCompatActivity {
     // Search Bar
     //==============================
     private void searchBar() {
-        TextInputEditText searchEditText = findViewById(R.id.searchEditText);searchEditText.addTextChangedListener(new TextWatcher() {
+        TextInputEditText searchEditText = findViewById(R.id.searchEditText);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -189,15 +185,86 @@ public class LibraryActivity extends AppCompatActivity {
     }
     //==========================================================================================
 
+    //==============================
+    // Set Listeners
+    //==============================
+    private void setListeners() {
+
+        // Go to player Activity click item
+        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths, artistNames, this);
+        RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
+        recyclerView.setAdapter(librarySongsAdapter); // using the adapter as our data source for encapsulation and separation of responsibilities
+
+        librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
+            isItemClickListenerActive = true;
+            isPlayAllClicked = false;
+
+            String selectedSongPath = librarySongsAdapter.songPaths.get(position);
+
+            Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
+            intent.putExtra("SONG_PATHS", librarySongsAdapter.songPaths);
+            intent.putExtra("SONG_PATH", selectedSongPath);
+            intent.putExtra("CURRENT_POSITION", position);
+            startActivity(intent);
+            stopPlayback();
+            isItemClickListenerActive = false;
+        });
+
+        // Play/Pause Button
+        librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
+            if (!isItemClickListenerActive) {
+                if (currentPosition != -1 && currentPosition != position) {
+                    librarySongsAdapter.setPlaying(false, currentPosition);
+                }
+
+                String clickedSongPath = librarySongsAdapter.songPaths.get(position);
+                if (!clickedSongPath.equals(selectedSongInLibraryPath) || !isPlaying) {
+                    selectedSongInLibraryPath = clickedSongPath;
+                    currentPosition = position;
+                    initializeMediaPlayer();
+                    playSelectedSong();
+                    librarySongsAdapter.setPlaying(true, currentPosition);
+                } else {
+                    if (isPlaying) {
+                        pausePlayback();
+                    } else {
+                        resumePlayback();
+                    }
+                }
+            }
+        });
+
+//         Play All layout
+        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
+        playAllLayout.setOnClickListener(v -> {
+            if (!isPlayAllClicked) {
+                isPlayAllClicked = true;
+                try {
+                    playAllSongs();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+
+        // number of songs beside the playAll
+        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
+        numberOfSongsText.setText("(" + songPaths.size() + ")");
+    }
+
+    //==========================================================================================
 
 
     //==============================
     // DisplaySongs
     //==============================
     private void displaySongs() {
-        ArrayList<String> songList = new ArrayList<>();
+        songList = new ArrayList<>();
         songPaths = new ArrayList<>();
-        ArrayList<String> artistNames = new ArrayList<>();
+        artistNames = new ArrayList<>();
+
+        // Fetch the songs from local storage
         String[] projection = {
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ARTIST,
@@ -224,7 +291,7 @@ public class LibraryActivity extends AppCompatActivity {
 
                     String formattedDuration = formatDuration(songDuration);
 
-                    String displayText =  songTitle + "\nArtist: " + songArtist +" " + formattedDuration;
+                    String displayText = songTitle + "\nArtist: " + songArtist + " " + formattedDuration;
 
                     songList.add(displayText);
                     songPaths.add(songPath);
@@ -236,55 +303,16 @@ public class LibraryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths,artistNames,this);
-        RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
-        recyclerView.setAdapter(librarySongsAdapter);
-
-        librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
-            isItemClickListenerActive = true;
-            String selectedSongPath = librarySongsAdapter.songPaths.get(position);
-
-            Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
-            intent.putExtra("SONG_PATHS", librarySongsAdapter.songPaths);
-            intent.putExtra("SONG_PATH", selectedSongPath);
-            intent.putExtra("CURRENT_POSITION", position);
-            startActivity(intent);
-            stopPlayback();
-            isItemClickListenerActive = false;
-        });
-
-        // Play/Pause Button
-        librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
-
-            if (!isItemClickListenerActive) {
-                if (currentPosition != -1 && currentPosition != position) {
-                    librarySongsAdapter.setPlaying(false, currentPosition);
-                }
-
-                String clickedSongPath = librarySongsAdapter.songPaths.get(position);
-                if (!clickedSongPath.equals(selectedSongInLibraryPath) || !isPlaying) {
-                    selectedSongInLibraryPath = clickedSongPath;
-                    currentPosition = position;
-                    initializeMediaPlayer();
-                    playSelectedSong();
-                    librarySongsAdapter.setPlaying(true, currentPosition);
-                } else {
-                    if (isPlaying) {
-                        isItemClickListenerActive = true;
-                        stopPlayback();
-                        librarySongsAdapter.setPlaying(false, currentPosition);
-                        currentPosition = -1;
-                    }
-                }
-            }
-        });
     }
     //==========================================================================================
+
 
     //==============================
     // MediaPlayer Initialization
     //==============================
     private void initializeMediaPlayer() {
+        // play the audio of fetched songs
+
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         } else {
@@ -335,6 +363,7 @@ public class LibraryActivity extends AppCompatActivity {
             playSong(selectedSongInLibraryPath);
         }
     }
+
     private void playSong(String path) {
         // Implement the logic to stop the current playback and start the playback of the new song
         stopPlayback();
@@ -353,62 +382,114 @@ public class LibraryActivity extends AppCompatActivity {
 
     }
 
+    private void pausePlayback() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            isPlaying = false;
+            updatePlayButton();
+        }
+    }
+
+    private void resumePlayback() {
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+            isPlaying = true;
+            updatePlayButton();
+        }
+    }
 
     //======================================================================================
 
     //==============================
     // PlayAll functionality
     //==============================
-    private void playAllSongs() {
+    private void playAllSongs() throws IOException {
         if (librarySongsAdapter != null && librarySongsAdapter.getItemCount() > 0) {
             ArrayList<String> songPaths = librarySongsAdapter.songPaths;
 
             if (currentPosition != -1) {
                 librarySongsAdapter.setPlaying(false, currentPosition);
             }
+            if (isPlayAllStopped) {
+                currentPosition = 0;
+                isPlayAllStopped = false;
+            }
             playSongAtIndex(songPaths, 0);
         }
     }
 
-    public void playSongAtIndex(ArrayList<String> songPaths, int index) {
+    public void playSongAtIndex(ArrayList<String> songPaths, int index) throws IOException {
         if (index < songPaths.size() && isPlayAllClicked) {
             librarySongsAdapter.setPlaying(true, index);
             String songPath = songPaths.get(index);
+
             playSong(songPath);
 
             long duration = getDurationOfSong(songPath);
+//            long duration = getFullDurationOfSong(songPath);
+
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (isPlayAllClicked) {
                     librarySongsAdapter.setPlaying(false, index);
-                    playSongAtIndex(songPaths, index + 1);
+
+                    Log.d(LOG_TAG, "playSongAtIndex: Finished playing song at index " + index);
+
+                    try {
+                        currentPosition = index + 1;
+                        playSongAtIndex(songPaths, index + 1);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }, duration);
         } else {
             if (isPlayAllClicked) {
                 isPlayAllClicked = false;
                 stopPlayback();
+                isPlayAllStopped = true;
             }
         }
     }
 
     public void onPlayPauseClick(int position) {
         if (isPlayAllClicked) {
-            isPlayAllClicked = false;
-            stopPlayback();
-        } else {
-            if (mediaPlayer == null) {
+            // The user clicked on the same song
+            if (currentPosition == position) {
+                stopPlayback();
+                isPlayAllClicked = false;
+            } else {
+                // The user clicked on a different song, stop "Play All" and play the selected song
+                isPlayAllClicked = false; // Stop "Play All"
+                stopPlayback();
+                selectedSongInLibraryPath = songPaths.get(position);
                 initializeMediaPlayer();
                 playSelectedSong();
-            } else {
-                mediaPlayer.start();
             }
         }
         updatePlayAllButtonState(position);
     }
 
 
+    private long getFullDurationOfSong(String songPath) throws IOException {
+        try {
+            if (mediaPlayer == null || mediaPlayer.isPlaying()) {
+                return 0;
+            }
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(songPath);
+
+            String durationString = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            long duration = Long.parseLong(durationString);
+
+            retriever.release();
+            return duration;
+        } catch (IllegalStateException e) {
+            return 0;
+        }
+    }
+
     private long getDurationOfSong(String songPath) {
-        return 5000;
+        return 4000;
     }
 
     public boolean isPlayAllClicked() {
@@ -434,62 +515,86 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     public void showPopupMenu(View view) {
-        if (popupMenu != null) {
-            popupMenu.dismiss();
-            return;
-        }
+        View popupView = getLayoutInflater().inflate(R.layout.playlist_dropdown, null);
 
-        // Apply the custom style to the PopupMenu
-        Context wrapper = new ContextThemeWrapper(this, R.style.PopupMenuStyle);
-        popupMenu = new PopupMenu(wrapper, view);
+        // Create the PopupWindow
+        popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
 
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.add_to_playlist_menu, popupMenu.getMenu());
+        // Set the background to allow touch outside to dismiss
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        // Find your custom menu items
+        TextView menuText1 = popupView.findViewById(R.id.menu_text1);
+        ImageView menuIcon = popupView.findViewById(R.id.menu_icon);
+
+        ImageView favoriteIcon = popupView.findViewById(R.id.menu_favorite);
+        TextView menuText2 = popupView.findViewById(R.id.menu_text2);
+
+        // Set onClickListener for your custom menu items
+        menuText1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.menu_add_to_playlist) {
-                    Toast.makeText(LibraryActivity.this, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                // Handle custom menu item click
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_add_to_playlist);
             }
         });
 
-        // Set a custom view for the PopupMenu items
-        for (int i = 0; i < popupMenu.getMenu().size(); i++) {
-            MenuItem menuItem = popupMenu.getMenu().getItem(i);
-            MenuItemCompat.setActionView(menuItem, R.layout.custom_popup_menu_item);
-            View actionView = MenuItemCompat.getActionView(menuItem);
-
-            // Set the custom layout for the PopupMenu item
-            TextView menuText = actionView.findViewById(R.id.menu_text);
-            menuText.setText(menuItem.getTitle());
-
-            // Handle item click as before
-            actionView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Handle item click
-                    popupMenu.dismiss();
-                    onMenuItemClick(menuItem);
-                }
-            });
-        }
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+        menuText2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDismiss(PopupMenu menu) {
-                popupMenu = null;
+            public void onClick(View v) {
+                // Handle custom menu item click
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_text2);
             }
         });
 
-        popupMenu.show();
+        if (!popupWindow.isShowing()) {
+            int[] location = new int[2];
+            view.getLocationOnScreen(location);
+            popupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0], location[1] - popupWindow.getHeight());
+        }
+        favoriteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle custom menu item click for favoriteIcon
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_favorite);
+            }
+        });
+
+
+        menuIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle custom menu item click
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_add_to_playlist);
+            }
+        });
+
+        // Show the PopupWindow
+        if (!popupWindow.isShowing()) {
+            popupWindow.showAsDropDown(view);
+        }
     }
 
-    private void onMenuItemClick(MenuItem item) {
+    private void onMenuItemClick(int itemId) {
         // Handle item click as needed
+        if (itemId == R.id.menu_add_to_playlist) {
+            Toast.makeText(LibraryActivity.this, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
+        } else if (itemId == R.id.menu_text2) {
+            Toast.makeText(LibraryActivity.this, "Add to Favorite Clicked", Toast.LENGTH_SHORT).show();
+            // Add your logic for "Add to Favorite" action
+        } else if (itemId == R.id.menu_favorite) {
+            Toast.makeText(LibraryActivity.this, "Favorite Clicked", Toast.LENGTH_SHORT).show();
+            // Add your logic for "Favorite" action
+        }
     }
 
     //======================================================================================
@@ -497,10 +602,17 @@ public class LibraryActivity extends AppCompatActivity {
     //==============================
     // UI Updates
     //==============================
+
+    private void updatePlayButton() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            isPlaying = true;
+        }
+    }
     private void updatePlayAllButtonState(int position) {
         boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
         librarySongsAdapter.setPlaying(isPlaying, position);
     }
+
 
     private void updateNoSongsFoundVisibility() {
         TextView noSongsFoundTextView = findViewById(R.id.noSongsFoundTextView);
@@ -521,9 +633,29 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        pausePlayback();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopPlayback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resumePlayback();
+    }
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         releaseMediaPlayer();
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
     }
     private void releaseMediaPlayer() {
         if (mediaPlayer != null) {

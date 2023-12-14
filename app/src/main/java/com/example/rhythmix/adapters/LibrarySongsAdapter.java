@@ -31,7 +31,9 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
     private AdapterView.OnItemClickListener onItemClickListener;
     private AdapterView.OnItemClickListener playPauseButtonClickListener;
     private LibraryActivity libraryActivity;
-    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths, ArrayList<String> artistList,LibraryActivity libraryActivity) {
+
+
+    public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths, ArrayList<String> artistList, LibraryActivity libraryActivity) {
         this.originalSongList = new ArrayList<>(songList);
         this.songList = songList;
         this.originalSongPaths = new ArrayList<>(songPaths);
@@ -80,21 +82,25 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         });
 
 
-        int playPauseIcon = isPlayingArray[position] ? R.drawable.ic_pause_24 : R.drawable.round_play_circle_24;
+
+        int playPauseIcon = isPlayingArray[position] ? R.drawable.ic_pause : R.drawable.round_play_circle_24;
+        Log.i(TAG,"SONG status" +  isPlayingArray[position] );
         holder.playPauseButton.setImageResource(playPauseIcon);
     }
 
 
+    // change the song play state once the user click on a song
     private void togglePlayPause(int position) {
         isPlayingArray[position] = !isPlayingArray[position];
         notifyItemChanged(position);
     }
 
 
-
+    // change the song play state used in functionality in libraryActivity
     public void setPlaying(boolean isPlaying, int position) {
         this.isPlayingArray[position] = isPlaying;
         notifyItemChanged(position);
+        Log.d(TAG, "setPlaying: Position " + position + " isPlaying: " + isPlaying);
     }
 
 
@@ -103,6 +109,7 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         return songList.size();
     }
 
+   // used so i can set actions in the LibraryActivity for specific events within the adapter
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }

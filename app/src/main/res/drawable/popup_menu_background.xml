@@ -1,4 +1,0 @@
-<!-- res/drawable/popup_menu_background.xml -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="8dp" />
-</shape>
