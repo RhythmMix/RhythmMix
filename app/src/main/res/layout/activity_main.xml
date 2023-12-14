@@ -31,7 +31,17 @@
                 android:scrollbars="horizontal" />
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/searchimagebutton"
+            android:layout_width="49dp"
+            android:layout_height="43dp"
 
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="361dp"
+            android:layout_marginBottom="31dp"
+            android:background="#D12121"
+            android:backgroundTint="#B81717"
+            android:hint="Search" />
 
         <LinearLayout
             android:layout_width="match_parent"

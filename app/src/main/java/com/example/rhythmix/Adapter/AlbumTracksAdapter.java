@@ -24,8 +24,7 @@ import java.util.List;
 public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.TrackViewHolder> {
     private List<Music> trackList;
     private Activity context;
-
-    private static final String TAG = "AlbumTracks_HOLDER";
+    private static final String  TAG="AlbumTracksAdapter";
 
     public AlbumTracksAdapter(List<Music> trackList, Activity context) {
         this.context = context;
@@ -34,9 +33,9 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
 
     @NonNull
     @Override
-    public AlbumTracksAdapter.TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_track, parent, false);
-        return new AlbumTracksAdapter.TrackViewHolder(view);
+        return new TrackViewHolder(view);
     }
 
     @Override
@@ -46,34 +45,30 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
             if (music != null && music.getArtist() != null && music.getArtist().getName() != null && music.getArtist().getPicture() != null) {
                 String imageUrl = music.getAlbum().getCover();
 
+                holder.trackTitle.setText(music.getTitle());
+                // Set other views as needed
+                // Load image using Picasso
+                Picasso.get().load(imageUrl).into(holder.trackImage);
 
-//                ImageView albumCover = holder.itemView.findViewById(R.id.musicImage);
-//                TextView albumTitle = holder.itemView.findViewById(R.id.musicTitle);
-//                ImageButton toggleButton = holder.itemView.findViewById(R.id.toggleButton);
-//
-//                Picasso.get().load(imageUrl).into(albumCover);
-//
-//                MediaPlayer mediaPlayer = new MediaPlayer();
-//                try {
-//                    mediaPlayer.setDataSource(context, Uri.parse(music.getPreview()));
-//                    mediaPlayer.prepareAsync();
-//                } catch (IOException e) {
-//                    Log.e(TAG, "Error setting data source", e);
-//                    mediaPlayer.release();
-//                }
-//
-//                String titleArtist = music.getTitle() + "\n\n" + music.getArtist().getName();
-//                albumTitle.setText(titleArtist);
+                // Set up media player and toggle button
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                try {
+                    mediaPlayer.setDataSource(context, Uri.parse(music.getPreview()));
+                    mediaPlayer.prepareAsync();
+                } catch (IOException e) {
+                    Log.e(TAG, "Error setting data source", e);
+                    mediaPlayer.release();
+                }
 
-//                toggleButton.setOnClickListener(v -> {
-//                    if (mediaPlayer.isPlaying()) {
-//                        mediaPlayer.pause();
-//                        toggleButton.setImageResource(android.R.drawable.ic_media_play);
-//                    } else {
-//                        mediaPlayer.start();
-//                        toggleButton.setImageResource(android.R.drawable.ic_media_pause);
-//                    }
-//                });
+                holder.trackToggleButton.setOnClickListener(v -> {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                        holder.trackToggleButton.setImageResource(android.R.drawable.ic_media_play);
+                    } else {
+                        mediaPlayer.start();
+                        holder.trackToggleButton.setImageResource(android.R.drawable.ic_media_pause);
+                    }
+                });
             }
         }
     }
@@ -83,20 +78,10 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
         return trackList != null ? trackList.size() : 0;
     }
 
-    @Override
-    public void onViewRecycled(@NonNull TrackViewHolder holder) {
-        MediaPlayer mediaPlayer = holder.mediaPlayer;
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
-        super.onViewRecycled(holder);
-    }
-
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
         ImageView trackImage;
         TextView trackTitle;
         ImageButton trackToggleButton;
-        MediaPlayer mediaPlayer;
 
         public TrackViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,4 +91,5 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
         }
     }
 }
+
 

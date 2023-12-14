@@ -3,8 +3,12 @@ package com.example.rhythmix;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -46,6 +50,16 @@ public class MainActivity extends AppCompatActivity {
         init();
         displayMultipleAlbums(fetchingAlbumsId());
         displayMultipleTracks(fetchingTracksId());
+
+        ImageButton searchimagebutton=findViewById(R.id.searchimagebutton);
+        searchimagebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent searchresultactivity = new Intent(MainActivity.this, SearchBarResultsActivity.class);
+                startActivity(searchresultactivity);
+            }
+        });
+
 
     }
 
@@ -100,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Long> fetchingAlbumsId() {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
-                595243L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 315512547L, 12231484L, 117053822L, 306544897L, 129186032L, 8113734L, 280436792L, 6475501L
+                595243L, 7040437L,11674708L,278981762L,464273655L, 418542097L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 315512547L, 12231484L, 117053822L, 306544897L, 129186032L, 8113734L, 280436792L, 6475501L
         );
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
@@ -117,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
-                1842063587L, 2372912335L, 1093313332L, 11747937L,  1409072752L, 117797212L,
-                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L);
+                1842063587L, 2372912335L, 1586852522L, 2582294482L, 435491442L, 11747937L,  1409072752L, 117797212L,
+                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L);
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {

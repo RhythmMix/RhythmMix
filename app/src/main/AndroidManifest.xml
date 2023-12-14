@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Rhythmix"
         tools:targetApi="31">
         <activity
+            android:name=".SearchBarResultsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Adapter.AlbumTracksAdapter"
             android:exported="false" />
         <activity
