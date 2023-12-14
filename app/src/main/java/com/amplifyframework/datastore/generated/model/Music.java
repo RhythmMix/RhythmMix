@@ -22,12 +22,11 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Music type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Music", authRules = {
+@ModelConfig(pluralName = "Music",  authRules = {
   @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
 public final class Music implements Model {
   public static final QueryField ID = field("Music", "id");
-  public static final QueryField MUSIC_ID = field("Music", "musicID");
   public static final QueryField MUSIC_TITLE = field("Music", "musicTitle");
   public static final QueryField MUSIC_ARTIST = field("Music", "musicArtist");
   public static final QueryField MUSIC_ALBUM = field("Music", "musicAlbum");
@@ -35,7 +34,6 @@ public final class Music implements Model {
   public static final QueryField MUSIC_COVER = field("Music", "musicCover");
   public static final QueryField MUSIC_MP3 = field("Music", "musicMp3");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="ID", isRequired = true) String musicID;
   private final @ModelField(targetType="String", isRequired = true) String musicTitle;
   private final @ModelField(targetType="String", isRequired = true) String musicArtist;
   private final @ModelField(targetType="String", isRequired = true) String musicAlbum;
@@ -55,10 +53,6 @@ public final class Music implements Model {
   
   public String getId() {
       return id;
-  }
-  
-  public String getMusicId() {
-      return musicID;
   }
   
   public String getMusicTitle() {
@@ -105,9 +99,8 @@ public final class Music implements Model {
       return updatedAt;
   }
   
-  private Music(String id, String musicID, String musicTitle, String musicArtist, String musicAlbum, Integer musicDuration, String musicCover, String musicMp3) {
+  private Music(String id, String musicTitle, String musicArtist, String musicAlbum, Integer musicDuration, String musicCover, String musicMp3) {
     this.id = id;
-    this.musicID = musicID;
     this.musicTitle = musicTitle;
     this.musicArtist = musicArtist;
     this.musicAlbum = musicAlbum;
@@ -125,7 +118,6 @@ public final class Music implements Model {
       } else {
       Music music = (Music) obj;
       return ObjectsCompat.equals(getId(), music.getId()) &&
-              ObjectsCompat.equals(getMusicId(), music.getMusicId()) &&
               ObjectsCompat.equals(getMusicTitle(), music.getMusicTitle()) &&
               ObjectsCompat.equals(getMusicArtist(), music.getMusicArtist()) &&
               ObjectsCompat.equals(getMusicAlbum(), music.getMusicAlbum()) &&
@@ -141,7 +133,6 @@ public final class Music implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getMusicId())
       .append(getMusicTitle())
       .append(getMusicArtist())
       .append(getMusicAlbum())
@@ -159,7 +150,6 @@ public final class Music implements Model {
     return new StringBuilder()
       .append("Music {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("musicID=" + String.valueOf(getMusicId()) + ", ")
       .append("musicTitle=" + String.valueOf(getMusicTitle()) + ", ")
       .append("musicArtist=" + String.valueOf(getMusicArtist()) + ", ")
       .append("musicAlbum=" + String.valueOf(getMusicAlbum()) + ", ")
@@ -172,7 +162,7 @@ public final class Music implements Model {
       .toString();
   }
   
-  public static MusicIdStep builder() {
+  public static MusicTitleStep builder() {
       return new Builder();
   }
   
@@ -192,14 +182,12 @@ public final class Music implements Model {
       null,
       null,
       null,
-      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      musicID,
       musicTitle,
       musicArtist,
       musicAlbum,
@@ -207,11 +195,6 @@ public final class Music implements Model {
       musicCover,
       musicMp3);
   }
-  public interface MusicIdStep {
-    MusicTitleStep musicId(String musicId);
-  }
-  
-
   public interface MusicTitleStep {
     MusicArtistStep musicTitle(String musicTitle);
   }
@@ -248,9 +231,8 @@ public final class Music implements Model {
   }
   
 
-  public static class Builder implements MusicIdStep, MusicTitleStep, MusicArtistStep, MusicAlbumStep, MusicDurationStep, MusicCoverStep, MusicMp3Step, BuildStep {
+  public static class Builder implements MusicTitleStep, MusicArtistStep, MusicAlbumStep, MusicDurationStep, MusicCoverStep, MusicMp3Step, BuildStep {
     private String id;
-    private String musicID;
     private String musicTitle;
     private String musicArtist;
     private String musicAlbum;
@@ -261,9 +243,8 @@ public final class Music implements Model {
       
     }
     
-    private Builder(String id, String musicID, String musicTitle, String musicArtist, String musicAlbum, Integer musicDuration, String musicCover, String musicMp3) {
+    private Builder(String id, String musicTitle, String musicArtist, String musicAlbum, Integer musicDuration, String musicCover, String musicMp3) {
       this.id = id;
-      this.musicID = musicID;
       this.musicTitle = musicTitle;
       this.musicArtist = musicArtist;
       this.musicAlbum = musicAlbum;
@@ -278,20 +259,12 @@ public final class Music implements Model {
         
         return new Music(
           id,
-          musicID,
           musicTitle,
           musicArtist,
           musicAlbum,
           musicDuration,
           musicCover,
           musicMp3);
-    }
-    
-    @Override
-     public MusicTitleStep musicId(String musicId) {
-        Objects.requireNonNull(musicId);
-        this.musicID = musicId;
-        return this;
     }
     
     @Override
@@ -348,20 +321,14 @@ public final class Music implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String musicId, String musicTitle, String musicArtist, String musicAlbum, Integer musicDuration, String musicCover, String musicMp3) {
-      super(id, musicID, musicTitle, musicArtist, musicAlbum, musicDuration, musicCover, musicMp3);
-      Objects.requireNonNull(musicID);
+    private CopyOfBuilder(String id, String musicTitle, String musicArtist, String musicAlbum, Integer musicDuration, String musicCover, String musicMp3) {
+      super(id, musicTitle, musicArtist, musicAlbum, musicDuration, musicCover, musicMp3);
       Objects.requireNonNull(musicTitle);
       Objects.requireNonNull(musicArtist);
       Objects.requireNonNull(musicAlbum);
       Objects.requireNonNull(musicDuration);
       Objects.requireNonNull(musicCover);
       Objects.requireNonNull(musicMp3);
-    }
-    
-    @Override
-     public CopyOfBuilder musicId(String musicId) {
-      return (CopyOfBuilder) super.musicId(musicId);
     }
     
     @Override
