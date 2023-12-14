@@ -425,8 +425,8 @@ public class LibraryActivity extends AppCompatActivity {
 
             playSong(songPath);
 
-            long duration = getDurationOfSong(songPath);
-//            long duration = getFullDurationOfSong(songPath);
+//            long duration = getDurationOfSong(songPath);
+            long duration = getFullDurationOfSong(songPath);
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (isPlayAllClicked) {
@@ -632,6 +632,10 @@ public class LibraryActivity extends AppCompatActivity {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+
+    //==============================
+    // Media Player Lifecycle
+    //==============================
     @Override
     protected void onPause() {
         super.onPause();
