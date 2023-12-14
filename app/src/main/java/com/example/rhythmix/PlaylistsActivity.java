@@ -1,6 +1,8 @@
 package com.example.rhythmix;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -15,6 +17,8 @@ public class PlaylistsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
+
+        //////////////////////>>Click here to create a playlist<<<<
 
         ImageView addListImageView = findViewById(R.id.add_list);
         addListImageView.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +44,19 @@ public class PlaylistsActivity extends AppCompatActivity {
         });
         // Set the default selection to "Playlists"
         navigationBar.check(R.id.playlistsButton);
-}
+
+
+    }
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>CREATE STATIC RECYCLER VIEW<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    private void setUpPlayListRecyclerView()
+    {
+        RecyclerView playlistRecyclerView = findViewById(R.id.playlistsRecycleView);
+        int numberOfColumns = 2;
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
+        playlistRecyclerView.setLayoutManager(layoutManager);
+
+    }
+
 
 }
