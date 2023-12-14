@@ -49,7 +49,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 ImageView musicImage = holder.itemView.findViewById(R.id.musicImage);
                 TextView musicTitle = holder.itemView.findViewById(R.id.musicTitle);
                 ImageButton toggleButton = holder.itemView.findViewById(R.id.toggleButton);
-
+                TextView artistName = holder.itemView.findViewById(R.id.musicArtistName);
 
                 Picasso.get().load(imageUrl).into(musicImage);
 
@@ -62,8 +62,11 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 }
 
                 // Displaying title & Artist name
-                String titleArtist = music.getTitle() + " \n \n " + music.getArtist().getName();
-                musicTitle.setText(titleArtist);
+                String songTitle = music.getTitle();
+                musicTitle.setText(songTitle);
+
+                String songArtist =music.getArtist().getName();
+                artistName.setText(songArtist);
 
 
                 toggleButton.setOnClickListener(v -> {
