@@ -1,4 +1,4 @@
-package com.example.rhythmix;
+package com.example.rhythmix.Activites;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.amplifyframework.core.Amplify;
+import com.example.rhythmix.R;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
@@ -20,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView textView5=findViewById(R.id.textView5);
         textView5.setOnClickListener(view -> {
-            Intent moveToSignUp=new Intent(LoginActivity.this,SignUpActivity.class);
+            Intent moveToSignUp=new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(moveToSignUp);
         });
 

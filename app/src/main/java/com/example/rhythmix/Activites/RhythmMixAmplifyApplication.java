@@ -1,4 +1,4 @@
-package com.example.rhythmix;
+package com.example.rhythmix.Activites;
 import android.app.Application;
 import android.util.Log;
 

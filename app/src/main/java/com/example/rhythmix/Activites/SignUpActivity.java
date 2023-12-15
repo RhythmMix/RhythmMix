@@ -1,4 +1,4 @@
-package com.example.rhythmix;
+package com.example.rhythmix.Activites;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.auth.options.AuthSignUpOptions;
 import com.amplifyframework.core.Amplify;
+import com.example.rhythmix.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         TextView textView5=findViewById(R.id.textView5);
         textView5.setOnClickListener(view -> {
-            Intent moveToSignUp=new Intent(SignUpActivity.this,LoginActivity.class);
+            Intent moveToSignUp=new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(moveToSignUp);
         });
 

@@ -1,8 +1,7 @@
-package com.example.rhythmix;
+package com.example.rhythmix.Activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.widget.RadioGroup;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Playlist;
+import com.example.rhythmix.R;
 import com.example.rhythmix.adapter.playlistRecyclerViewAdapter;
 
 import java.io.BufferedWriter;
@@ -28,8 +28,6 @@ public class PlaylistsActivity extends AppCompatActivity {
     private playlistRecyclerViewAdapter playlistRecyclerViewAdapter;
     List<Playlist> playlists = new ArrayList<>();
     public static final String TAG = "playlistTag";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +120,7 @@ public class PlaylistsActivity extends AppCompatActivity {
 
         //>>>>>>>>>Static Playlist<<<<<<<<<<<<<<
 
-        playlistRecyclerViewAdapter=new playlistRecyclerViewAdapter(playlists);
+        playlistRecyclerViewAdapter=new playlistRecyclerViewAdapter(playlists,this);
         playlistRecyclerView.setAdapter(playlistRecyclerViewAdapter);
     }
 

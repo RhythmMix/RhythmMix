@@ -1,4 +1,4 @@
-package com.example.rhythmix;
+package com.example.rhythmix.Activites;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,21 +21,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
-import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.datastore.generated.model.Playlist;
 import com.amplifyframework.datastore.generated.model.User;
+import com.example.rhythmix.R;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class CreatePlaylistActivity extends AppCompatActivity {
     public static final String CREATE_PLAY_LIST_ACTIVITY_TAG = "CreatePlaylistActivity";
@@ -254,7 +251,7 @@ public class CreatePlaylistActivity extends AppCompatActivity {
                     successResponse -> {
                         Log.i(TAG, "EditProductActivity.onCreate(): created a product successfully");
                         Snackbar.make(findViewById(R.id.playlistaccess), "Product saved!", Snackbar.LENGTH_SHORT).show();
-                        Intent backToPlayList=new Intent(CreatePlaylistActivity.this,PlaylistsActivity.class);
+                        Intent backToPlayList=new Intent(CreatePlaylistActivity.this, PlaylistsActivity.class);
                         startActivity(backToPlayList);
                     },
                     failureResponse -> Log.i(TAG, "EditProductActivity.onCreate(): failed with this response: " + failureResponse)

@@ -2,9 +2,7 @@
 <resources>
 
     <color name="red">#A10B0B</color>
-
-    <color name="transparent">#A10B0B</color>
-
+    <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="backward_color">#DD000000</color>
     <item name="FlatWhite" type="color">#F5F5F5</item>
@@ -14,4 +12,5 @@
     <color name="shuffleColor">#A57C03</color>
     <color name="SplashColor">@android:color/black</color>
     <item name="SplashBackground" type ="color">#f0f0f0</item>
+    <color name="grey">#DD504E4E</color>
 </resources>

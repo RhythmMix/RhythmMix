@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="95dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_gravity="fill_horizontal"
+    android:layout_marginTop="10dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/musicImage"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:padding="6dp"
+        app:riv_corner_radius="4dp"
+        app:riv_border_width="1dp"
+        app:riv_border_color="#44F5F5F5"
+        android:layout_marginEnd="10dp"
+        app:srcCompat="@android:drawable/btn_star_big_on"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/musicTitle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Galaxy Supernova"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/FlatWhite"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="21dp"/>
+
+        <TextView
+            android:id="@+id/musicArtistName"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Artist Name"
+            android:textSize="11sp"
+            android:textColor="@color/FlatWhite"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/toggleButton"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:background="#00E65100"
+        android:backgroundTint="#CA370A"
+        android:contentDescription="TODO"
+        android:gravity="center"
+        android:hapticFeedbackEnabled="true"
+        android:src="@android:drawable/ic_media_play"/>
+
+    <ImageView
+        android:id="@+id/menu_button_main"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:srcCompat="@drawable/ic_more_horiz_black_24dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/ripple_oval"
+        app:tint="#DDF5F5F5"
+        android:layout_gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="showPopupMenu"/>
+
+
+</LinearLayout>

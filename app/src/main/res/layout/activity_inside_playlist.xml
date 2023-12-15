@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backward_color"
-    tools:context=".InsidePlaylistActivity">
+    tools:context=".Activites.InsidePlaylistActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:elevation="0dp"
-        tools:targetApi="lollipop"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:targetApi="lollipop">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/playlist_pager_collapsing_toolbar"
@@ -60,18 +61,18 @@
                     app:shadowDeltaTop="4dp"
                     tools:ignore="MissingClass">
 
+
                     <ImageView
                         android:id="@+id/art"
-                        android:layout_width="140dp"
-                        android:layout_height="140dp"
-                        android:layout_marginStart="45dp"
-                        android:layout_marginBottom="18dp"
+                        android:layout_width="139dp"
+                        android:layout_height="124dp"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/white_rounded"
                         android:padding="3dp"
                         android:src="@drawable/head"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
                     <TextView
                         android:id="@+id/title"
@@ -162,7 +163,6 @@
             </RelativeLayout>
 
 
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -171,7 +171,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="425dp"
         android:layout_height="524dp"
-        android:layout_marginBottom="4dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingBottom="@dimen/bottom_back_stack_spacing"
@@ -180,6 +179,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.985"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/playlist_song_item"
         tools:orientation="vertical" />

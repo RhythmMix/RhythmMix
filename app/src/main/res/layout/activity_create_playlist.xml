@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/overlay"
     android:id="@+id/playlistaccess"
-    tools:context=".CreatePlaylistActivity">
+    tools:context=".Activites.CreatePlaylistActivity">
 
     <EditText
         android:id="@+id/playlistNameEditText"

@@ -29,6 +29,11 @@
     <style name="Widget.ActionButton.Overflow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
         <item name="android:contentDescription">@string/accessibility_overflow</item>
     </style>
+    <style name="MyImageButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@drawable/rounded_button_background</item>
+        <item name="android:scaleType">fitXY</item>
+        <!-- Add any other style attributes you want to customize -->
+    </style>
 
 
 </resources>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".RhythmMixAmplifyApplication"
+        android:name=".Activites.RhythmMixAmplifyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,30 +14,39 @@
         android:theme="@style/Theme.Rhythmix"
         tools:targetApi="31">
         <activity
-            android:name=".AddToFavoritesActivity"
+            android:name=".Activites.SongPlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".CreatePlaylistActivity"
+            android:name=".Activites.LibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".PlaylistsActivity"
+            android:name=".Activites.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".InsidePlaylistActivity"
+            android:name=".Activites.AddToFavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".Activites.CreatePlaylistActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activites.PlaylistsActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".Activites.InsidePlaylistActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activites.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activites.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activites.SignUpActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".RhythmMixAmplify" -->
         <!-- android:exported="false" /> -->
         <activity
-            android:name=".MainActivity"
+            android:name=".Activites.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
