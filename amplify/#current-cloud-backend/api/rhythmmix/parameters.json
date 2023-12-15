@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "rhythmmix",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2023-12-13T17:20:55.395Z"
+}

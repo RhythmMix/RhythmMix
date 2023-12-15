@@ -1,0 +1,1078 @@
+{
+    "Parameters": {
+        "env": {
+            "Type": "String",
+            "Default": "NONE"
+        },
+        "AppSyncApiName": {
+            "Type": "String",
+            "Default": "AppSyncSimpleTransform"
+        },
+        "DynamoDBModelTableReadIOPS": {
+            "Type": "Number",
+            "Default": 5,
+            "Description": "The number of read IOPS the table should support."
+        },
+        "DynamoDBModelTableWriteIOPS": {
+            "Type": "Number",
+            "Default": 5,
+            "Description": "The number of write IOPS the table should support."
+        },
+        "DynamoDBBillingMode": {
+            "Type": "String",
+            "Default": "PAY_PER_REQUEST",
+            "AllowedValues": [
+                "PAY_PER_REQUEST",
+                "PROVISIONED"
+            ],
+            "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+        },
+        "DynamoDBEnablePointInTimeRecovery": {
+            "Type": "String",
+            "Default": "false",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Description": "Whether to enable Point in Time Recovery on the table."
+        },
+        "DynamoDBEnableServerSideEncryption": {
+            "Type": "String",
+            "Default": "true",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "Description": "Enable server side encryption powered by KMS."
+        },
+        "S3DeploymentBucket": {
+            "Type": "String",
+            "Description": "An S3 Bucket name where assets are deployed"
+        },
+        "S3DeploymentRootKey": {
+            "Type": "String",
+            "Description": "An S3 key relative to the S3DeploymentBucket that points to the root of the deployment directory."
+        }
+    },
+    "Resources": {
+        "GraphQLAPI": {
+            "Type": "AWS::AppSync::GraphQLApi",
+            "Properties": {
+                "AuthenticationType": "API_KEY",
+                "Name": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AppSyncApiName"
+                            },
+                            "-",
+                            {
+                                "Ref": "env"
+                            }
+                        ]
+                    ]
+                }
+            }
+        },
+        "GraphQLAPITransformerSchema3CB2AE18": {
+            "Type": "AWS::AppSync::GraphQLSchema",
+            "Properties": {
+                "ApiId": {
+                    "Fn::GetAtt": [
+                        "GraphQLAPI",
+                        "ApiId"
+                    ]
+                },
+                "DefinitionS3Location": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "s3://",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/schema.graphql"
+                        ]
+                    ]
+                }
+            }
+        },
+        "GraphQLAPIDefaultApiKey215A6DD7": {
+            "Type": "AWS::AppSync::ApiKey",
+            "Properties": {
+                "ApiId": {
+                    "Fn::GetAtt": [
+                        "GraphQLAPI",
+                        "ApiId"
+                    ]
+                },
+                "Description": "final project from thaer",
+                "Expires": 1707738644
+            }
+        },
+        "GraphQLAPINONEDS95A13CF0": {
+            "Type": "AWS::AppSync::DataSource",
+            "Properties": {
+                "ApiId": {
+                    "Fn::GetAtt": [
+                        "GraphQLAPI",
+                        "ApiId"
+                    ]
+                },
+                "Name": "NONE_DS",
+                "Type": "NONE",
+                "Description": "None Data Source for Pipeline functions"
+            }
+        },
+        "Todo": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/Todo.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPINONEDS95A13CF0",
+                            "Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "PlaylistMusic": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/PlaylistMusic.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPINONEDS95A13CF0",
+                            "Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "Playlist": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/Playlist.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFuncti69EF2643": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFunctionB2F9B378FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "Music": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/Music.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFuncti69EF2643": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFunctionB2F9B378FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "User": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/User.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFuncti69EF2643": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFunctionB2F9B378FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "FavoriteMusic": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/FavoriteMusic.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFuncti69EF2643": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFunctionB2F9B378FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "Favorite": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/Favorite.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "referencetotransformerrootstackenv10C5A902Ref": {
+                        "Ref": "env"
+                    },
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicQuerygetPlaylistMusicauth0FunctionQuerygetPlaylistMusicauth0FunctionAppSyncFunction862DF1ACFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoQuerygetTodopostAuth0FunctionQuerygetTodopostAuth0FunctionAppSyncFunction083ADD8DFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationcreateTodoinit0FunctionMutationcreateTodoinit0FunctionAppSyncFunction9D822C24FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicMutationcreatePlaylistMusicauth0FunctionMutationcreatePlaylistMusicauth0FunctionAppSyncFunctionB96B4644FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoMutationupdateTodoinit0FunctionMutationupdateTodoinit0FunctionAppSyncFunctionDECD85CDFunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFuncti69EF2643": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicSubscriptiononCreatePlaylistMusicauth0FunctionSubscriptiononCreatePlaylistMusicauth0FunctionAppSyncFunctionB2F9B378FunctionId"
+                        ]
+                    },
+                    "referencetotransformerrootstackTodoNestedStackTodoNestedStackResource9AC126A3OutputstransformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId": {
+                        "Fn::GetAtt": [
+                            "Todo",
+                            "Outputs.transformerrootstackTodoSubscriptionOnCreateTodoDataResolverFnSubscriptionOnCreateTodoDataResolverFnAppSyncFunctionCED2552FFunctionId"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPITransformerSchema3CB2AE18"
+            ]
+        },
+        "ConnectionStack": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "https://s3.",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                                "Ref": "AWS::URLSuffix"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "/",
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "/stacks/ConnectionStack.json"
+                        ]
+                    ]
+                },
+                "Parameters": {
+                    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPINONEDS95A13CF0",
+                            "Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicDataSourceD399F792Name": {
+                        "Fn::GetAtt": [
+                            "Music",
+                            "Outputs.transformerrootstackMusicMusicDataSourceD399F792Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicTableE5AFA743Ref": {
+                        "Fn::GetAtt": [
+                            "Music",
+                            "Outputs.transformerrootstackMusicMusicTableE5AFA743Ref"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicDataSource5789F074Name": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicPlaylistMusicDataSource5789F074Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicTable2DE7CB2FRef": {
+                        "Fn::GetAtt": [
+                            "PlaylistMusic",
+                            "Outputs.transformerrootstackPlaylistMusicPlaylistMusicTable2DE7CB2FRef"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistDataSourceF9622500Name": {
+                        "Fn::GetAtt": [
+                            "Playlist",
+                            "Outputs.transformerrootstackPlaylistPlaylistDataSourceF9622500Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistTable494DF929Ref": {
+                        "Fn::GetAtt": [
+                            "Playlist",
+                            "Outputs.transformerrootstackPlaylistPlaylistTable494DF929Ref"
+                        ]
+                    },
+                    "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicDataSourceA7BDD3AFName": {
+                        "Fn::GetAtt": [
+                            "FavoriteMusic",
+                            "Outputs.transformerrootstackFavoriteMusicFavoriteMusicDataSourceA7BDD3AFName"
+                        ]
+                    },
+                    "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicTableD627C14FRef": {
+                        "Fn::GetAtt": [
+                            "FavoriteMusic",
+                            "Outputs.transformerrootstackFavoriteMusicFavoriteMusicTableD627C14FRef"
+                        ]
+                    },
+                    "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserDataSourceA8C4C398Name": {
+                        "Fn::GetAtt": [
+                            "User",
+                            "Outputs.transformerrootstackUserUserDataSourceA8C4C398Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserTableA7A02430Ref": {
+                        "Fn::GetAtt": [
+                            "User",
+                            "Outputs.transformerrootstackUserUserTableA7A02430Ref"
+                        ]
+                    },
+                    "referencetotransformerrootstackFavoriteNestedStackFavoriteNestedStackResource383EF06AOutputstransformerrootstackFavoriteFavoriteDataSourceA34E0025Name": {
+                        "Fn::GetAtt": [
+                            "Favorite",
+                            "Outputs.transformerrootstackFavoriteFavoriteDataSourceA34E0025Name"
+                        ]
+                    },
+                    "referencetotransformerrootstackFavoriteNestedStackFavoriteNestedStackResource383EF06AOutputstransformerrootstackFavoriteFavoriteTableE2F22650Ref": {
+                        "Fn::GetAtt": [
+                            "Favorite",
+                            "Outputs.transformerrootstackFavoriteFavoriteTableE2F22650Ref"
+                        ]
+                    }
+                }
+            },
+            "DependsOn": [
+                "Favorite",
+                "FavoriteMusic",
+                "GraphQLAPITransformerSchema3CB2AE18",
+                "Music",
+                "Playlist",
+                "PlaylistMusic",
+                "User"
+            ]
+        },
+        "CustomResourcesjson": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "Parameters": {
+                    "AppSyncApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "AppSyncApiName": {
+                        "Ref": "AppSyncApiName"
+                    },
+                    "env": {
+                        "Ref": "env"
+                    },
+                    "S3DeploymentBucket": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "S3DeploymentRootKey": {
+                        "Ref": "S3DeploymentRootKey"
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "/",
+                        [
+                            "https://s3.amazonaws.com",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "stacks",
+                            "CustomResources.json"
+                        ]
+                    ]
+                }
+            },
+            "DependsOn": [
+                "GraphQLAPI",
+                "GraphQLAPITransformerSchema3CB2AE18",
+                "Todo",
+                "PlaylistMusic",
+                "Playlist",
+                "Music",
+                "User",
+                "FavoriteMusic",
+                "Favorite",
+                "ConnectionStack"
+            ]
+        }
+    },
+    "Outputs": {
+        "GraphQLAPIKeyOutput": {
+            "Description": "Your GraphQL API ID.",
+            "Value": {
+                "Fn::GetAtt": [
+                    "GraphQLAPIDefaultApiKey215A6DD7",
+                    "ApiKey"
+                ]
+            },
+            "Export": {
+                "Name": {
+                    "Fn::Join": [
+                        ":",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "GraphQLApiKey"
+                        ]
+                    ]
+                }
+            }
+        },
+        "GraphQLAPIIdOutput": {
+            "Description": "Your GraphQL API ID.",
+            "Value": {
+                "Fn::GetAtt": [
+                    "GraphQLAPI",
+                    "ApiId"
+                ]
+            },
+            "Export": {
+                "Name": {
+                    "Fn::Join": [
+                        ":",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "GraphQLApiId"
+                        ]
+                    ]
+                }
+            }
+        },
+        "GraphQLAPIEndpointOutput": {
+            "Description": "Your GraphQL API endpoint.",
+            "Value": {
+                "Fn::GetAtt": [
+                    "GraphQLAPI",
+                    "GraphQLUrl"
+                ]
+            },
+            "Export": {
+                "Name": {
+                    "Fn::Join": [
+                        ":",
+                        [
+                            {
+                                "Ref": "AWS::StackName"
+                            },
+                            "GraphQLApiEndpoint"
+                        ]
+                    ]
+                }
+            }
+        }
+    }
+}

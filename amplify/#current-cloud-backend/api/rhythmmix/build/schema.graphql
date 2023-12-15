@@ -1,0 +1,657 @@
+type Todo {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type PlaylistMusic {
+  id: ID!
+  playlistID: ID!
+  musicID: ID!
+  playlist: Playlist
+  music: Music
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Playlist {
+  id: ID!
+  playlistName: String!
+  playlistBackground: String
+  userID: ID!
+  user: User
+  musics(filter: ModelMusicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelMusicConnection
+  playlistMusic(filter: ModelPlaylistMusicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPlaylistMusicConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Music {
+  id: ID!
+  musicTitle: String!
+  musicArtist: String!
+  musicAlbum: String!
+  musicDuration: Int!
+  musicCover: String!
+  musicMp3: String!
+  playlists(filter: ModelPlaylistFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPlaylistConnection
+  favoriteMusics(filter: ModelFavoriteMusicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelFavoriteMusicConnection
+  playlistMusic(filter: ModelPlaylistMusicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPlaylistMusicConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String
+  userImageS3Key: String
+  playlists(filter: ModelPlaylistFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPlaylistConnection
+  favorites(filter: ModelFavoriteMusicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelFavoriteMusicConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type FavoriteMusic {
+  id: ID!
+  favoriteID: ID!
+  musicID: ID!
+  favorite: Favorite
+  music: Music
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Favorite {
+  favoriteID: ID!
+  favoriteTitle: String!
+  favoriteArtist: String!
+  favoriteMp3: String!
+  userID: ID!
+  favoriteMusics(filter: ModelFavoriteMusicFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelFavoriteMusicConnection
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTodoConnection {
+  items: [Todo]!
+  nextToken: String
+}
+
+input ModelTodoFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelTodoFilterInput]
+  or: [ModelTodoFilterInput]
+  not: ModelTodoFilterInput
+}
+
+type Query {
+  getTodo(id: ID!): Todo
+  listTodos(filter: ModelTodoFilterInput, limit: Int, nextToken: String): ModelTodoConnection
+  getPlaylistMusic(id: ID!): PlaylistMusic
+  listPlaylistMusics(filter: ModelPlaylistMusicFilterInput, limit: Int, nextToken: String): ModelPlaylistMusicConnection
+  getPlaylist(id: ID!): Playlist
+  listPlaylists(filter: ModelPlaylistFilterInput, limit: Int, nextToken: String): ModelPlaylistConnection
+  getMusic(id: ID!): Music
+  listMusic(filter: ModelMusicFilterInput, limit: Int, nextToken: String): ModelMusicConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  getFavoriteMusic(id: ID!): FavoriteMusic
+  listFavoriteMusics(filter: ModelFavoriteMusicFilterInput, limit: Int, nextToken: String): ModelFavoriteMusicConnection
+  getFavorite(id: ID!): Favorite
+  listFavorites(filter: ModelFavoriteFilterInput, limit: Int, nextToken: String): ModelFavoriteConnection
+}
+
+input ModelTodoConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelTodoConditionInput]
+  or: [ModelTodoConditionInput]
+  not: ModelTodoConditionInput
+}
+
+input CreateTodoInput {
+  id: ID
+  name: String!
+  description: String
+}
+
+input UpdateTodoInput {
+  id: ID!
+  name: String
+  description: String
+}
+
+input DeleteTodoInput {
+  id: ID!
+}
+
+type Mutation {
+  createTodo(input: CreateTodoInput!, condition: ModelTodoConditionInput): Todo
+  updateTodo(input: UpdateTodoInput!, condition: ModelTodoConditionInput): Todo
+  deleteTodo(input: DeleteTodoInput!, condition: ModelTodoConditionInput): Todo
+  createPlaylistMusic(input: CreatePlaylistMusicInput!, condition: ModelPlaylistMusicConditionInput): PlaylistMusic
+  updatePlaylistMusic(input: UpdatePlaylistMusicInput!, condition: ModelPlaylistMusicConditionInput): PlaylistMusic
+  deletePlaylistMusic(input: DeletePlaylistMusicInput!, condition: ModelPlaylistMusicConditionInput): PlaylistMusic
+  createPlaylist(input: CreatePlaylistInput!, condition: ModelPlaylistConditionInput): Playlist
+  updatePlaylist(input: UpdatePlaylistInput!, condition: ModelPlaylistConditionInput): Playlist
+  deletePlaylist(input: DeletePlaylistInput!, condition: ModelPlaylistConditionInput): Playlist
+  createMusic(input: CreateMusicInput!, condition: ModelMusicConditionInput): Music
+  updateMusic(input: UpdateMusicInput!, condition: ModelMusicConditionInput): Music
+  deleteMusic(input: DeleteMusicInput!, condition: ModelMusicConditionInput): Music
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createFavoriteMusic(input: CreateFavoriteMusicInput!, condition: ModelFavoriteMusicConditionInput): FavoriteMusic
+  updateFavoriteMusic(input: UpdateFavoriteMusicInput!, condition: ModelFavoriteMusicConditionInput): FavoriteMusic
+  deleteFavoriteMusic(input: DeleteFavoriteMusicInput!, condition: ModelFavoriteMusicConditionInput): FavoriteMusic
+  createFavorite(input: CreateFavoriteInput!, condition: ModelFavoriteConditionInput): Favorite
+  updateFavorite(input: UpdateFavoriteInput!, condition: ModelFavoriteConditionInput): Favorite
+  deleteFavorite(input: DeleteFavoriteInput!, condition: ModelFavoriteConditionInput): Favorite
+}
+
+input ModelSubscriptionTodoFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTodoFilterInput]
+  or: [ModelSubscriptionTodoFilterInput]
+}
+
+type Subscription {
+  onCreateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["createTodo"])
+  onUpdateTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["updateTodo"])
+  onDeleteTodo(filter: ModelSubscriptionTodoFilterInput): Todo @aws_subscribe(mutations: ["deleteTodo"])
+  onCreatePlaylistMusic(filter: ModelSubscriptionPlaylistMusicFilterInput): PlaylistMusic @aws_subscribe(mutations: ["createPlaylistMusic"])
+  onUpdatePlaylistMusic(filter: ModelSubscriptionPlaylistMusicFilterInput): PlaylistMusic @aws_subscribe(mutations: ["updatePlaylistMusic"])
+  onDeletePlaylistMusic(filter: ModelSubscriptionPlaylistMusicFilterInput): PlaylistMusic @aws_subscribe(mutations: ["deletePlaylistMusic"])
+  onCreatePlaylist(filter: ModelSubscriptionPlaylistFilterInput): Playlist @aws_subscribe(mutations: ["createPlaylist"])
+  onUpdatePlaylist(filter: ModelSubscriptionPlaylistFilterInput): Playlist @aws_subscribe(mutations: ["updatePlaylist"])
+  onDeletePlaylist(filter: ModelSubscriptionPlaylistFilterInput): Playlist @aws_subscribe(mutations: ["deletePlaylist"])
+  onCreateMusic(filter: ModelSubscriptionMusicFilterInput): Music @aws_subscribe(mutations: ["createMusic"])
+  onUpdateMusic(filter: ModelSubscriptionMusicFilterInput): Music @aws_subscribe(mutations: ["updateMusic"])
+  onDeleteMusic(filter: ModelSubscriptionMusicFilterInput): Music @aws_subscribe(mutations: ["deleteMusic"])
+  onCreateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateFavoriteMusic(filter: ModelSubscriptionFavoriteMusicFilterInput): FavoriteMusic @aws_subscribe(mutations: ["createFavoriteMusic"])
+  onUpdateFavoriteMusic(filter: ModelSubscriptionFavoriteMusicFilterInput): FavoriteMusic @aws_subscribe(mutations: ["updateFavoriteMusic"])
+  onDeleteFavoriteMusic(filter: ModelSubscriptionFavoriteMusicFilterInput): FavoriteMusic @aws_subscribe(mutations: ["deleteFavoriteMusic"])
+  onCreateFavorite(filter: ModelSubscriptionFavoriteFilterInput): Favorite @aws_subscribe(mutations: ["createFavorite"])
+  onUpdateFavorite(filter: ModelSubscriptionFavoriteFilterInput): Favorite @aws_subscribe(mutations: ["updateFavorite"])
+  onDeleteFavorite(filter: ModelSubscriptionFavoriteFilterInput): Favorite @aws_subscribe(mutations: ["deleteFavorite"])
+}
+
+type ModelPlaylistMusicConnection {
+  items: [PlaylistMusic]!
+  nextToken: String
+}
+
+input ModelPlaylistMusicFilterInput {
+  id: ModelIDInput
+  playlistID: ModelIDInput
+  musicID: ModelIDInput
+  and: [ModelPlaylistMusicFilterInput]
+  or: [ModelPlaylistMusicFilterInput]
+  not: ModelPlaylistMusicFilterInput
+}
+
+input ModelPlaylistMusicConditionInput {
+  playlistID: ModelIDInput
+  musicID: ModelIDInput
+  and: [ModelPlaylistMusicConditionInput]
+  or: [ModelPlaylistMusicConditionInput]
+  not: ModelPlaylistMusicConditionInput
+}
+
+input CreatePlaylistMusicInput {
+  id: ID
+  playlistID: ID!
+  musicID: ID!
+}
+
+input UpdatePlaylistMusicInput {
+  id: ID!
+  playlistID: ID
+  musicID: ID
+}
+
+input DeletePlaylistMusicInput {
+  id: ID!
+}
+
+input ModelSubscriptionPlaylistMusicFilterInput {
+  id: ModelSubscriptionIDInput
+  playlistID: ModelSubscriptionIDInput
+  musicID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionPlaylistMusicFilterInput]
+  or: [ModelSubscriptionPlaylistMusicFilterInput]
+}
+
+type ModelPlaylistConnection {
+  items: [Playlist]!
+  nextToken: String
+}
+
+input ModelPlaylistFilterInput {
+  id: ModelIDInput
+  playlistName: ModelStringInput
+  playlistBackground: ModelStringInput
+  userID: ModelIDInput
+  and: [ModelPlaylistFilterInput]
+  or: [ModelPlaylistFilterInput]
+  not: ModelPlaylistFilterInput
+}
+
+input ModelPlaylistConditionInput {
+  playlistName: ModelStringInput
+  playlistBackground: ModelStringInput
+  userID: ModelIDInput
+  and: [ModelPlaylistConditionInput]
+  or: [ModelPlaylistConditionInput]
+  not: ModelPlaylistConditionInput
+}
+
+input CreatePlaylistInput {
+  id: ID
+  playlistName: String!
+  playlistBackground: String
+  userID: ID!
+}
+
+input UpdatePlaylistInput {
+  id: ID!
+  playlistName: String
+  playlistBackground: String
+  userID: ID
+}
+
+input DeletePlaylistInput {
+  id: ID!
+}
+
+input ModelSubscriptionPlaylistFilterInput {
+  id: ModelSubscriptionIDInput
+  playlistName: ModelSubscriptionStringInput
+  playlistBackground: ModelSubscriptionStringInput
+  userID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionPlaylistFilterInput]
+  or: [ModelSubscriptionPlaylistFilterInput]
+}
+
+type ModelMusicConnection {
+  items: [Music]!
+  nextToken: String
+}
+
+input ModelMusicFilterInput {
+  id: ModelIDInput
+  musicTitle: ModelStringInput
+  musicArtist: ModelStringInput
+  musicAlbum: ModelStringInput
+  musicDuration: ModelIntInput
+  musicCover: ModelStringInput
+  musicMp3: ModelStringInput
+  and: [ModelMusicFilterInput]
+  or: [ModelMusicFilterInput]
+  not: ModelMusicFilterInput
+}
+
+input ModelMusicConditionInput {
+  musicTitle: ModelStringInput
+  musicArtist: ModelStringInput
+  musicAlbum: ModelStringInput
+  musicDuration: ModelIntInput
+  musicCover: ModelStringInput
+  musicMp3: ModelStringInput
+  and: [ModelMusicConditionInput]
+  or: [ModelMusicConditionInput]
+  not: ModelMusicConditionInput
+}
+
+input CreateMusicInput {
+  id: ID
+  musicTitle: String!
+  musicArtist: String!
+  musicAlbum: String!
+  musicDuration: Int!
+  musicCover: String!
+  musicMp3: String!
+}
+
+input UpdateMusicInput {
+  id: ID!
+  musicTitle: String
+  musicArtist: String
+  musicAlbum: String
+  musicDuration: Int
+  musicCover: String
+  musicMp3: String
+}
+
+input DeleteMusicInput {
+  id: ID!
+}
+
+input ModelSubscriptionMusicFilterInput {
+  id: ModelSubscriptionIDInput
+  musicTitle: ModelSubscriptionStringInput
+  musicArtist: ModelSubscriptionStringInput
+  musicAlbum: ModelSubscriptionStringInput
+  musicDuration: ModelSubscriptionIntInput
+  musicCover: ModelSubscriptionStringInput
+  musicMp3: ModelSubscriptionStringInput
+  and: [ModelSubscriptionMusicFilterInput]
+  or: [ModelSubscriptionMusicFilterInput]
+}
+
+type ModelUserConnection {
+  items: [User]!
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  email: ModelStringInput
+  username: ModelStringInput
+  userImageS3Key: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input ModelUserConditionInput {
+  email: ModelStringInput
+  username: ModelStringInput
+  userImageS3Key: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+input CreateUserInput {
+  id: ID
+  email: String!
+  username: String
+  userImageS3Key: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  email: String
+  username: String
+  userImageS3Key: String
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelSubscriptionUserFilterInput {
+  id: ModelSubscriptionIDInput
+  email: ModelSubscriptionStringInput
+  username: ModelSubscriptionStringInput
+  userImageS3Key: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUserFilterInput]
+  or: [ModelSubscriptionUserFilterInput]
+}
+
+type ModelFavoriteMusicConnection {
+  items: [FavoriteMusic]!
+  nextToken: String
+}
+
+input ModelFavoriteMusicFilterInput {
+  id: ModelIDInput
+  favoriteID: ModelIDInput
+  musicID: ModelIDInput
+  and: [ModelFavoriteMusicFilterInput]
+  or: [ModelFavoriteMusicFilterInput]
+  not: ModelFavoriteMusicFilterInput
+}
+
+input ModelFavoriteMusicConditionInput {
+  favoriteID: ModelIDInput
+  musicID: ModelIDInput
+  and: [ModelFavoriteMusicConditionInput]
+  or: [ModelFavoriteMusicConditionInput]
+  not: ModelFavoriteMusicConditionInput
+}
+
+input CreateFavoriteMusicInput {
+  id: ID
+  favoriteID: ID!
+  musicID: ID!
+}
+
+input UpdateFavoriteMusicInput {
+  id: ID!
+  favoriteID: ID
+  musicID: ID
+}
+
+input DeleteFavoriteMusicInput {
+  id: ID!
+}
+
+input ModelSubscriptionFavoriteMusicFilterInput {
+  id: ModelSubscriptionIDInput
+  favoriteID: ModelSubscriptionIDInput
+  musicID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionFavoriteMusicFilterInput]
+  or: [ModelSubscriptionFavoriteMusicFilterInput]
+}
+
+type ModelFavoriteConnection {
+  items: [Favorite]!
+  nextToken: String
+}
+
+input ModelFavoriteFilterInput {
+  favoriteID: ModelIDInput
+  favoriteTitle: ModelStringInput
+  favoriteArtist: ModelStringInput
+  favoriteMp3: ModelStringInput
+  userID: ModelIDInput
+  and: [ModelFavoriteFilterInput]
+  or: [ModelFavoriteFilterInput]
+  not: ModelFavoriteFilterInput
+}
+
+input ModelFavoriteConditionInput {
+  favoriteID: ModelIDInput
+  favoriteTitle: ModelStringInput
+  favoriteArtist: ModelStringInput
+  favoriteMp3: ModelStringInput
+  userID: ModelIDInput
+  and: [ModelFavoriteConditionInput]
+  or: [ModelFavoriteConditionInput]
+  not: ModelFavoriteConditionInput
+}
+
+input CreateFavoriteInput {
+  favoriteID: ID!
+  favoriteTitle: String!
+  favoriteArtist: String!
+  favoriteMp3: String!
+  userID: ID!
+  id: ID
+}
+
+input UpdateFavoriteInput {
+  favoriteID: ID
+  favoriteTitle: String
+  favoriteArtist: String
+  favoriteMp3: String
+  userID: ID
+  id: ID!
+}
+
+input DeleteFavoriteInput {
+  id: ID!
+}
+
+input ModelSubscriptionFavoriteFilterInput {
+  favoriteID: ModelSubscriptionIDInput
+  favoriteTitle: ModelSubscriptionStringInput
+  favoriteArtist: ModelSubscriptionStringInput
+  favoriteMp3: ModelSubscriptionStringInput
+  userID: ModelSubscriptionIDInput
+  and: [ModelSubscriptionFavoriteFilterInput]
+  or: [ModelSubscriptionFavoriteFilterInput]
+}
