@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<resources>
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Reneh Styles-->
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="CustomSeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressDrawable">@drawable/custom_seekbar_progress</item>
+        <item name="android:thumb">@drawable/custom_seekbar_thumb</item>
+    </style>
+
     <!--Farah Styles-->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowShowWallpaper">true</item>
@@ -14,15 +25,10 @@
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
         <item name="android:textColorSecondary">@color/FlatWhite</item>
     </style>
-    <style name="roundedImageView">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
-    </style>
 
     <style name="Widget.ActionButton.Overflow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
         <item name="android:contentDescription">@string/accessibility_overflow</item>
-        </style>
-
+    </style>
 
 
 </resources>

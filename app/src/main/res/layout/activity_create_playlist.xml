@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/overlay"
+    android:id="@+id/playlistaccess"
     tools:context=".CreatePlaylistActivity">
 
     <EditText
@@ -12,32 +13,33 @@
         android:layout_width="376dp"
         android:layout_height="58dp"
         android:layout_below="@id/playlistTitleTextView"
-        android:layout_marginBottom="104dp"
         android:backgroundTint="#852746"
         android:hint="Playlist Name"
         android:inputType="text"
         android:textColor="#FFAABBCC"
         android:textColorHint="#FFAABBCC"
-        app:layout_constraintBottom_toTopOf="@+id/createPlaylistButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.369" />
 
     <Button
         android:id="@+id/createPlaylistButton"
         android:layout_width="187dp"
         android:layout_height="50dp"
         android:layout_below="@id/playlistNameEditText"
-        android:layout_marginBottom="188dp"
         android:backgroundTint="#852746"
         android:fontFamily="@font/ios_bold"
-        android:text=" Playlist name"
+        android:text="@string/addPlayListButton"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.443"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.837"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -52,10 +54,48 @@
         android:text="@string/add_to_playlist"
         android:textColor="#852746"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/playlistNameEditText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.766" />
+        app:layout_constraintVertical_bias="0.231" />
+
+    <ImageButton
+        android:id="@+id/playlistBackground"
+        android:layout_width="301dp"
+        android:layout_height="78dp"
+        android:background="#1AC0C0C0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.632"
+        app:srcCompat="@drawable/baseline_upload_24" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_playList_background"
+        android:textColor="#852746"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.453" />
+
+    <ImageView
+        android:id="@+id/editProductImageImageView"
+        android:layout_width="196dp"
+        android:layout_height="203dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.647"
+        app:srcCompat="@drawable/head" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,9 @@
       },
       "auth": {
         "rhythmmix3d3b5f35": {}
+      },
+      "storage": {
+        "rhythemixstorage": {}
       }
     }
   }

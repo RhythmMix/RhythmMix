@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.PlaylistFragment">
+
+    <ImageButton
+        android:id="@+id/playlistImageButton"
+        android:layout_width="190dp"
+        android:layout_height="169dp"
+        android:src="@drawable/rhythemix"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="?android:selectableItemBackground"
+        android:scaleType="fitXY"></ImageButton>
+
+    <TextView
+        android:id="@+id/playlistTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playlist_fragment"
+        android:textColor="@color/red"
+        android:layout_below="@id/playlistImageButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+
+</RelativeLayout>

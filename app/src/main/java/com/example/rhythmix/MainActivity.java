@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setUpLoginAndLogoutButton();
 
         Button go =findViewById(R.id.move);
@@ -27,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
     private void setUpLoginAndLogoutButton() {
         Button loginButton = findViewById(R.id.loginButton);
         if (Amplify.Auth.getCurrentUser() != null) {
