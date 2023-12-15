@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "rhythmmix",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-rhythmmix-dev-200138-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/04221742b7ecf0951000a8c28ec17b6d7b10a1a3"
+}

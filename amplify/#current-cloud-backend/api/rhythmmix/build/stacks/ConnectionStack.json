@@ -1,0 +1,1061 @@
+{
+  "Resources": {
+    "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "Playlistmusicsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.musics.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "PlaylistMusicsDataResolverFnPlaylistMusicsDataResolverFnAppSyncFunction2E4618CE": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicDataSourceD399F792Name"
+        },
+        "Name": "PlaylistMusicsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.musics.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.musics.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "PlaylistmusicsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "musics",
+        "TypeName": "Playlist",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistMusicsDataResolverFnPlaylistMusicsDataResolverFnAppSyncFunction2E4618CE",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Playlist\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"musics\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicTableE5AFA743Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "PlaylistPlaylistMusicDataResolverFnPlaylistPlaylistMusicDataResolverFnAppSyncFunctionD6FD60AC": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicDataSource5789F074Name"
+        },
+        "Name": "PlaylistPlaylistMusicDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.playlistMusic.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.playlistMusic.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "PlaylistplaylistMusicResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "playlistMusic",
+        "TypeName": "Playlist",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistPlaylistMusicDataResolverFnPlaylistPlaylistMusicDataResolverFnAppSyncFunctionD6FD60AC",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Playlist\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"playlistMusic\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicTable2DE7CB2FRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MusicPlaylistsDataResolverFnMusicPlaylistsDataResolverFnAppSyncFunction2A7635A2": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistDataSourceF9622500Name"
+        },
+        "Name": "MusicPlaylistsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Music.playlists.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Music.playlists.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "MusicplaylistsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "playlists",
+        "TypeName": "Music",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "MusicPlaylistsDataResolverFnMusicPlaylistsDataResolverFnAppSyncFunction2A7635A2",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Music\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"playlists\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistTable494DF929Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MusicFavoriteMusicsDataResolverFnMusicFavoriteMusicsDataResolverFnAppSyncFunction188E79A1": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicDataSourceA7BDD3AFName"
+        },
+        "Name": "MusicFavoriteMusicsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Music.favoriteMusics.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Music.favoriteMusics.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "MusicfavoriteMusicsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "favoriteMusics",
+        "TypeName": "Music",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "MusicFavoriteMusicsDataResolverFnMusicFavoriteMusicsDataResolverFnAppSyncFunction188E79A1",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Music\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"favoriteMusics\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicTableD627C14FRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MusicplaylistMusicResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "playlistMusic",
+        "TypeName": "Music",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistPlaylistMusicDataResolverFnPlaylistPlaylistMusicDataResolverFnAppSyncFunctionD6FD60AC",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Music\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"playlistMusic\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicTable2DE7CB2FRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "UserplaylistsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "playlists",
+        "TypeName": "User",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "MusicPlaylistsDataResolverFnMusicPlaylistsDataResolverFnAppSyncFunction2A7635A2",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"User\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"playlists\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistTable494DF929Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "UserfavoritesResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "favorites",
+        "TypeName": "User",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "MusicFavoriteMusicsDataResolverFnMusicFavoriteMusicsDataResolverFnAppSyncFunction188E79A1",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"User\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"favorites\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicTableD627C14FRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "FavoriteFavoriteMusicsDataResolverFnFavoriteFavoriteMusicsDataResolverFnAppSyncFunction4F40BB5D": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicDataSourceA7BDD3AFName"
+        },
+        "Name": "FavoriteFavoriteMusicsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Favorite.favoriteMusics.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Favorite.favoriteMusics.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "FavoritefavoriteMusicsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "favoriteMusics",
+        "TypeName": "Favorite",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "FavoriteFavoriteMusicsDataResolverFnFavoriteFavoriteMusicsDataResolverFnAppSyncFunction4F40BB5D",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Favorite\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"favoriteMusics\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicTableD627C14FRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "PlaylistMusicPlaylistDataResolverFnPlaylistMusicPlaylistDataResolverFnAppSyncFunction4A3CB4B5": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistDataSourceF9622500Name"
+        },
+        "Name": "PlaylistMusicPlaylistDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/PlaylistMusic.playlist.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/PlaylistMusic.playlist.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "PlaylistMusicplaylistResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "playlist",
+        "TypeName": "PlaylistMusic",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistMusicPlaylistDataResolverFnPlaylistMusicPlaylistDataResolverFnAppSyncFunction4A3CB4B5",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"PlaylistMusic\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"playlist\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistTable494DF929Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "PlaylistMusicMusicDataResolverFnPlaylistMusicMusicDataResolverFnAppSyncFunctionEB122075": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicDataSourceD399F792Name"
+        },
+        "Name": "PlaylistMusicMusicDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/PlaylistMusic.music.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/PlaylistMusic.music.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "PlaylistMusicmusicResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "music",
+        "TypeName": "PlaylistMusic",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistMusicMusicDataResolverFnPlaylistMusicMusicDataResolverFnAppSyncFunctionEB122075",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"PlaylistMusic\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"music\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicTableE5AFA743Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "PlaylistUserDataResolverFnPlaylistUserDataResolverFnAppSyncFunction8C692CEF": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserDataSourceA8C4C398Name"
+        },
+        "Name": "PlaylistUserDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.user.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Playlist.user.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "PlaylistuserResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "user",
+        "TypeName": "Playlist",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistUserDataResolverFnPlaylistUserDataResolverFnAppSyncFunction8C692CEF",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Playlist\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"user\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserTableA7A02430Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "FavoriteMusicFavoriteDataResolverFnFavoriteMusicFavoriteDataResolverFnAppSyncFunction81D82B6B": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackFavoriteNestedStackFavoriteNestedStackResource383EF06AOutputstransformerrootstackFavoriteFavoriteDataSourceA34E0025Name"
+        },
+        "Name": "FavoriteMusicFavoriteDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/FavoriteMusic.favorite.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/FavoriteMusic.favorite.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "FavoriteMusicfavoriteResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "favorite",
+        "TypeName": "FavoriteMusic",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "FavoriteMusicFavoriteDataResolverFnFavoriteMusicFavoriteDataResolverFnAppSyncFunction81D82B6B",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"FavoriteMusic\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"favorite\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackFavoriteNestedStackFavoriteNestedStackResource383EF06AOutputstransformerrootstackFavoriteFavoriteTableE2F22650Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "FavoriteMusicmusicResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "music",
+        "TypeName": "FavoriteMusic",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Playlistmusicsauth0FunctionPlaylistmusicsauth0FunctionAppSyncFunctionE4A8BE08",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PlaylistMusicMusicDataResolverFnPlaylistMusicMusicDataResolverFnAppSyncFunctionEB122075",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"FavoriteMusic\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"music\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicTableE5AFA743Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    }
+  },
+  "Parameters": {
+    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicDataSourceD399F792Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackMusicNestedStackMusicNestedStackResource67839687OutputstransformerrootstackMusicMusicTableE5AFA743Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicDataSource5789F074Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPlaylistMusicNestedStackPlaylistMusicNestedStackResource536F3AF8OutputstransformerrootstackPlaylistMusicPlaylistMusicTable2DE7CB2FRef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistDataSourceF9622500Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPlaylistNestedStackPlaylistNestedStackResourceCC3E10EBOutputstransformerrootstackPlaylistPlaylistTable494DF929Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicDataSourceA7BDD3AFName": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackFavoriteMusicNestedStackFavoriteMusicNestedStackResource7E202265OutputstransformerrootstackFavoriteMusicFavoriteMusicTableD627C14FRef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserDataSourceA8C4C398Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackUserNestedStackUserNestedStackResource01084C14OutputstransformerrootstackUserUserTableA7A02430Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackFavoriteNestedStackFavoriteNestedStackResource383EF06AOutputstransformerrootstackFavoriteFavoriteDataSourceA34E0025Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackFavoriteNestedStackFavoriteNestedStackResource383EF06AOutputstransformerrootstackFavoriteFavoriteTableE2F22650Ref": {
+      "Type": "String"
+    }
+  }
+}
