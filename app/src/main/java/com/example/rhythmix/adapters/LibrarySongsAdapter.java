@@ -74,7 +74,6 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
             if (libraryActivity != null && libraryActivity.isPlayAllClicked()) {
                 libraryActivity.onPlayPauseClick(clickedPosition);
             } else {
-                togglePlayPause(clickedPosition);
                 if (playPauseButtonClickListener != null) {
                     playPauseButtonClickListener.onItemClick(null, holder.itemView, clickedPosition, clickedPosition);
                 }
@@ -89,19 +88,21 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
     }
 
 
-    // change the song play state once the user click on a song
-    private void togglePlayPause(int position) {
-        isPlayingArray[position] = !isPlayingArray[position];
-        notifyItemChanged(position);
-    }
-
-
     // change the song play state used in functionality in libraryActivity
     public void setPlaying(boolean isPlaying, int position) {
+        if (isPlaying) {
+            // Pause all other items
+            for (int i = 0; i < isPlayingArray.length; i++) {
+                if (i != position) {
+                    isPlayingArray[i] = false;
+                }
+            }
+        }
+
         this.isPlayingArray[position] = isPlaying;
-        notifyItemChanged(position);
-        Log.d(TAG, "setPlaying: Position " + position + " isPlaying: " + isPlaying);
+        notifyDataSetChanged();
     }
+
 
 
     @Override
@@ -109,7 +110,7 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         return songList.size();
     }
 
-   // used so i can set actions in the LibraryActivity for specific events within the adapter
+    // used so i can set actions in the LibraryActivity for specific events within the adapter
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
@@ -152,4 +153,3 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         }
     }
 }
-

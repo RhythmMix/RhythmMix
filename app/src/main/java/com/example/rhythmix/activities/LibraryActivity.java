@@ -323,6 +323,7 @@ public class LibraryActivity extends AppCompatActivity {
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 isPlaying = true;
+                Log.i(LOG_TAG,"Is playing inside media");
             });
             if (selectedSongInLibraryPath != null) {
                 ContentResolver resolver = getContentResolver();
@@ -359,6 +360,7 @@ public class LibraryActivity extends AppCompatActivity {
     //==============================
     private void playSelectedSong() {
         if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty()) {
+            Log.d(LOG_TAG, "is playing inside playSelectedSong " + isPlaying);
             currentPosition = songPaths.indexOf(selectedSongInLibraryPath);
             playSong(selectedSongInLibraryPath);
         }
@@ -379,7 +381,6 @@ public class LibraryActivity extends AppCompatActivity {
             mediaPlayer.reset();
             isPlaying = false;
         }
-
     }
 
     private void pausePlayback() {
@@ -387,6 +388,7 @@ public class LibraryActivity extends AppCompatActivity {
             mediaPlayer.pause();
             isPlaying = false;
             updatePlayButton();
+            updatePlayAllButtonState(currentPosition);
         }
     }
 
@@ -394,7 +396,9 @@ public class LibraryActivity extends AppCompatActivity {
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             isPlaying = true;
+            Log.i(LOG_TAG,"Is playing inside resumePlayback");
             updatePlayButton();
+            updatePlayAllButtonState(currentPosition);
         }
     }
 
@@ -406,7 +410,6 @@ public class LibraryActivity extends AppCompatActivity {
     private void playAllSongs() throws IOException {
         if (librarySongsAdapter != null && librarySongsAdapter.getItemCount() > 0) {
             ArrayList<String> songPaths = librarySongsAdapter.songPaths;
-
             if (currentPosition != -1) {
                 librarySongsAdapter.setPlaying(false, currentPosition);
             }
@@ -414,7 +417,13 @@ public class LibraryActivity extends AppCompatActivity {
                 currentPosition = 0;
                 isPlayAllStopped = false;
             }
-            playSongAtIndex(songPaths, 0);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                try {
+                    playSongAtIndex(songPaths, 0);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }, 40);
         }
     }
 
@@ -422,21 +431,24 @@ public class LibraryActivity extends AppCompatActivity {
         if (index < songPaths.size() && isPlayAllClicked) {
             librarySongsAdapter.setPlaying(true, index);
             String songPath = songPaths.get(index);
-
             playSong(songPath);
 
-//            long duration = getDurationOfSong(songPath);
+//            long duration = getDurationOfSong(songPath);updatePlayAllButtonState(position);
             long duration = getFullDurationOfSong(songPath);
 
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (isPlayAllClicked) {
                     librarySongsAdapter.setPlaying(false, index);
-
-                    Log.d(LOG_TAG, "playSongAtIndex: Finished playing song at index " + index);
-
+                    Log.d(LOG_TAG, "index in playSongAtIndex third line " + index);
                     try {
                         currentPosition = index + 1;
-                        playSongAtIndex(songPaths, index + 1);
+
+                        // Reset currentPosition to 0 if we reached the end of the list
+                        if (currentPosition >= songPaths.size()) {
+                            currentPosition = 0;
+                        }
+
+                        playSongAtIndex(songPaths, currentPosition);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -447,44 +459,70 @@ public class LibraryActivity extends AppCompatActivity {
                 isPlayAllClicked = false;
                 stopPlayback();
                 isPlayAllStopped = true;
+                currentPosition = 0; // Reset currentPosition to 0 when stopping playback
             }
         }
     }
 
     public void onPlayPauseClick(int position) {
         if (isPlayAllClicked) {
-            // The user clicked on the same song
+//             The user clicked on the same song
             if (currentPosition == position) {
                 stopPlayback();
                 isPlayAllClicked = false;
+                updatePlayAllButtonState(position);
             } else {
-                // The user clicked on a different song, stop "Play All" and play the selected song
-                isPlayAllClicked = false; // Stop "Play All"
+//                 The user clicked on a different song, stop "Play All" and play the selected song
+                isPlayAllClicked = false;
+                updatePlayAllButtonState(position);
                 stopPlayback();
                 selectedSongInLibraryPath = songPaths.get(position);
                 initializeMediaPlayer();
                 playSelectedSong();
             }
         }
-        updatePlayAllButtonState(position);
     }
 
 
     private long getFullDurationOfSong(String songPath) throws IOException {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+
         try {
-            if (mediaPlayer == null || mediaPlayer.isPlaying()) {
-                return 0;
+            Log.i(LOG_TAG, "getFullDurationOfSong path" + songPath);
+
+            ContentResolver resolver = getContentResolver();
+            Uri contentUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+            String selection = MediaStore.Audio.Media.DATA + "=?";
+            String[] selectionArgs = {songPath};
+            Cursor cursor = resolver.query(contentUri, null, selection, selectionArgs, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int idColumnIndex = cursor.getColumnIndex(MediaStore.Audio.Media._ID);
+
+                if (idColumnIndex != -1) {
+                    long id = cursor.getLong(idColumnIndex);
+                    Uri uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+                    cursor.close();
+
+                    retriever.setDataSource(this, uri);
+
+                    String durationString = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                    return Long.parseLong(durationString);
+                } else {
+                    cursor.close();
+                }
+            } else {
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(songPath);
 
-            String durationString = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            long duration = Long.parseLong(durationString);
-
-            retriever.release();
-            return duration;
-        } catch (IllegalStateException e) {
+            return 0; // Return 0 if unable to retrieve duration
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            e.printStackTrace(); // Log the exception for debugging
             return 0;
+        } finally {
+            retriever.release(); // Manually release the retriever in the finally block
         }
     }
 
@@ -608,10 +646,10 @@ public class LibraryActivity extends AppCompatActivity {
             isPlaying = true;
         }
     }
-    private void updatePlayAllButtonState(int position) {
-        boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
-        librarySongsAdapter.setPlaying(isPlaying, position);
-    }
+private void updatePlayAllButtonState(int position) {
+    boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
+    librarySongsAdapter.setPlaying(isPlaying, position);
+}
 
 
     private void updateNoSongsFoundVisibility() {
@@ -636,23 +674,23 @@ public class LibraryActivity extends AppCompatActivity {
     //==============================
     // Media Player Lifecycle
     //==============================
-    @Override
-    protected void onPause() {
-        super.onPause();
-        pausePlayback();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        pausePlayback();
+//    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        stopPlayback();
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        stopPlayback();
+//    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        resumePlayback();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        resumePlayback();
+//    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
