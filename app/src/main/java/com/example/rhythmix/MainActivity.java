@@ -3,9 +3,11 @@ package com.example.rhythmix;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,10 +15,15 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.rhythmix.Adapter.AlbumRecyclerViewAdapter;
+import com.example.rhythmix.Adapter.ImageSliderAdapter;
 import com.example.rhythmix.Adapter.TrackRecyclerViewAdapter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
         displayMultipleAlbums(fetchingAlbumsId());
         displayMultipleTracks(fetchingTracksId());
 
-        ImageButton searchimagebutton=findViewById(R.id.searchimagebutton);
-        searchimagebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent searchresultactivity = new Intent(MainActivity.this, SearchBarResultsActivity.class);
-                startActivity(searchresultactivity);
-            }
-        });
+//        ImageButton searchimagebutton=findViewById(R.id.searchimagebutton);
+//        searchimagebutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent searchresultactivity = new Intent(MainActivity.this, SearchBarResultsActivity.class);
+//                startActivity(searchresultactivity);
+//            }
+//        });
 
 
     }
@@ -194,10 +201,45 @@ public class MainActivity extends AppCompatActivity {
     /////////////////////////////////////////////////////////////////////////
 
 
-    public void init(){
-        ImageView staticImage= findViewById(R.id.staticImage);
-        String imagePath = "https://wjct.org/wp-content/uploads/2022/12/Artiststowatch-Square2-scaled.jpg";
-        Glide.with(this).load(imagePath).into(staticImage);
+//    public void init(){
+//        ImageView staticImage= findViewById(R.id.staticImage);
+//        String imagePath = "https://wjct.org/wp-content/uploads/2022/12/Artiststowatch-Square2-scaled.jpg";
+//        Glide.with(this).load(imagePath).into(staticImage);
+//    }
+
+    public void init() {
+
+        List<Integer> imageResources = Arrays.asList(R.drawable.imageslider1,R.drawable.imageslider2, R.drawable.imageslider3,R.drawable.imageslider4);
+        ViewPager2 imageSlider = findViewById(R.id.imageSlider);
+        ImageSliderAdapter imageSliderAdapter = new ImageSliderAdapter(imageResources);
+        imageSlider.setAdapter(imageSliderAdapter);
+
+        // Auto-scroll the ViewPager2
+        final Handler handler = new Handler();
+        final Runnable update = new Runnable() {
+            public void run() {
+                int currentPage = imageSlider.getCurrentItem();
+                int totalPages = imageSliderAdapter.getItemCount();
+                if (currentPage == totalPages - 1) {
+                    currentPage = 0;
+                } else {
+                    currentPage++;
+                }
+                imageSlider.setCurrentItem(currentPage, true);
+            }
+        };
+
+        // Delay in milliseconds between slides
+        int delay = 7000;
+
+        // Start the auto-scroll loop
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        }, 0, delay);
     }
 
 
