@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.rhythmix.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,9 +39,11 @@ public class SearchActivity extends AppCompatActivity {
 
         Button gotoplaylist=findViewById(R.id.goToplaylist);
         gotoplaylist.setOnClickListener(view -> {
-            Intent intent=new Intent(SearchActivity.this,PlaylistsActivity.class);
+            Intent intent=new Intent(SearchActivity.this,AddToFavoritesActivity.class);
             startActivity(intent);
         });
+
+
 
 }
     }

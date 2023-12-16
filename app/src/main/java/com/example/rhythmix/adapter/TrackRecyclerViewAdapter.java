@@ -28,6 +28,8 @@ import com.amplifyframework.datastore.generated.model.Music;
 import com.amplifyframework.datastore.generated.model.User;
 import com.example.rhythmix.Activites.AddToFavoritesActivity;
 
+import com.example.rhythmix.Activites.ChoosePlaylistActivity;
+import com.example.rhythmix.Activites.SearchActivity;
 import com.example.rhythmix.R;
 import com.example.rhythmix.models.Track;
 import com.squareup.picasso.Picasso;
@@ -93,7 +95,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             }
         }
     }
-
     @Override
     public int getItemCount() {
         return trackList.size();
@@ -163,7 +164,8 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
     private void onMenuItemClick(int itemId, Track selectedTrack) {
         if (itemId == R.id.menu_text1) {
-            Toast.makeText(context, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
+            addToPlaylist(selectedTrack);
         } else if (itemId == R.id.menu_text2) {
             Toast.makeText(context, "Add to Favorite Clicked", Toast.LENGTH_SHORT).show();
             addToFavorites(selectedTrack);
@@ -171,6 +173,30 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             Toast.makeText(context, "Share Clicked", Toast.LENGTH_SHORT).show();
         }
     }
+
+    //////>>>>>>>>>>>>>>>>>>>>>>>>> Farah AddToPLayList<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    private void addToPlaylist(Track selectedTrack) {
+        AuthUser authUser = Amplify.Auth.getCurrentUser();
+        Intent addToPlaylistIntent = new Intent(context, ChoosePlaylistActivity.class);
+        if (authUser != null) {
+
+            long trackId = selectedTrack.getId();
+            String trackTitle = selectedTrack.getTitle();
+            String trackArtist = selectedTrack.getArtist().getName();
+            String trackMp3 = selectedTrack.getPreview();
+            String userEmail = authUser.getUsername();
+            String cover =selectedTrack.getAlbum().getCover();
+            addToPlaylistIntent.putExtra("TRACK_ID", trackId);
+            addToPlaylistIntent.putExtra("TRACK_TITLE", trackTitle);
+            addToPlaylistIntent.putExtra("TRACK_ARTIST", trackArtist);
+            addToPlaylistIntent.putExtra("TRACK_MP3", trackMp3);
+            addToPlaylistIntent.putExtra("TrackCover",cover);
+            addToPlaylistIntent.putExtra("SELECTED_TRACK", selectedTrack);
+            context.startActivity(addToPlaylistIntent);
+        }
+    }
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>Balqees AddToFavorites<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
     private void addToFavorites(Track selectedTrack) {
@@ -184,74 +210,20 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             String trackArtist = selectedTrack.getArtist().getName();
             String trackMp3 = selectedTrack.getPreview();
             String userEmail = authUser.getUsername(); // Assuming the user's email is used as the username
+            String cover =selectedTrack.getAlbum().getCover();
 
 
-            buildUserAndAddToFavorites(authUser, userEmail, trackId, trackTitle, trackArtist, trackMp3);
-
+            buildUserAndAddToFavorites(authUser, userEmail, trackId, trackTitle, trackArtist, trackMp3, cover);
             addToFavoritesIntent.putExtra("TRACK_ID", selectedTrack.getId());
             addToFavoritesIntent.putExtra("TRACK_TITLE", selectedTrack.getTitle());
             addToFavoritesIntent.putExtra("TRACK_ARTIST", selectedTrack.getArtist().getName());
             addToFavoritesIntent.putExtra("TRACK_MP3", selectedTrack.getPreview());
+            addToFavoritesIntent.putExtra("TrackCover",selectedTrack.getAlbum().getCover());
 
             context.startActivity(addToFavoritesIntent);
         }
     }
-
-    private void addToPlaylist(Track selectedTrack) {
-        AuthUser authUser = Amplify.Auth.getCurrentUser();
-        Intent addToPlaylistIntent = new Intent(context, Playlist.class);
-
-        if (authUser != null) {
-            // Extract relevant information from the selected track
-            long trackId = selectedTrack.getId();
-            String trackTitle = selectedTrack.getTitle();
-            String trackArtist = selectedTrack.getArtist().getName();
-            String trackMp3 = selectedTrack.getPreview();
-            String userEmail = authUser.getUsername(); // Assuming the user's email is used as the username
-
-
-            buildUserAndAddToFavorites(authUser, userEmail, trackId, trackTitle, trackArtist, trackMp3);
-
-            addToPlaylistIntent.putExtra("TRACK_ID", selectedTrack.getId());
-            addToPlaylistIntent.putExtra("TRACK_TITLE", selectedTrack.getTitle());
-            addToPlaylistIntent.putExtra("TRACK_ARTIST", selectedTrack.getArtist().getName());
-            addToPlaylistIntent.putExtra("TRACK_MP3", selectedTrack.getPreview());
-            context.startActivity(addToPlaylistIntent);
-        }
-    }
-    private void buildUserAndAddToPlaylist(AuthUser authUser, String userEmail, long trackId, String trackTitle, String trackArtist, String trackMp3, String cover) {
-        User user = User.builder()
-                .email(userEmail)
-                .id(authUser.getUserId())
-                .username(authUser.getUsername())
-                .userImageS3Key("")
-                .build();
-
-
-//        Music music=Music.builder()
-//                        .musicTitle(trackTitle)
-//                                .musicArtist(trackArtist)
-//                                        .musicCover()
-//                                                .musicMp3(trackMp3)
-//                                                        .build();
-//                Favorite.builder()
-//                .favoriteId(String.valueOf(trackId))
-//                .favoriteTitle(trackTitle)
-//                .favoriteArtist(trackMp3)
-//                .favoriteMp3(trackArtist)
-//                .userId(authUser.getUserId())
-//                .build();
-
-//        Amplify.API.mutate(
-//                ModelMutation.create(favorite),
-//                successResponse -> Log.i(TAG, "Saved item for playlist with name: " + successResponse.getData()),
-//                failureResponse -> Log.e(TAG, "Error saving item", failureResponse)
-//        );
-    }
-
-
-
-    private void buildUserAndAddToFavorites(AuthUser authUser, String userEmail, long trackId, String trackTitle, String trackArtist, String trackMp3) {
+    private void buildUserAndAddToFavorites(AuthUser authUser, String userEmail, long trackId, String trackTitle, String trackArtist, String trackMp3, String cover) {
         User user = User.builder()
                 .email(userEmail)
                 .id(authUser.getUserId())
@@ -265,6 +237,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 .favoriteArtist(trackMp3)
                 .favoriteMp3(trackArtist)
                 .userId(authUser.getUserId())
+                .favoriteCover(cover)
                 .build();
 
         Amplify.API.mutate(
@@ -274,9 +247,13 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         );
     }
 
+
+
+
+
     public void addTrack(Track track) {
         trackList.add(track);
         notifyDataSetChanged();
-}
+    }
 
 }

@@ -2,15 +2,11 @@ package com.example.rhythmix.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,28 +16,28 @@ import com.amplifyframework.datastore.generated.model.Playlist;
 import com.bumptech.glide.Glide;
 import com.example.rhythmix.Activites.InsidePlaylistActivity;
 import com.example.rhythmix.R;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
+public class ChoosePlaylistAdapter extends RecyclerView.Adapter{
     List<Playlist> playlists;
     Context callingActivity;
-    public playlistRecyclerViewAdapter(List<Playlist> playlists,Context callingActivity) {
+    private OnPlaylistClickListener playlistClickListener;
 
+    public interface OnPlaylistClickListener {
+        void onPlaylistClick(String playlistId);
+    }
+    public ChoosePlaylistAdapter(List<Playlist> playlists,Context callingActivity,OnPlaylistClickListener listener) {
         this.playlists = playlists;
         this.callingActivity = callingActivity;
-
+        this.playlistClickListener = listener;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View playListFragment = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_playlist,parent,false);
-        return new playlistViewHolder(playListFragment);
-    }
+        return new playlistRecyclerViewAdapter.playlistViewHolder(playListFragment);    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -64,6 +60,8 @@ public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
             Intent goToInsidePlaylist = new Intent(callingActivity, InsidePlaylistActivity.class);
             goToInsidePlaylist.putExtra("playlistName", playlistName);
             goToInsidePlaylist.putExtra("playlistBackground", playlistImagePath);
+            String playlistId = playlists.get(position).getId(); // Assuming getId() returns the playlist ID
+            playlistClickListener.onPlaylistClick(playlistId);
             callingActivity.startActivity(goToInsidePlaylist);
 
         });
@@ -73,9 +71,9 @@ public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return playlists.size();
     }
-    public static class playlistViewHolder extends RecyclerView.ViewHolder{
+    public static class ChooseplaylistViewHolder extends RecyclerView.ViewHolder{
 
-        public playlistViewHolder(@NonNull View itemView) {
+        public ChooseplaylistViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
