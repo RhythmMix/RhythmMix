@@ -16,6 +16,7 @@ import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.auth.options.AuthSignUpOptions;
 import com.amplifyframework.core.Amplify;
+import com.example.rhythmix.activities.LoginActivity;
 
 public class SignUpFunctionalityActivity extends AppCompatActivity {
     private static final String TAG = SignUpFunctionalityActivity.class.getSimpleName();
@@ -52,7 +53,7 @@ public class SignUpFunctionalityActivity extends AppCompatActivity {
                     verificationCode,
                     god -> {
                         Log.i(TAG, "Verification succeeded: " + god.toString());
-                        Intent goToLogin =new Intent(SignUpFunctionalityActivity.this,LoginActivity.class);
+                        Intent goToLogin =new Intent(SignUpFunctionalityActivity.this, LoginActivity.class);
                         startActivity(goToLogin);
                         fetchUserAttributesAndNavigate(username);
                     },

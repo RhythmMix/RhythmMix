@@ -64,7 +64,7 @@ public class SongPlayerActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             handlePermissions();
         } else {
-            initializeMediaPlayer(); // For versions lower than Marshmallow
+            initializeMediaPlayer();
         }
 
         // UI elements
@@ -135,6 +135,7 @@ public class SongPlayerActivity extends AppCompatActivity {
         seekBar = findViewById(R.id.seekBar);
         shuffleButton = findViewById(R.id.shuffleButton);
         heartButton = findViewById(R.id.heartButton);
+
 
         // Other UI setup
         currentPosition = getIntent().getIntExtra("CURRENT_POSITION", 0);

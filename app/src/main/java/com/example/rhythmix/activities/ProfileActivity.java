@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
             } else return false;
         });
-        // Set the default item to be the "Search" item
+        // Set the default item to be the "Profile" item
         bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(true);
     }
 }

@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "com.example.rhythmix"
         minSdk 26
-        targetSdk 33
+        targetSdk 32
 
         versionCode 1
         versionName "1.0"
@@ -56,4 +56,21 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Balqees Dependencies
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    // Convert Data to JSON && Convert JSON to Data (Class Object)
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    // picasso for converting image link into API
+    implementation 'com.squareup.picasso:picasso:2.8'
+    // retrofit (HTTP client library for Android and Java that simplifies the process of making network requests and handling APIs)
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // gson converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
 }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,9 @@
         android:theme="@style/Theme.Rhythmix"
         tools:targetApi="31">
         <activity
+            android:name=".activities.APISongPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.CreatePlaylistActivity"
             android:exported="false" />
         <activity
@@ -23,6 +27,15 @@
         <activity android:name=".activities.LibraryActivity" />
         <activity
             android:name=".activities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SearchBarResultsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Adapter.AlbumTracksAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".models.AlbumTracksActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"
@@ -49,19 +62,11 @@
             android:name=".activities.SongPlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
             android:name=".ProfileFunctionalityActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpFunctionalityActivity"
             android:exported="false" />
-
-        <service
-            android:name=".services.MediaPlayerService"
-            android:exported="false" />
-
     </application>
 
 </manifest>

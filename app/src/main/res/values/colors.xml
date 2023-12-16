@@ -12,4 +12,5 @@
     <item name="SplashBackground" type ="color">#f0f0f0</item>
     <color name="backward_color">#DD000000</color>
     <color name="grey">#DD504E4E</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

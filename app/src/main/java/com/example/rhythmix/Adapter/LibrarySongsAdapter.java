@@ -1,4 +1,4 @@
-package com.example.rhythmix.adapters;
+package com.example.rhythmix.Adapter;
 
 import android.content.Context;
 import android.util.Log;

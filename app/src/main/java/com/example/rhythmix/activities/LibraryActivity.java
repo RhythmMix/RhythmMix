@@ -20,13 +20,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -35,12 +32,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rhythmix.R;
-import com.example.rhythmix.adapters.LibrarySongsAdapter;
+import com.example.rhythmix.Adapter.LibrarySongsAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -75,16 +71,85 @@ public class LibraryActivity extends AppCompatActivity {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            handleLibraryPermissions();
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Log.i(LOG_TAG, "hi Requesting permission...");
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+            } else {
+                Log.i(LOG_TAG, "hi Permission already granted. Displaying songs...");
+                displaySongs();
+            }
         } else {
+            Log.i(LOG_TAG, "hi SDK_INT < M. Displaying songs...");
             displaySongs();
         }
 
+        // Go to player Activity click item
+        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths, artistNames, this);
+        recyclerView.setAdapter(librarySongsAdapter); // using the adapter as our data source for encapsulation and separation of responsibilities
+
+        librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
+            isItemClickListenerActive = true;
+            isPlayAllClicked = false;
+
+            String selectedSongPath = librarySongsAdapter.songPaths.get(position);
+
+            Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
+            intent.putExtra("SONG_PATHS", librarySongsAdapter.songPaths);
+            intent.putExtra("SONG_PATH", selectedSongPath);
+            intent.putExtra("CURRENT_POSITION", position);
+            startActivity(intent);
+            stopPlayback();
+            isItemClickListenerActive = false;
+        });
+
+        // Play/Pause Button
+        librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
+            if (!isItemClickListenerActive) {
+                if (currentPosition != -1 && currentPosition != position) {
+                    librarySongsAdapter.setPlaying(false, currentPosition);
+                }
+
+                String clickedSongPath = librarySongsAdapter.songPaths.get(position);
+                if (!clickedSongPath.equals(selectedSongInLibraryPath) || !isPlaying) {
+                    selectedSongInLibraryPath = clickedSongPath;
+                    currentPosition = position;
+                    initializeMediaPlayer();
+                    playSelectedSong();
+                    librarySongsAdapter.setPlaying(true, currentPosition);
+                } else {
+                    if (isPlaying) {
+                        pausePlayback();
+                    } else {
+                        resumePlayback();
+                    }
+                }
+            }
+        });
+
+//         Play All layout
+        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
+        playAllLayout.setOnClickListener(v -> {
+            if (!isPlayAllClicked) {
+                isPlayAllClicked = true;
+                try {
+                    playAllSongs();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Display number of songs
+        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
+        numberOfSongsText.setText("(" + songPaths.size() + ")");
+
+
+//        setListeners();
         setupNavigationBar();
         setupBottomNavigationView();
         searchBar();
         initializePopupMenu();
-        setListeners();
+
 
     }
 
@@ -149,11 +214,12 @@ public class LibraryActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == REQUEST_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.i(LOG_TAG, "hi Permission granted. Displaying songs...");
                 displaySongs();
             } else {
+                Log.i(LOG_TAG, "hi Permission denied. Redirecting to MainActivity...");
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
@@ -185,81 +251,12 @@ public class LibraryActivity extends AppCompatActivity {
     }
     //==========================================================================================
 
-    //==============================
-    // Set Listeners
-    //==============================
-    private void setListeners() {
-
-        // Go to player Activity click item
-        librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths, artistNames, this);
-        RecyclerView recyclerView = findViewById(R.id.libraryRecyclerView);
-        recyclerView.setAdapter(librarySongsAdapter); // using the adapter as our data source for encapsulation and separation of responsibilities
-
-        librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
-            isItemClickListenerActive = true;
-            isPlayAllClicked = false;
-
-            String selectedSongPath = librarySongsAdapter.songPaths.get(position);
-
-            Intent intent = new Intent(LibraryActivity.this, SongPlayerActivity.class);
-            intent.putExtra("SONG_PATHS", librarySongsAdapter.songPaths);
-            intent.putExtra("SONG_PATH", selectedSongPath);
-            intent.putExtra("CURRENT_POSITION", position);
-            startActivity(intent);
-            stopPlayback();
-            isItemClickListenerActive = false;
-        });
-
-        // Play/Pause Button
-        librarySongsAdapter.setOnPlayPauseButtonClickListener((parent, view, position, id) -> {
-            if (!isItemClickListenerActive) {
-                if (currentPosition != -1 && currentPosition != position) {
-                    librarySongsAdapter.setPlaying(false, currentPosition);
-                }
-
-                String clickedSongPath = librarySongsAdapter.songPaths.get(position);
-                if (!clickedSongPath.equals(selectedSongInLibraryPath) || !isPlaying) {
-                    selectedSongInLibraryPath = clickedSongPath;
-                    currentPosition = position;
-                    initializeMediaPlayer();
-                    playSelectedSong();
-                    librarySongsAdapter.setPlaying(true, currentPosition);
-                } else {
-                    if (isPlaying) {
-                        pausePlayback();
-                    } else {
-                        resumePlayback();
-                    }
-                }
-            }
-        });
-
-//         Play All layout
-        LinearLayout playAllLayout = findViewById(R.id.controlsLayout);
-        playAllLayout.setOnClickListener(v -> {
-            if (!isPlayAllClicked) {
-                isPlayAllClicked = true;
-                try {
-                    playAllSongs();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-
-        // number of songs beside the playAll
-        TextView numberOfSongsText = findViewById(R.id.numberOfSongsText);
-        numberOfSongsText.setText("(" + songPaths.size() + ")");
-    }
-
-    //==========================================================================================
-
 
     //==============================
     // DisplaySongs
     //==============================
     private void displaySongs() {
+        Log.i(LOG_TAG, "entered displaySongs");
         songList = new ArrayList<>();
         songPaths = new ArrayList<>();
         artistNames = new ArrayList<>();
@@ -271,7 +268,9 @@ public class LibraryActivity extends AppCompatActivity {
                 MediaStore.Audio.Media.DURATION,
                 MediaStore.Audio.Media.DATA
         };
-
+        Log.i(LOG_TAG,"songList inside display" + songList);
+        Log.i(LOG_TAG,"songPaths inside display" + songPaths);
+        Log.i(LOG_TAG,"artistNames inside display" + artistNames);
         try {
             // Querying the external media content provider
             Cursor cursor = getContentResolver().query(
@@ -302,7 +301,6 @@ public class LibraryActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     //==========================================================================================
 
