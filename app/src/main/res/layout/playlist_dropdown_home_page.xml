@@ -69,7 +69,7 @@
                 android:layout_marginStart="8dp"
                 android:text="Add to Favorites"
                 android:textColor="@color/white"
-                android:textSize="17sp" /> <!-- Added margin -->
+                android:textSize="17sp" />
 
         </LinearLayout>
 

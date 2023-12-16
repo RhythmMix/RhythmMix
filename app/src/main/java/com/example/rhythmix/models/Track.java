@@ -1,13 +1,9 @@
 package com.example.rhythmix.models;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Music {
+public class Track {
     private long id;
     private String title;
     private String link;
@@ -19,9 +15,7 @@ public class Music {
     private String preview;
     private Artist artist;     //Nested Class
     private Album album;      //Nested Class
-
-
-    public Music(JSONObject musicObject) throws JSONException {
+    public Track(JSONObject musicObject) throws JSONException {
         id = musicObject.getInt("id");
         title = musicObject.getString("title");
         link = musicObject.getString("link");

@@ -3,9 +3,7 @@ package com.example.rhythmix;
 
 import com.example.rhythmix.models.Album;
 import com.example.rhythmix.models.Data;
-import com.example.rhythmix.models.Music;
-
-import java.util.List;
+import com.example.rhythmix.models.Track;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -24,7 +22,7 @@ public interface MusicApiInterface {
 
     @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com"})
     @GET("track/{trackIds}")
-    Call<Music> getTracks(@Path("trackIds") long trackId);
+    Call<Track> getTracks(@Path("trackIds") long trackId);
 
     @Headers({"X-RapidAPI-Key: bae0efd049mshd3823f0e2a43ab1p192424jsn46ab3ffb4f66", "X-RapidAPI-Host: deezerdevs-deezer.p.rapidapi.com"})
     @GET("search")

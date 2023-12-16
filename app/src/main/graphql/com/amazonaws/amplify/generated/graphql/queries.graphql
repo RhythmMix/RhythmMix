@@ -44,12 +44,10 @@ query GetPlaylistMusic($id: ID!) {
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -135,8 +133,6 @@ query GetMusic($id: ID!) {
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -167,8 +163,6 @@ query ListMusic(
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -230,18 +224,17 @@ query GetFavoriteMusic($id: ID!) {
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -279,6 +272,7 @@ query GetFavorite($id: ID!) {
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -302,6 +296,7 @@ query ListFavorites(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt

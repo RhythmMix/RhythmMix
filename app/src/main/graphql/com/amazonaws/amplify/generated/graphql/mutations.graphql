@@ -59,12 +59,10 @@ mutation CreatePlaylistMusic(
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -94,12 +92,10 @@ mutation UpdatePlaylistMusic(
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -129,12 +125,10 @@ mutation DeletePlaylistMusic(
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -251,8 +245,6 @@ mutation CreateMusic(
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -281,8 +273,6 @@ mutation UpdateMusic(
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -311,8 +301,6 @@ mutation DeleteMusic(
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -415,18 +403,17 @@ mutation CreateFavoriteMusic(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -452,18 +439,17 @@ mutation UpdateFavoriteMusic(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -489,18 +475,17 @@ mutation DeleteFavoriteMusic(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -522,6 +507,7 @@ mutation CreateFavorite(
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -543,6 +529,7 @@ mutation UpdateFavorite(
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -564,6 +551,7 @@ mutation DeleteFavorite(
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken

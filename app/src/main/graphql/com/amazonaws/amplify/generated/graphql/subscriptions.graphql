@@ -49,12 +49,10 @@ subscription OnCreatePlaylistMusic(
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -83,12 +81,10 @@ subscription OnUpdatePlaylistMusic(
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -117,12 +113,10 @@ subscription OnDeletePlaylistMusic(
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -227,8 +221,6 @@ subscription OnCreateMusic($filter: ModelSubscriptionMusicFilterInput) {
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -254,8 +246,6 @@ subscription OnUpdateMusic($filter: ModelSubscriptionMusicFilterInput) {
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -281,8 +271,6 @@ subscription OnDeleteMusic($filter: ModelSubscriptionMusicFilterInput) {
     id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -375,18 +363,17 @@ subscription OnCreateFavoriteMusic(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -411,18 +398,17 @@ subscription OnUpdateFavoriteMusic(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -447,18 +433,17 @@ subscription OnDeleteFavoriteMusic(
       favoriteTitle
       favoriteArtist
       favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
+    track {
       id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
       createdAt
@@ -477,6 +462,7 @@ subscription OnCreateFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -495,6 +481,7 @@ subscription OnUpdateFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -513,6 +500,7 @@ subscription OnDeleteFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
     favoriteTitle
     favoriteArtist
     favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
