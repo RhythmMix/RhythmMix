@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amplifyframework.datastore.generated.model.Playlist;
 import com.bumptech.glide.Glide;
+import com.example.rhythmix.Activites.AddToFavoritesActivity;
 import com.example.rhythmix.Activites.InsidePlaylistActivity;
 import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
@@ -51,21 +52,12 @@ public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
         ImageButton playlistFragmentImage = holder.itemView.findViewById(R.id.playlistImageButton);
         String playlistImagePath = playlists.get(position).getPlaylistBackground();
 
-        playlistFragmentText.setText(playlistName);
-
-        Log.d("TaskDetailActivity", "Image URL: " + playlistImagePath);
-        String imagePath = "https://rhythmmix90bba48f17b9485194f4a1c4ae1c9bc1200138-dev.s3.us-east-2.amazonaws.com/public/"+playlistImagePath;
-        Log.d("imagePath", "Image path: " + imagePath);
-
-        Glide.with(holder.itemView.getContext()).load(imagePath)
-                .error(R.drawable.rhythemix)
-                .into(playlistFragmentImage);
 
         holder.itemView.setOnClickListener(view -> {
-            Intent goToInsidePlaylist = new Intent(callingActivity, InsidePlaylistActivity.class);
-            goToInsidePlaylist.putExtra("playlistName", playlistName);
-            goToInsidePlaylist.putExtra("playlistBackground", playlistImagePath);
-            callingActivity.startActivity(goToInsidePlaylist);
+            Intent addToFavorites = new Intent(callingActivity, AddToFavoritesActivity.class);
+            addToFavorites.putExtra("playlistName", playlistName);
+            addToFavorites.putExtra("playlistBackground", playlistImagePath);
+            callingActivity.startActivity(addToFavorites);
 
         });
     }

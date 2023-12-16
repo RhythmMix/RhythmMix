@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
@@ -59,7 +60,14 @@ public class PlaylistsActivity extends AppCompatActivity {
                 }
         );
 
-
+        ImageButton FavoriteImageButton= findViewById(R.id.FavoriteImageButton);
+        FavoriteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToFavPage= new Intent(PlaylistsActivity.this, AddToFavoritesActivity.class);
+                startActivity(goToFavPage);
+            }
+        });
 
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();

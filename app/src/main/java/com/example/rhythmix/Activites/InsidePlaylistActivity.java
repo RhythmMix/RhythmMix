@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ public class InsidePlaylistActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String playlistName = intent.getStringExtra("playlistName");
         String playlistBackground = intent.getStringExtra("playlistBackground");
+
+
 
 
         TextView playlistTitle =findViewById(R.id.title);

@@ -13,7 +13,7 @@ type PlaylistMusic @model @auth(rules: [{ allow: public }]) {
   playlistID: ID!
   musicID: ID!
   playlist: Playlist @belongsTo(fields: ["playlistID"])
-  music: Music @belongsTo(fields: ["musicID"])
+  track: Music @belongsTo(fields: ["musicID"])
 }
 
 type Playlist @model @auth(rules: [{ allow: public }]) {
@@ -30,8 +30,6 @@ type Music @model @auth(rules: [{ allow: public }]) {
   id: ID!
   musicTitle: String!
   musicArtist: String!
-  musicAlbum: String!
-  musicDuration: Int!
   musicCover: String!
   musicMp3: String!
   playlists: [Playlist] @hasMany(fields: ["id"])
@@ -53,7 +51,7 @@ type FavoriteMusic @model @auth(rules: [{ allow: public }]) {
   favoriteID: ID!
   musicID: ID!
   favorite: Favorite @belongsTo(fields: ["favoriteID"])
-  music: Music @belongsTo(fields: ["musicID"])
+  track: Music @belongsTo(fields: ["musicID"])
 }
 
 type Favorite @model @auth(rules: [{ allow: public }]) {
@@ -61,6 +59,7 @@ type Favorite @model @auth(rules: [{ allow: public }]) {
   favoriteTitle: String!
   favoriteArtist: String!
   favoriteMp3: String!
+  favoriteCover:String
   userID: ID!
   favoriteMusics: [FavoriteMusic] @hasMany(fields: ["favoriteID"])
 }

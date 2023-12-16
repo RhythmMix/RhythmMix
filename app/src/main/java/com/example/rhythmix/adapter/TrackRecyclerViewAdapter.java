@@ -63,6 +63,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 TextView musicTitle = holder.itemView.findViewById(R.id.musicTitle);
                 ImageButton toggleButton = holder.itemView.findViewById(R.id.toggleButton);
                 ImageView menuButton = holder.itemView.findViewById(R.id.menu_button_main);
+                TextView musicArtistName= holder.itemView.findViewById(R.id.musicArtistName);
                 initializePopupMenu(menuButton , music);
 
 
@@ -76,9 +77,11 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                     throw new RuntimeException(e);
                 }
 
-                String titleArtist = music.getTitle() + " \n \n " + music.getArtist().getName();
+                String titleArtist = music.getTitle();
                 musicTitle.setText(titleArtist);
 
+                String artistName = music.getArtist().getName();
+                musicArtistName.setText(artistName);
 
 
                 toggleButton.setOnClickListener(v -> {
@@ -190,9 +193,9 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             String trackArtist = selectedTrack.getArtist().getName();
             String trackMp3 = selectedTrack.getPreview();
             String userEmail = authUser.getUsername();
+            String albumCover= selectedTrack.getAlbum().getCover();
 
-
-            buildUserAndAddToFavorites(authUser, userEmail, trackId, trackTitle, trackArtist, trackMp3);
+            buildUserAndAddToFavorites(authUser, userEmail, trackId, trackTitle, trackArtist, trackMp3, albumCover);
 
             addToFavoritesIntent.putExtra("TRACK_ID", selectedTrack.getId());
             addToFavoritesIntent.putExtra("TRACK_TITLE", selectedTrack.getTitle());
@@ -205,7 +208,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     }
 
 
-    private void buildUserAndAddToFavorites(AuthUser authUser, String userEmail, long trackId, String trackTitle, String trackArtist, String trackMp3) {
+    private void buildUserAndAddToFavorites(AuthUser authUser, String userEmail, long trackId, String trackTitle, String trackArtist, String trackMp3 , String albumCover) {
         User user = User.builder()
                 .email(userEmail)
                 .id(authUser.getUserId())
@@ -216,9 +219,10 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         Favorite favorite = Favorite.builder()
                 .favoriteId(String.valueOf(trackId))
                 .favoriteTitle(trackTitle)
-                .favoriteArtist(trackMp3)
-                .favoriteMp3(trackArtist)
+                .favoriteArtist(trackArtist)
+                .favoriteMp3(trackMp3)
                 .userId(authUser.getUserId())
+                .favoriteCover(albumCover)
                 .build();
 
         Amplify.API.mutate(
