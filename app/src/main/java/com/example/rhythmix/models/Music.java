@@ -62,5 +62,27 @@ public class Music {
         return id;
 }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setPreview(String preview) {
+        this.preview = preview;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
 }

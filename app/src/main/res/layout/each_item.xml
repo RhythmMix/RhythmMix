@@ -57,6 +57,7 @@
         android:hapticFeedbackEnabled="true"
         android:src="@android:drawable/ic_media_play"/>
 
+
     <ImageView
         android:id="@+id/menu_button_main"
         android:layout_width="45dp"

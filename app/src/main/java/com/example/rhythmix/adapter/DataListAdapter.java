@@ -83,16 +83,7 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
         }
     }
 
-    private void addToFavorites(Music selectedTrack) {
-        Intent addToFavoritesIntent = new Intent(context, AddToFavoritesActivity.class);
 
-        addToFavoritesIntent.putExtra("TRACK_ID", selectedTrack.getId());
-        addToFavoritesIntent.putExtra("TRACK_TITLE", selectedTrack.getTitle());
-        addToFavoritesIntent.putExtra("TRACK_ARTIST", selectedTrack.getArtist().getName());
-        addToFavoritesIntent.putExtra("TRACK_MP3", selectedTrack.getPreview());
-
-        context.startActivity(addToFavoritesIntent);
-    }
 
 
     @Override
