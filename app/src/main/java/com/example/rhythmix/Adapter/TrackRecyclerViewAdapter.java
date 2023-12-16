@@ -26,6 +26,9 @@ import java.util.List;
 public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecyclerViewAdapter.TrackListViewHolder> {
 
     private List<Music> musicList;
+    private List<String> previewUrls;
+    private List<String> titleList;
+    private List<String> artistsList;
     private Activity context;
     private MediaPlayer currentMediaPlayer;
     private RecyclerView recyclerView;
@@ -34,10 +37,13 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
     private static final String TAG = "Vertical_HOLDER";
 
-    public TrackRecyclerViewAdapter(Activity context, List<Music> musicList, RecyclerView recyclerView, MainActivity mainActivity) {
+    public TrackRecyclerViewAdapter(Activity context, List<Music> musicList,List<String> previewUrls, RecyclerView recyclerView,List<String> titleList,List<String> artistsList) {
         this.context = context;
         this.musicList = musicList;
         this.recyclerView = recyclerView;
+        this.previewUrls=previewUrls;
+        this.titleList=titleList;
+        this.artistsList=artistsList;
     }
 
 
@@ -84,6 +90,20 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                         intent.putExtra("SONG_TITLE", clickedMusic.getTitle());
                         intent.putExtra("SONG_ARTIST", clickedMusic.getArtist().getName());
                         intent.putExtra("SONG_PATH", clickedMusic.getPreview());
+
+                        Log.i(TAG,"previewUrlsSSS"+previewUrls);
+
+                        intent.putStringArrayListExtra("PREVIEW_URLS", new ArrayList<>(previewUrls));
+                        intent.putStringArrayListExtra("TITLES_LIST", new ArrayList<>(titleList));
+                        intent.putStringArrayListExtra("ARTISTS_LIST", new ArrayList<>(artistsList));
+                        intent.putExtra("CURRENT_POSITION", clickedPosition);
+
+                        if (currentlyPlayingPosition != -1) {
+                            currentMediaPlayer.pause();
+                            // Update the toggle icon for the item at the currently playing position
+                            updateToggleIconForItem(android.R.drawable.ic_media_play, currentlyPlayingPosition);
+                        }
+
 
                         context.startActivity(intent);
                     }
@@ -157,4 +177,3 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     }
 
 }
-

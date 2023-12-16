@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
@@ -27,20 +28,25 @@ public class APISongPlayerActivity extends AppCompatActivity {
     final static String TAG="songPlayerActivity";
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
+    private boolean isShuffleActive;
     private SeekBar seekBar;
     TextView songNameTextView;
     TextView artistNameTextView;
     private String songPath;
     private  List<String> songPaths;
     private int currentPosition;
+    private int lastPlayedPosition = 0;
     private TextView txtStart, txtStop;
     private Handler handler;
     private Runnable runnable;
+    private ImageView shuffleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apisong_player);
+
+        isShuffleActive = false;
 
         backButton();
         initializeUI();
@@ -71,12 +77,15 @@ public class APISongPlayerActivity extends AppCompatActivity {
         txtStart = findViewById(R.id.ApiPlayerActivityTxtStart);
         txtStop = findViewById(R.id.ApiPlayerActivityTxtStop);
         Button playButton = findViewById(R.id.ApiPlayButton);
+        Button nextButton = findViewById(R.id.nextButton);
+        Button prevButton = findViewById(R.id.prevButton);
         seekBar = findViewById(R.id.ApiSeekBar);
         handler = new Handler();
+        shuffleButton = findViewById(R.id.shuffleButton);
 
         Intent intent = getIntent();
-        songPaths = intent.getStringArrayListExtra("SONG_PATH");
-        Log.i(TAG,"track paths in previous" + songPaths);
+        songPaths = intent.getStringArrayListExtra("PREVIEW_URLS");
+  ;
 
         playButton.setOnClickListener(view -> {
             if (isPlaying) {
@@ -85,6 +94,10 @@ public class APISongPlayerActivity extends AppCompatActivity {
                 resumePlayback();
             }
         });
+
+        currentPosition = getIntent().getIntExtra("CURRENT_POSITION", 0);
+        nextButton.setOnClickListener(view -> playSequentialNextSong());
+        prevButton.setOnClickListener(view -> playPreviousSong());
 
         // Set up seek bar listener
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -107,6 +120,9 @@ public class APISongPlayerActivity extends AppCompatActivity {
             }
         });
 
+        // Set up shuffle listener
+        shuffleButton.setOnClickListener(view -> toggleShuffle());
+        updateShuffleButtonColor();
     }
 
     //============================
@@ -120,14 +136,16 @@ public class APISongPlayerActivity extends AppCompatActivity {
 
         Log.i(TAG, "Song Path in media: " + songPath);
 
-        try {
-            mediaPlayer.setDataSource(APISongPlayerActivity.this, Uri.parse(songPath));
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    resumePlayback();
-                }
+        try {mediaPlayer.setOnCompletionListener(mp -> {
+            playNextSong();
+        });
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                isPlaying = true;
+                updateSeekBar();
+                updatePlayButton();
             });
+            mediaPlayer.setDataSource(APISongPlayerActivity.this, Uri.parse(songPath));
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -142,8 +160,10 @@ public class APISongPlayerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String selectedSongPath = intent.getStringExtra("SONG_PATH");
 
-        Log.i(TAG, "Selected Song Path: " + selectedSongPath);
-        playSong(selectedSongPath);
+        if (songPaths != null && !songPaths.isEmpty()) {
+            currentPosition = songPaths.indexOf(selectedSongPath);
+            playSong(selectedSongPath);
+        }
     }
 
 
@@ -151,15 +171,65 @@ public class APISongPlayerActivity extends AppCompatActivity {
         // Implement the logic to stop the current playback and start the playback of the new song
         stopPlayback();
         songPath = path;
-        mediaInitialization();
 
         Intent intent = getIntent();
-        String songTitle = intent.getStringExtra("SONG_TITLE");
-        songNameTextView.setText(songTitle);
-        String songArtist = intent.getStringExtra("SONG_ARTIST");
-        artistNameTextView.setText(songArtist);
+        ArrayList<String> titlesList = intent.getStringArrayListExtra("TITLES_LIST");
+        ArrayList<String> artistsList = intent.getStringArrayListExtra("ARTISTS_LIST");
+
+        if (currentPosition >= 0 && currentPosition < titlesList.size()) {
+            String songTitle = titlesList.get(currentPosition);
+            String songArtist = artistsList.get(currentPosition);
+
+            songNameTextView.setText(songTitle);
+            artistNameTextView.setText(songArtist);
+        }
+
+        try {
+            mediaPlayer.setDataSource(APISongPlayerActivity.this, Uri.parse(songPath));
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    private void playNextSong() {
+        if (isShuffleActive) {
+            playRandomSong();
+        } else {
+            playSequentialNextSong();
+        }
+    }
+
+
+    private void playSequentialNextSong() {
+
+        if (currentPosition < songPaths.size() - 1) {
+            currentPosition++;
+            Log.i(TAG,"cureent inside next"+ currentPosition);
+        } else {
+            // This is the last song, stop playback
+            stopPlayback();
+            return;
+        }
+        String nextSongPath = songPaths.get(currentPosition);
+        playSong(nextSongPath);
+        isPlaying = true;
+        updatePlayButton();
+    }
+
+    private void playPreviousSong() {
+        if (currentPosition > 0) {
+            currentPosition--;
+        } else {
+            // This is the first song, stop playback
+            stopPlayback();
+            return;
+        }
+        String prevSongPath = songPaths.get(currentPosition);
+        playSong(prevSongPath);
+        isPlaying = true;
+        updatePlayButton();
+    }
 
 
     private void stopPlayback() {
@@ -189,6 +259,35 @@ public class APISongPlayerActivity extends AppCompatActivity {
             updateSeekBar(); // To refresh the progress
         }
     }
+
+
+    //==============================
+    // Shuffle Methods
+    //==============================
+    private void toggleShuffle() {
+        Log.d(TAG, "toggleShuffle: Shuffle button clicked");
+        isShuffleActive = !isShuffleActive;
+
+        if (!isShuffleActive) {
+            currentPosition = lastPlayedPosition;
+        }
+
+        updateShuffleButtonColor();
+    }
+
+    private void playRandomSong() {
+        Log.d(TAG, "playRandomSong: Playing random song");
+        if (songPaths != null && songPaths.size() > 1) {
+            ArrayList<String> availableSongs = new ArrayList<>(songPaths);
+            availableSongs.remove(songPath);
+
+            int randomIndex = (int) (Math.random() * availableSongs.size());
+
+            lastPlayedPosition = currentPosition;
+            playSong(availableSongs.get(randomIndex));
+        }
+    }
+
 
     //==============================
     // UI Updates
@@ -226,6 +325,12 @@ public class APISongPlayerActivity extends AppCompatActivity {
 
             handler.postDelayed(runnable, 1000);
         }
+    }
+
+
+    private void updateShuffleButtonColor() {
+        int shuffleButtonColor = isShuffleActive ? R.color.shuffleColor : R.color.white;
+        shuffleButton.setColorFilter(getResources().getColor(shuffleButtonColor));
     }
 
     //==============================

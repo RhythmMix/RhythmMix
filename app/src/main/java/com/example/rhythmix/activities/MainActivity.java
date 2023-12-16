@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Album> albumList = new ArrayList<>();
     private List<Music> musicList = new ArrayList<>();
     private List<String> previewUrls = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
+    private List<String> artistsList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private AlbumRecyclerViewAdapter albumHorizontalRecyclerViewAdapter;
     private TrackRecyclerViewAdapter trackRecyclerViewAdapter;
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
                 1842063587L, 2372912335L, 1586852522L, 2582294482L, 435491442L, 11747937L,  1409072752L, 117797212L,
-                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L);
+                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L,2504808871L);
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {
@@ -196,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         List<Music> musicList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false);
         trackRecyclerView.setLayoutManager(layoutManager);
-        TrackRecyclerViewAdapter trackRecyclerViewAdapter = new TrackRecyclerViewAdapter(this, musicList, trackRecyclerView,this);
+        TrackRecyclerViewAdapter trackRecyclerViewAdapter = new TrackRecyclerViewAdapter(this, musicList, previewUrls,trackRecyclerView,titleList,artistsList);
         trackRecyclerView.setAdapter(trackRecyclerViewAdapter);
 
         for (Long trackId : tracksId) {
@@ -222,6 +224,8 @@ public class MainActivity extends AppCompatActivity {
                     if (music != null && music.getArtist() != null && music.getTitle() != null && music.getPreview() != null) {
                         trackRecyclerViewAdapter.addTrack(music);
                         previewUrls.add(music.getPreview());
+                        titleList.add(music.getTitle());
+                        artistsList.add(music.getArtist().getName());
                         Log.i(TAG, "added to the list" + previewUrls);
                     } else {
                         Log.e(TAG, "Invalid Music data");
@@ -238,12 +242,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    public List<String> pathList(){
-        Log.i(TAG, "List" + previewUrls);
-        return previewUrls;
-    }
-
 
     //==============================
     // Slider
@@ -364,9 +362,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+   
 }
-
-
-
-
-
