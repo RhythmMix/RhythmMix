@@ -40,6 +40,8 @@ public class APISongPlayerActivity extends AppCompatActivity {
     private Handler handler;
     private Runnable runnable;
     private ImageView shuffleButton;
+    private ImageView heartButton;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class APISongPlayerActivity extends AppCompatActivity {
         seekBar = findViewById(R.id.ApiSeekBar);
         handler = new Handler();
         shuffleButton = findViewById(R.id.shuffleButton);
+        heartButton = findViewById(R.id.heartButton);
 
         Intent intent = getIntent();
         songPaths = intent.getStringArrayListExtra("PREVIEW_URLS");
@@ -96,7 +99,7 @@ public class APISongPlayerActivity extends AppCompatActivity {
         });
 
         currentPosition = getIntent().getIntExtra("CURRENT_POSITION", 0);
-        nextButton.setOnClickListener(view -> playSequentialNextSong());
+        nextButton.setOnClickListener(view -> playNextSong());
         prevButton.setOnClickListener(view -> playPreviousSong());
 
         // Set up seek bar listener
@@ -123,6 +126,9 @@ public class APISongPlayerActivity extends AppCompatActivity {
         // Set up shuffle listener
         shuffleButton.setOnClickListener(view -> toggleShuffle());
         updateShuffleButtonColor();
+
+        // Set up favorite listener
+        heartButton.setOnClickListener(view -> onHeartButtonClick());
     }
 
     //============================
@@ -130,11 +136,9 @@ public class APISongPlayerActivity extends AppCompatActivity {
     //============================
     public void mediaInitialization() {
         mediaPlayer = new MediaPlayer();
-
+        Log.i(TAG,"song paths"+ songPaths);
         Intent intent = getIntent();
         String songPath = intent.getStringExtra("SONG_PATH");
-
-        Log.i(TAG, "Song Path in media: " + songPath);
 
         try {mediaPlayer.setOnCompletionListener(mp -> {
             playNextSong();
@@ -156,9 +160,9 @@ public class APISongPlayerActivity extends AppCompatActivity {
     // Playback Control
     //==============================
     private void playSelectedSong() {
-
         Intent intent = getIntent();
         String selectedSongPath = intent.getStringExtra("SONG_PATH");
+
 
         if (songPaths != null && !songPaths.isEmpty()) {
             currentPosition = songPaths.indexOf(selectedSongPath);
@@ -177,9 +181,11 @@ public class APISongPlayerActivity extends AppCompatActivity {
         ArrayList<String> artistsList = intent.getStringArrayListExtra("ARTISTS_LIST");
 
         if (currentPosition >= 0 && currentPosition < titlesList.size()) {
+
+            Log.i(TAG,"Current position in playSong: " + currentPosition);
             String songTitle = titlesList.get(currentPosition);
             String songArtist = artistsList.get(currentPosition);
-
+            Log.i(TAG,"Current position in playSong after setters: " + currentPosition);
             songNameTextView.setText(songTitle);
             artistNameTextView.setText(songArtist);
         }
@@ -202,20 +208,26 @@ public class APISongPlayerActivity extends AppCompatActivity {
 
 
     private void playSequentialNextSong() {
-
         if (currentPosition < songPaths.size() - 1) {
             currentPosition++;
-            Log.i(TAG,"cureent inside next"+ currentPosition);
         } else {
             // This is the last song, stop playback
             stopPlayback();
             return;
         }
-        String nextSongPath = songPaths.get(currentPosition);
-        playSong(nextSongPath);
-        isPlaying = true;
-        updatePlayButton();
+
+        if (isShuffleActive) {
+            playRandomSong();
+        } else {
+            String nextSongPath = songPaths.get(currentPosition);
+            playSong(nextSongPath);
+            isPlaying = true;
+            updatePlayButton();
+        }
     }
+
+
+
 
     private void playPreviousSong() {
         if (currentPosition > 0) {
@@ -265,27 +277,58 @@ public class APISongPlayerActivity extends AppCompatActivity {
     // Shuffle Methods
     //==============================
     private void toggleShuffle() {
-        Log.d(TAG, "toggleShuffle: Shuffle button clicked");
-        isShuffleActive = !isShuffleActive;
-
         if (!isShuffleActive) {
-            currentPosition = lastPlayedPosition;
+            lastPlayedPosition = currentPosition;
         }
-
+        isShuffleActive = !isShuffleActive;
         updateShuffleButtonColor();
     }
 
+
     private void playRandomSong() {
-        Log.d(TAG, "playRandomSong: Playing random song");
         if (songPaths != null && songPaths.size() > 1) {
             ArrayList<String> availableSongs = new ArrayList<>(songPaths);
             availableSongs.remove(songPath);
 
+            int originalPosition = currentPosition;
+
+            if (!isShuffleActive) {
+                if (currentPosition < songPaths.size() - 1) {
+                    currentPosition++;
+                } else {
+                    stopPlayback();
+                    return;
+                }
+            } else {
+                lastPlayedPosition = originalPosition;
+            }
+
             int randomIndex = (int) (Math.random() * availableSongs.size());
 
-            lastPlayedPosition = currentPosition;
+            currentPosition = randomIndex;
+            Log.i(TAG, "Current position in random: " + currentPosition);
+
             playSong(availableSongs.get(randomIndex));
         }
+    }
+
+    //==============================
+    // Favorite Methods
+    //==============================
+
+    private void onHeartButtonClick() {
+        isFavorite = !isFavorite;
+        updateHeartButtonColor();
+
+        String message = isFavorite ? "Added to favorites" : "Removed from favorites";
+        showToast(message);
+    }
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    private void updateHeartButtonColor() {
+        int heartButtonColor = isFavorite ? R.color.red : R.color.white;
+        heartButton.setColorFilter(getResources().getColor(heartButtonColor));
     }
 
 
@@ -326,7 +369,6 @@ public class APISongPlayerActivity extends AppCompatActivity {
             handler.postDelayed(runnable, 1000);
         }
     }
-
 
     private void updateShuffleButtonColor() {
         int shuffleButtonColor = isShuffleActive ? R.color.shuffleColor : R.color.white;

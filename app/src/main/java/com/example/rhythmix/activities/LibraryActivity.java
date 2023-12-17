@@ -321,7 +321,6 @@ public class LibraryActivity extends AppCompatActivity {
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 isPlaying = true;
-                Log.i(LOG_TAG,"Is playing inside media");
             });
             if (selectedSongInLibraryPath != null) {
                 ContentResolver resolver = getContentResolver();
@@ -357,8 +356,8 @@ public class LibraryActivity extends AppCompatActivity {
     // Play Song Controls
     //==============================
     private void playSelectedSong() {
-        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty()) {
-            Log.d(LOG_TAG, "is playing inside playSelectedSong " + isPlaying);
+        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty() && mediaPlayer.isPlaying() ) {
+            stopPlayback();
             currentPosition = songPaths.indexOf(selectedSongInLibraryPath);
             playSong(selectedSongInLibraryPath);
         }

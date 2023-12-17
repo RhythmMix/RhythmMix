@@ -48,7 +48,7 @@ public class SongPlayerActivity extends AppCompatActivity {
     private ImageView shuffleButton;
     private int lastPlayedPosition = 0;
     private boolean isFavorite = false;
-    private ImageView heartButton;
+
 
 
     @Override
@@ -134,7 +134,6 @@ public class SongPlayerActivity extends AppCompatActivity {
         Button prevButton = findViewById(R.id.prevButton);
         seekBar = findViewById(R.id.seekBar);
         shuffleButton = findViewById(R.id.shuffleButton);
-        heartButton = findViewById(R.id.heartButton);
 
 
         // Other UI setup
@@ -173,8 +172,7 @@ public class SongPlayerActivity extends AppCompatActivity {
             }
         });
 
-        // Set up favorite listener
-        heartButton.setOnClickListener(view -> onHeartButtonClick());
+
 
         // Set up shuffle listener
         shuffleButton.setOnClickListener(view -> toggleShuffle());
@@ -241,8 +239,6 @@ public class SongPlayerActivity extends AppCompatActivity {
 
     private void playSelectedSong() {
         String selectedSongPath = getIntent().getStringExtra("SONG_PATH");
-
-        Log.i(TAG, "Selected Song Path (SongPlayerActivity): " + selectedSongPath);
 
         if (songPaths != null && !songPaths.isEmpty()) {
             currentPosition = songPaths.indexOf(selectedSongPath);
@@ -370,25 +366,6 @@ public class SongPlayerActivity extends AppCompatActivity {
             lastPlayedPosition = currentPosition;
             playSong(availableSongs.get(randomIndex));
         }
-    }
-
-    //==============================
-    // Favorite Methods
-    //==============================
-
-    private void onHeartButtonClick() {
-        isFavorite = !isFavorite;
-        updateHeartButtonColor();
-
-        String message = isFavorite ? "Added to favorites" : "Removed from favorites";
-        showToast(message);
-    }
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-    private void updateHeartButtonColor() {
-        int heartButtonColor = isFavorite ? R.color.red : R.color.white;
-        heartButton.setColorFilter(getResources().getColor(heartButtonColor));
     }
 
 

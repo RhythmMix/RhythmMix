@@ -95,77 +95,82 @@
 
     </LinearLayout>
 
-    <!-- Designed gap between image and SeekBar -->
-    <View
-        android:id="@+id/gapView"
+
+    <RelativeLayout
+        android:id="@+id/seekBarContainer"
         android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_below="@id/playerActivitySongImage"/>
-
-
-    <!-- Designed SeekBar -->
-    <SeekBar
-        android:id="@+id/seekBar"
-        style="@style/CustomSeekBar"
-        android:layout_width="300dp"
-        android:layout_height="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/playerActivitySongImage"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+
+        <!-- Shuffle Button -->
+        <ImageView
+            android:id="@+id/shuffleButton"
+            android:layout_width="36dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:clickable="true"
+            android:onClick="onShuffleButtonClick"
+            android:src="@drawable/ic_shuffle"
+            app:tint="@color/shuffleColor" />
+
+        <!-- Designed SeekBar -->
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="@style/CustomSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_toEndOf="@+id/shuffleButton"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+    </RelativeLayout>
 
     <!-- Media Controls (Play, Previous, Next) -->
     <LinearLayout
         android:id="@+id/layoutMediaControls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@id/seekBarContainer"
         android:gravity="center"
-        android:layout_below="@id/seekBar">
-
-        <!-- Shuffle Icon -->
-        <ImageView
-            android:id="@+id/shuffleButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:clickable="true"
-            android:onClick="onShuffleButtonClick"
-            android:src="@drawable/ic_shuffle"
-            app:tint="@color/shuffleColor"/>
+        android:layout_marginTop="30dp">
 
         <!-- Previous Button -->
         <Button
+            android:id="@+id/prevButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/prevButton"
             android:layout_toLeftOf="@+id/playButton"
-            android:background="@drawable/ic_skip_previous_24"/>
+            android:background="@drawable/ic_skip_previous_24" />
 
-        <!-- Play Button -->
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="1dp" />
+
+        <!-- Play Button at the center -->
         <Button
             android:id="@+id/playButton"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@drawable/ic_pause_24" />
 
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="1dp" />
+
         <!-- Next Button -->
         <Button
             android:id="@+id/nextButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toRightOf="@+id/playButton"
             android:background="@drawable/ic_skip_next_24" />
-
-        <!-- Heart Icon -->
-        <ImageView
-            android:id="@+id/heartButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:clickable="true"
-            android:onClick="onHeartButtonClick"
-            android:src="@drawable/ic_favorite" />
     </LinearLayout>
 </RelativeLayout>

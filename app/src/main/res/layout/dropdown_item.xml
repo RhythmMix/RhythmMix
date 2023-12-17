@@ -2,8 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/rounded_dropdown_item_background"
-    >
+    android:background="@drawable/rounded_dropdown_item_background">
 
     <TextView
         android:id="@+id/dropdown_text"
@@ -11,6 +10,5 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:background="@color/transparent"
-        android:textColor="#FFFFFF"
-        />
+        android:textColor="#FFFFFF" />
 </LinearLayout>

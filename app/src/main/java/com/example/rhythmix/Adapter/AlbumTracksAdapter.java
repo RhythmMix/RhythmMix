@@ -1,10 +1,7 @@
 package com.example.rhythmix.Adapter;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,81 +10,109 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.rhythmix.models.Music;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.Music;
 import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.util.List;
 
 public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.TrackViewHolder> {
-    private List<Music> trackList;
-    private Activity context;
-    private static final String  TAG="AlbumTracksAdapter";
+    private final List<Music> trackList2;
+    private final MediaPlayer mediaPlayer;
+    private int playingPosition = -1; // Keep track of the currently playing position
 
-    public AlbumTracksAdapter(List<Music> trackList, Activity context) {
-        this.context = context;
-        this.trackList = trackList;
+
+    public AlbumTracksAdapter(List<Music> trackList) {
+        trackList2 = trackList;
+        this.mediaPlayer = new MediaPlayer();
+
+        for (Music track : trackList) {
+            String trackTitle = track.getTitle();
+            String albumTitle = (track.getAlbum() != null) ? track.getAlbum().getTitle() : "Unknown Album";
+            Log.d("AlbumTracksAdapter", "Trackfromme: " + trackTitle + ", Albumfromme: " + albumTitle);
+        }
     }
 
     @NonNull
     @Override
     public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_track, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.album_track_item, parent, false);
         return new TrackViewHolder(view);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
-        if (trackList != null && position >= 0 && position < trackList.size()) {
-            Music music = trackList.get(position);
-            if (music != null && music.getArtist() != null && music.getArtist().getName() != null && music.getArtist().getPicture() != null) {
-                String imageUrl = music.getAlbum().getCover();
+        Music music = trackList2.get(position);
+        holder.trackTitle.setSelected(true);
+        holder.trackTitle.setHorizontallyScrolling(true);
+        holder.trackTitle.setSingleLine(true);
+        holder.trackTitle.setText(music.getTitle());
+        holder.albumNumber.setText(String.valueOf(position + 1));
 
-                holder.trackTitle.setText(music.getTitle());
-                // Set other views as needed
-                // Load image using Picasso
-                Picasso.get().load(imageUrl).into(holder.trackImage);
+        holder.trackToggleButton.setOnClickListener(v -> {
+            int adapterPosition = holder.getAdapterPosition();
 
-                // Set up media player and toggle button
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(context, Uri.parse(music.getPreview()));
-                    mediaPlayer.prepareAsync();
-                } catch (IOException e) {
-                    Log.e(TAG, "Error setting data source", e);
-                    mediaPlayer.release();
-                }
+            if (adapterPosition == playingPosition) {
+                // If the clicked item is the currently playing item, stop the music
+                stopMediaPlayer();
+                playingPosition = -1;
+            } else {
+                // If a different item is clicked, stop the currently playing music (if any)
+                stopMediaPlayer();
 
-                holder.trackToggleButton.setOnClickListener(v -> {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.pause();
-                        holder.trackToggleButton.setImageResource(android.R.drawable.ic_media_play);
-                    } else {
-                        mediaPlayer.start();
-                        holder.trackToggleButton.setImageResource(android.R.drawable.ic_media_pause);
-                    }
-                });
+                // Play the new music
+                playMediaPlayer(music.getPreview());
+                playingPosition = adapterPosition;
             }
-        }
+
+            notifyDataSetChanged(); // Update the UI
+        });
+
+
+        // Update the UI based on the current playing position
+        holder.trackToggleButton.setImageResource(holder.getAdapterPosition() == playingPosition
+                ? android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play);
     }
+
 
     @Override
     public int getItemCount() {
-        return trackList != null ? trackList.size() : 0;
+        return trackList2 != null ? trackList2.size() : 0;
+    }
+
+    private void playMediaPlayer(String previewUrl) {
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(previewUrl);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            Log.e("AlbumTracksAdapter", "Error playing media", e);
+        }
+    }
+
+    private void stopMediaPlayer() {
+        mediaPlayer.stop();
+        mediaPlayer.reset();
     }
 
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
-        ImageView trackImage;
-        TextView trackTitle;
-        ImageButton trackToggleButton;
+       public TextView albumNumber;
+        public ImageView trackImage;
+        public TextView trackTitle;
+        public ImageButton trackToggleButton;
 
-        public TrackViewHolder(@NonNull View itemView) {
-            super(itemView);
-            trackImage = itemView.findViewById(R.id.musicImage);
-            trackTitle = itemView.findViewById(R.id.musicTitle);
-            trackToggleButton = itemView.findViewById(R.id.toggleButton);
+        public TrackViewHolder(View view) {
+            super(view);
+            albumNumber=view.findViewById(R.id.albumNumber);
+            trackImage = view.findViewById(R.id.albumImage);
+            trackTitle = view.findViewById(R.id.albumTitle);
+            trackToggleButton = view.findViewById(R.id.albumToggleButton);
         }
     }
 }
-
-

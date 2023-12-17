@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Rhythmix"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AlbumTracksActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.APISongPlayerActivity"
             android:exported="false" />
         <activity
