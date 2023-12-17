@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Album implements Serializable {
-
     private long id;
     private String title;
     private String tracklist;

@@ -17,6 +17,8 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Playlist;
+import com.amplifyframework.datastore.generated.model.PlaylistMusic;
+import com.example.rhythmix.OnPlaylistClickListener;
 import com.example.rhythmix.R;
 import com.example.rhythmix.adapter.ChoosePlaylistAdapter;
 import com.example.rhythmix.adapter.playlistRecyclerViewAdapter;
@@ -34,12 +36,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ChoosePlaylistActivity extends AppCompatActivity implements ChoosePlaylistAdapter.OnPlaylistClickListener {
+public class ChoosePlaylistActivity extends AppCompatActivity implements ChoosePlaylistAdapter.OnPlaylistClickListener{
     private ChoosePlaylistAdapter choosePlaylistAdapter;
     List<Playlist> playlists = new ArrayList<>();
     public static final String TAG = "playlistTag";
     String getPlaylistId;
     Intent getTrackIntent;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +78,15 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
         );
 
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
-        getTrackIntent = getIntent();
         amplifier();
         setUpPlayListRecyclerView();
-        if (getTrackIntent.hasExtra("SELECTED_TRACK")) {
-            Track selectedTrack = (Track) getTrackIntent.getSerializableExtra("SELECTED_TRACK");
-            addToPlaylist(selectedTrack);
-        }
-    }
-    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>CREATE RECYCLERVIEW<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        getTrackIntent = getIntent();
+        Log.i("TAG","PlaylistId is : "+getPlaylistId);
 
+    }
+    private void onPlaylistSelected(String playlistId) {
+        getPlaylistId = playlistId;
+    }
     public void amplifier() {
         Amplify.API.query(
                 ModelQuery.list(Playlist.class),
@@ -100,52 +104,117 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                 failure -> Log.i(TAG, "failed to read tasks")
         );
     }
+    @Override
+    public void onPlaylistClick(String playlistId) {
+        Log.i(TAG, "Selected Playlist Id: " + playlistId);
+        onPlaylistSelected(playlistId);
 
+
+        Track selectedTrack = (Track) getTrackIntent.getSerializableExtra("SELECTED_TRACK");
+        addToPlaylistAndAmplify(selectedTrack);
+
+
+        Intent goToInsidePlaylist = new Intent(this, InsidePlaylistActivity.class);
+        goToInsidePlaylist.putExtra("playlistId", playlistId);
+        Log.i(TAG, "The Playlist Id is: " + playlistId);
+        startActivity(goToInsidePlaylist);
+    }
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>Create a track on database<<<<<<<<<<<<<<<<<<<<<<<<
-    private void addToPlaylist(Track selectedTrack) {
+    public void addToPlaylistAndAmplify(Track selectedTrack) {
         String trackTitle = getTrackIntent.getStringExtra("TRACK_TITLE");
-        String trackArtist= getTrackIntent.getStringExtra("TRACK_ARTIST");
+        String trackArtist = getTrackIntent.getStringExtra("TRACK_ARTIST");
         String trackMp3 = getTrackIntent.getStringExtra("TRACK_MP3");
         String trackCover = getTrackIntent.getStringExtra("TrackCover");
-        buildUserAndAddToPlaylist( trackTitle, trackArtist, trackMp3, trackCover);
 
-    }
-    private void buildUserAndAddToPlaylist( String trackTitle, String trackArtist, String trackMp3, String cover) {
-        Music music=Music.builder()
+        Music music = Music.builder()
                 .musicTitle(trackTitle)
                 .musicArtist(trackArtist)
-                .musicCover(cover)
+                .musicCover(trackCover)
                 .musicMp3(trackMp3)
                 .build();
 
+        if (getPlaylistId != null) {
+            PlaylistMusic playlistMusic = PlaylistMusic.builder()
+                    .playlist(Playlist.justId(getPlaylistId))
+                    .track(music)
+                    .build();
+
+            Amplify.API.mutate(
+                    ModelMutation.create(playlistMusic),
+                    successResponse -> {
+                        Log.i(TAG, "Saved PlaylistMusic item: " + successResponse.getData());
+                        saveMusicItem(music);
+                    },
+                    failureResponse -> Log.e(TAG, "Error saving PlaylistMusic item", failureResponse)
+            );
+
+            runOnUiThread(() -> {
+                choosePlaylistAdapter.notifyDataSetChanged();
+            });
+        } else {
+            Log.e(TAG, "No playlist ID available");
+        }
+    }
+    private void saveMusicItem(Music music) {
         Amplify.API.mutate(
                 ModelMutation.create(music),
-                successResponse -> Log.i(TAG, "Saved item for playlist with name: " + successResponse.getData()),
-                failureResponse -> Log.e(TAG, "Error saving item", failureResponse)
+                successResponse -> Log.i(TAG, "Saved Music item: " + successResponse.getData()),
+                failureResponse -> Log.e(TAG, "Error saving Music item", failureResponse)
         );
     }
 
-    private void setUpPlayListRecyclerView()
-    {
-        RecyclerView playlistRecyclerView = (RecyclerView) findViewById(R.id.playlistsRecycleView);
+//    public void addToPlaylistAndAmplify(Track selectedTrack) {
+//        String trackTitle = getTrackIntent.getStringExtra("TRACK_TITLE");
+//        String trackArtist = getTrackIntent.getStringExtra("TRACK_ARTIST");
+//        String trackMp3 = getTrackIntent.getStringExtra("TRACK_MP3");
+//        String trackCover = getTrackIntent.getStringExtra("TrackCover");
+//
+//        Music music = Music.builder()
+//                .musicTitle(trackTitle)
+//                .musicArtist(trackArtist)
+//                .musicCover(trackCover)
+//                .musicMp3(trackMp3)
+//                .build();
+//
+//        if (getPlaylistId != null) {
+//            PlaylistMusic playlistMusic = PlaylistMusic.builder()
+//                    .playlist(Playlist.justId(getPlaylistId))
+//                    .track(music)
+//                    .build();
+//
+//            Amplify.API.mutate(
+//                    ModelMutation.create(playlistMusic),
+//                    successResponse -> {
+//                        Log.i(TAG, "Saved PlaylistMusic item: " + successResponse.getData());
+//                        saveMusicItem(music);
+//                    },
+//                    failureResponse -> Log.e(TAG, "Error saving PlaylistMusic item", failureResponse)
+//            );
+//
+//            runOnUiThread(() -> {
+//                choosePlaylistAdapter.notifyDataSetChanged();
+//            });
+//        } else {
+//            Log.e(TAG, "No playlist ID available");
+//        }
+//    }
+
+
+
+
+    private void setUpPlayListRecyclerView() {
+        RecyclerView playlistRecyclerView = findViewById(R.id.playlistsRecycleView);
         int numberOfColumns = 2;
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
         playlistRecyclerView.setLayoutManager(layoutManager);
-
-        //>>>>>>>>>Static Playlist<<<<<<<<<<<<<<
-
-        choosePlaylistAdapter=new ChoosePlaylistAdapter(playlists,this,this);
+        choosePlaylistAdapter = new ChoosePlaylistAdapter(playlists, this, this);
         playlistRecyclerView.setAdapter(choosePlaylistAdapter);
+
     }
 
-    @Override
-    public void onPlaylistClick(String playlistId) {
-        Intent goToInsidePlaylist = new Intent(this, InsidePlaylistActivity.class);
-        goToInsidePlaylist.putExtra("playlistId", playlistId);
-        Log.i(TAG, "The Playlist Id is :"+playlistId);
-        getPlaylistId=playlistId;
-        startActivity(goToInsidePlaylist);
-    }
+
+
+
 }

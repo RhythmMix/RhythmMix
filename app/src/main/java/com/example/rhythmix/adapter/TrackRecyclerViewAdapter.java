@@ -192,7 +192,8 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             addToPlaylistIntent.putExtra("TRACK_ARTIST", trackArtist);
             addToPlaylistIntent.putExtra("TRACK_MP3", trackMp3);
             addToPlaylistIntent.putExtra("TrackCover",cover);
-            addToPlaylistIntent.putExtra("SELECTED_TRACK", selectedTrack);
+                addToPlaylistIntent.putExtra("SELECTED_TRACK", selectedTrack);
+
             context.startActivity(addToPlaylistIntent);
         }
     }
@@ -219,6 +220,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             addToFavoritesIntent.putExtra("TRACK_ARTIST", selectedTrack.getArtist().getName());
             addToFavoritesIntent.putExtra("TRACK_MP3", selectedTrack.getPreview());
             addToFavoritesIntent.putExtra("TrackCover",selectedTrack.getAlbum().getCover());
+
 
             context.startActivity(addToFavoritesIntent);
         }
