@@ -36,24 +36,20 @@ query GetPlaylistMusic($id: ID!) {
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -85,16 +81,15 @@ query ListPlaylistMusics(
 
 query GetPlaylist($id: ID!) {
   getPlaylist(id: $id) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -107,7 +102,6 @@ query GetPlaylist($id: ID!) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -121,11 +115,10 @@ query ListPlaylists(
 ) {
   listPlaylists(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
@@ -137,11 +130,9 @@ query ListPlaylists(
 
 query GetMusic($id: ID!) {
   getMusic(id: $id) {
-    musicID
+    id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -156,7 +147,6 @@ query GetMusic($id: ID!) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -170,14 +160,11 @@ query ListMusic(
 ) {
   listMusic(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      musicID
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -189,10 +176,10 @@ query ListMusic(
 
 query GetUser($id: ID!) {
   getUser(id: $id) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -201,7 +188,6 @@ query GetUser($id: ID!) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -215,11 +201,10 @@ query ListUsers(
 ) {
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -236,24 +221,22 @@ query GetFavoriteMusic($id: ID!) {
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -286,9 +269,10 @@ query ListFavoriteMusics(
 query GetFavorite($id: ID!) {
   getFavorite(id: $id) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -309,9 +293,10 @@ query ListFavorites(
   listFavorites(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
       userID
       id
       createdAt

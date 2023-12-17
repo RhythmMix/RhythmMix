@@ -309,7 +309,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "music",
+                        "name": "track",
                         "description": null,
                         "args": [],
                         "type": {
@@ -365,7 +365,7 @@
                 "specifiedByUrl": null,
                 "fields": [
                     {
-                        "name": "playlistID",
+                        "name": "id",
                         "description": null,
                         "args": [],
                         "type": {
@@ -559,22 +559,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "id",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "createdAt",
                         "description": null,
                         "args": [],
@@ -630,7 +614,7 @@
                 "specifiedByUrl": null,
                 "fields": [
                     {
-                        "name": "musicID",
+                        "name": "id",
                         "description": null,
                         "args": [],
                         "type": {
@@ -671,38 +655,6 @@
                             "ofType": {
                                 "kind": "SCALAR",
                                 "name": "String",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicAlbum",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicDuration",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "Int",
                                 "ofType": null
                             }
                         },
@@ -925,22 +877,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "id",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "createdAt",
                         "description": null,
                         "args": [],
@@ -985,7 +921,7 @@
                 "specifiedByUrl": null,
                 "fields": [
                     {
-                        "name": "userID",
+                        "name": "id",
                         "description": null,
                         "args": [],
                         "type": {
@@ -1029,17 +965,13 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "password",
+                        "name": "userImageS3Key",
                         "description": null,
                         "args": [],
                         "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            }
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -1167,22 +1099,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "id",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "createdAt",
                         "description": null,
                         "args": [],
@@ -1287,7 +1203,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "music",
+                        "name": "track",
                         "description": null,
                         "args": [],
                         "type": {
@@ -1359,7 +1275,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteTitle",
+                        "name": "favoriteTitle",
                         "description": null,
                         "args": [],
                         "type": {
@@ -1375,7 +1291,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteArtist",
+                        "name": "favoriteArtist",
                         "description": null,
                         "args": [],
                         "type": {
@@ -1391,7 +1307,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteMp3",
+                        "name": "favoriteMp3",
                         "description": null,
                         "args": [],
                         "type": {
@@ -1402,6 +1318,18 @@
                                 "name": "String",
                                 "ofType": null
                             }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "favoriteCover",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -5923,7 +5851,7 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "playlistID",
+                        "name": "id",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -6027,18 +5955,6 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "playlistID",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelIDInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "playlistName",
                         "description": null,
                         "type": {
@@ -6131,16 +6047,12 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "playlistID",
+                        "name": "id",
                         "description": null,
                         "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -6189,18 +6101,6 @@
                         "defaultValue": null,
                         "isDeprecated": false,
                         "deprecationReason": null
-                    },
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
                     }
                 ],
                 "interfaces": null,
@@ -6215,12 +6115,16 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "playlistID",
+                        "name": "id",
                         "description": null,
                         "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -6257,22 +6161,6 @@
                             "kind": "SCALAR",
                             "name": "ID",
                             "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -6319,7 +6207,7 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "playlistID",
+                        "name": "id",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -6455,7 +6343,7 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "musicID",
+                        "name": "id",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -6484,30 +6372,6 @@
                         "type": {
                             "kind": "INPUT_OBJECT",
                             "name": "ModelStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicAlbum",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicDuration",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelIntInput",
                             "ofType": null
                         },
                         "defaultValue": null,
@@ -6595,18 +6459,6 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "musicID",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelIDInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "musicTitle",
                         "description": null,
                         "type": {
@@ -6624,30 +6476,6 @@
                         "type": {
                             "kind": "INPUT_OBJECT",
                             "name": "ModelStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicAlbum",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicDuration",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelIntInput",
                             "ofType": null
                         },
                         "defaultValue": null,
@@ -6735,16 +6563,12 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "musicID",
+                        "name": "id",
                         "description": null,
                         "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -6783,38 +6607,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "musicAlbum",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicDuration",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "Int",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "musicCover",
                         "description": null,
                         "type": {
@@ -6841,18 +6633,6 @@
                                 "name": "String",
                                 "ofType": null
                             }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -6871,12 +6651,16 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "musicID",
+                        "name": "id",
                         "description": null,
                         "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -6907,30 +6691,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "musicAlbum",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "String",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicDuration",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "musicCover",
                         "description": null,
                         "type": {
@@ -6949,22 +6709,6 @@
                             "kind": "SCALAR",
                             "name": "String",
                             "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -7011,7 +6755,7 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "musicID",
+                        "name": "id",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7040,30 +6784,6 @@
                         "type": {
                             "kind": "INPUT_OBJECT",
                             "name": "ModelSubscriptionStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicAlbum",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelSubscriptionStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "musicDuration",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelSubscriptionIntInput",
                             "ofType": null
                         },
                         "defaultValue": null,
@@ -7183,7 +6903,7 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "userID",
+                        "name": "id",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7219,7 +6939,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "password",
+                        "name": "userImageS3Key",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7287,18 +7007,6 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "userID",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelIDInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "email",
                         "description": null,
                         "type": {
@@ -7323,7 +7031,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "password",
+                        "name": "userImageS3Key",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7391,16 +7099,12 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "userID",
+                        "name": "id",
                         "description": null,
                         "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -7435,27 +7139,11 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "password",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "id",
+                        "name": "userImageS3Key",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "ID",
+                            "name": "String",
                             "ofType": null
                         },
                         "defaultValue": null,
@@ -7475,12 +7163,16 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "userID",
+                        "name": "id",
                         "description": null,
                         "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -7511,28 +7203,12 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "password",
+                        "name": "userImageS3Key",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
                             "name": "String",
                             "ofType": null
-                        },
-                        "defaultValue": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -7579,7 +7255,7 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "userID",
+                        "name": "id",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7615,7 +7291,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "password",
+                        "name": "userImageS3Key",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8159,7 +7835,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteTitle",
+                        "name": "favoriteTitle",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8171,7 +7847,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteArtist",
+                        "name": "favoriteArtist",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8183,7 +7859,19 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteMp3",
+                        "name": "favoriteMp3",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "favoriteCover",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8275,7 +7963,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteTitle",
+                        "name": "favoriteTitle",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8287,7 +7975,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteArtist",
+                        "name": "favoriteArtist",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8299,7 +7987,19 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteMp3",
+                        "name": "favoriteMp3",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "favoriteCover",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8395,7 +8095,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteTitle",
+                        "name": "favoriteTitle",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -8411,7 +8111,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteArtist",
+                        "name": "favoriteArtist",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -8427,7 +8127,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteMp3",
+                        "name": "favoriteMp3",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -8437,6 +8137,18 @@
                                 "name": "String",
                                 "ofType": null
                             }
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "favoriteCover",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
                         },
                         "defaultValue": null,
                         "isDeprecated": false,
@@ -8495,7 +8207,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteTitle",
+                        "name": "favoriteTitle",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -8507,7 +8219,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteArtist",
+                        "name": "favoriteArtist",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -8519,7 +8231,19 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteMp3",
+                        "name": "favoriteMp3",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "favoriteCover",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -8611,7 +8335,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteTitle",
+                        "name": "favoriteTitle",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8623,7 +8347,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteArtist",
+                        "name": "favoriteArtist",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -8635,7 +8359,19 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "FavoriteMp3",
+                        "name": "favoriteMp3",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelSubscriptionStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "favoriteCover",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",

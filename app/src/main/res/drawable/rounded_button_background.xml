@@ -3,3 +3,4 @@
     <solid android:color="#DD000000" /> <!-- Set your desired background color -->
     <corners android:radius="8dp" /> <!-- Set the radius for rounded corners -->
 </shape>
+

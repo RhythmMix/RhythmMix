@@ -41,24 +41,20 @@ subscription OnCreatePlaylistMusic(
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -77,24 +73,20 @@ subscription OnUpdatePlaylistMusic(
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -113,24 +105,20 @@ subscription OnDeletePlaylistMusic(
     playlistID
     musicID
     playlist {
-      playlistID
+      id
       playlistName
       playlistBackground
       userID
-      id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -143,16 +131,15 @@ subscription OnDeletePlaylistMusic(
 
 subscription OnCreatePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
   onCreatePlaylist(filter: $filter) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -165,7 +152,6 @@ subscription OnCreatePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -174,16 +160,15 @@ subscription OnCreatePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
 
 subscription OnUpdatePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
   onUpdatePlaylist(filter: $filter) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -196,7 +181,6 @@ subscription OnUpdatePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -205,16 +189,15 @@ subscription OnUpdatePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
 
 subscription OnDeletePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
   onDeletePlaylist(filter: $filter) {
-    playlistID
+    id
     playlistName
     playlistBackground
     userID
     user {
-      userID
+      id
       email
       username
-      password
-      id
+      userImageS3Key
       createdAt
       updatedAt
       __typename
@@ -227,7 +210,6 @@ subscription OnDeletePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -236,11 +218,9 @@ subscription OnDeletePlaylist($filter: ModelSubscriptionPlaylistFilterInput) {
 
 subscription OnCreateMusic($filter: ModelSubscriptionMusicFilterInput) {
   onCreateMusic(filter: $filter) {
-    musicID
+    id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -255,7 +235,6 @@ subscription OnCreateMusic($filter: ModelSubscriptionMusicFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -264,11 +243,9 @@ subscription OnCreateMusic($filter: ModelSubscriptionMusicFilterInput) {
 
 subscription OnUpdateMusic($filter: ModelSubscriptionMusicFilterInput) {
   onUpdateMusic(filter: $filter) {
-    musicID
+    id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -283,7 +260,6 @@ subscription OnUpdateMusic($filter: ModelSubscriptionMusicFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -292,11 +268,9 @@ subscription OnUpdateMusic($filter: ModelSubscriptionMusicFilterInput) {
 
 subscription OnDeleteMusic($filter: ModelSubscriptionMusicFilterInput) {
   onDeleteMusic(filter: $filter) {
-    musicID
+    id
     musicTitle
     musicArtist
-    musicAlbum
-    musicDuration
     musicCover
     musicMp3
     playlists {
@@ -311,7 +285,6 @@ subscription OnDeleteMusic($filter: ModelSubscriptionMusicFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -320,10 +293,10 @@ subscription OnDeleteMusic($filter: ModelSubscriptionMusicFilterInput) {
 
 subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
   onCreateUser(filter: $filter) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -332,7 +305,6 @@ subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -341,10 +313,10 @@ subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
 
 subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
   onUpdateUser(filter: $filter) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -353,7 +325,6 @@ subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -362,10 +333,10 @@ subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
 
 subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
   onDeleteUser(filter: $filter) {
-    userID
+    id
     email
     username
-    password
+    userImageS3Key
     playlists {
       nextToken
       __typename
@@ -374,7 +345,6 @@ subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
       nextToken
       __typename
     }
-    id
     createdAt
     updatedAt
     __typename
@@ -390,24 +360,22 @@ subscription OnCreateFavoriteMusic(
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -427,24 +395,22 @@ subscription OnUpdateFavoriteMusic(
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -464,24 +430,22 @@ subscription OnDeleteFavoriteMusic(
     musicID
     favorite {
       favoriteID
-      FavoriteTitle
-      FavoriteArtist
-      FavoriteMp3
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
       userID
       id
       createdAt
       updatedAt
       __typename
     }
-    music {
-      musicID
+    track {
+      id
       musicTitle
       musicArtist
-      musicAlbum
-      musicDuration
       musicCover
       musicMp3
-      id
       createdAt
       updatedAt
       __typename
@@ -495,9 +459,10 @@ subscription OnDeleteFavoriteMusic(
 subscription OnCreateFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
   onCreateFavorite(filter: $filter) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -513,9 +478,10 @@ subscription OnCreateFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
 subscription OnUpdateFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
   onUpdateFavorite(filter: $filter) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken
@@ -531,9 +497,10 @@ subscription OnUpdateFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
 subscription OnDeleteFavorite($filter: ModelSubscriptionFavoriteFilterInput) {
   onDeleteFavorite(filter: $filter) {
     favoriteID
-    FavoriteTitle
-    FavoriteArtist
-    FavoriteMp3
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
+    favoriteCover
     userID
     favoriteMusics {
       nextToken

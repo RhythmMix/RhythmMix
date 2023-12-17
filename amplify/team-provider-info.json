@@ -16,7 +16,10 @@
         "rhythmmix": {}
       },
       "auth": {
+<<<<<<< HEAD
         "rhythmmix2d606791": {},
+=======
+>>>>>>> 86573f8be92a98ece6dd8cb5e68933b9a57a512d
         "rhythmmix3d3b5f35": {}
       },
       "storage": {

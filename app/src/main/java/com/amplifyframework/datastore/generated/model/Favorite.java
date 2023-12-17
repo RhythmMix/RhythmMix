@@ -346,5 +346,5 @@ public final class Favorite implements Model {
     }
   }
 
+  }
   
-}

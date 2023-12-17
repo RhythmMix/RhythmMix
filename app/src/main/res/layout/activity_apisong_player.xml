@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#000000"
-    tools:context=".activities.APISongPlayerActivity">
+    tools:context=".Activities.APISongPlayerActivity">
 
 
     <!-- Default Image for Songs  -->

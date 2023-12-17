@@ -14,23 +14,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rhythmix.R;
-import com.example.rhythmix.models.Music;
-import com.squareup.picasso.Picasso;
+import com.example.rhythmix.models.Track;
 
 import java.io.IOException;
 import java.util.List;
 
 public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.TrackViewHolder> {
-    private final List<Music> trackList2;
+    private final List<Track> trackList2;
     private final MediaPlayer mediaPlayer;
     private int playingPosition = -1; // Keep track of the currently playing position
 
 
-    public AlbumTracksAdapter(List<Music> trackList) {
+    public AlbumTracksAdapter(List<Track> trackList) {
         trackList2 = trackList;
         this.mediaPlayer = new MediaPlayer();
 
-        for (Music track : trackList) {
+        for (Track track : trackList) {
             String trackTitle = track.getTitle();
             String albumTitle = (track.getAlbum() != null) ? track.getAlbum().getTitle() : "Unknown Album";
             Log.d("AlbumTracksAdapter", "Trackfromme: " + trackTitle + ", Albumfromme: " + albumTitle);
@@ -47,7 +46,7 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
-        Music music = trackList2.get(position);
+        Track music = trackList2.get(position);
         holder.trackTitle.setSelected(true);
         holder.trackTitle.setHorizontallyScrolling(true);
         holder.trackTitle.setSingleLine(true);

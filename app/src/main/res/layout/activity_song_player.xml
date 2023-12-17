@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#000000"
-    tools:context=".activities.SongPlayerActivity">
+    tools:context=".Activities.SongPlayerActivity">
     <!-- Default Image for Songs  -->
     <ImageView
         android:id="@+id/playerActivitySongImage"
@@ -174,3 +174,4 @@
             android:background="@drawable/ic_skip_next_24" />
     </LinearLayout>
 </RelativeLayout>
+

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/allsongsoverly"
+    tools:context=".Activities.PlaylistsActivity">
+
+  <!--Playlists Text-->
+  <TextView
+      android:id="@+id/playlistTitleTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:text="Playlists"
+      android:textColor="#FFFFFF"
+      android:textSize="30sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <!--SearchBar-->
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/searchTextInputLayoutPlaylists"
+      android:layout_width="0dp"
+      android:layout_height="56dp"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="24dp"
+      android:layout_marginEnd="32dp"
+      app:boxBackgroundMode="outline"
+      app:endIconMode="clear_text"
+      app:hintEnabled="false"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/playlistTitleTextView">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_border"
+        android:drawableStart="@drawable/ic_action_search"
+        android:drawablePadding="8dp"
+        android:hint="Search"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!--Songs/Playlist NavBar-->
+  <RadioGroup
+      android:id="@+id/navigationBarPlaylist"
+      android:layout_width="0dp"
+      android:layout_height="48dp"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="32dp"
+      android:background="@android:color/transparent"
+      android:orientation="horizontal"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/searchTextInputLayoutPlaylists">
+
+    <RadioButton
+        android:id="@+id/songsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:button="@android:color/transparent"
+        android:gravity="center"
+        android:text="Songs"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <RadioButton
+        android:id="@+id/playlistsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:button="@android:color/transparent"
+        android:gravity="center"
+        android:text="Playlists"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+  </RadioGroup>
+
+  <ImageView
+      android:id="@+id/add_list"
+      android:layout_width="169dp"
+      android:layout_height="141dp"
+      android:paddingTop="13dp"
+      android:paddingBottom="13dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.165"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.383"
+      app:srcCompat="@drawable/plus"
+      app:tint="@color/FlatWhite"
+      tools:ignore="MissingConstraints" />
+
+  <!--RecyclerView-->
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/playlistsRecycleView"
+      android:layout_width="350dp"
+      android:layout_height="271dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.475"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.965" />
+
+  <ImageButton
+      android:id="@+id/FavoriteImageButton"
+      android:layout_width="155dp"
+      android:layout_height="137dp"
+      android:scaleType="fitXY"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.875"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.387"
+      app:srcCompat="@drawable/favsongoverly" />
+
+  <TextView
+      android:id="@+id/FavoriteSong"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/ios_bold"
+      android:text="Favorite Tracks"
+      android:textColor="@color/white"
+      android:textSize="16dp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.835"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.534" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

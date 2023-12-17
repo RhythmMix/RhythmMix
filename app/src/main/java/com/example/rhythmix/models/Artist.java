@@ -3,7 +3,9 @@ package com.example.rhythmix.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Artist {
+import java.io.Serializable;
+
+public class Artist implements Serializable {
     private long id;
     private String name;
     private String link;
