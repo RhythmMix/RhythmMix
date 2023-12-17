@@ -164,7 +164,7 @@ public class LibraryActivity extends AppCompatActivity {
                 RecyclerView libraryRecyclerView = findViewById(R.id.libraryRecyclerView);
                 libraryRecyclerView.setVisibility(View.VISIBLE);
             } else if (checkedId == R.id.playlistsButton) {
-                startActivity(new Intent(LibraryActivity.this, PlaylistsActivity.class));
+//                startActivity(new Intent(LibraryActivity.this, PlaylistsActivity.class));
             }
         });
         navigationBar.check(R.id.songsButton);
