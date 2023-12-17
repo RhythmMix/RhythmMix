@@ -181,10 +181,9 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
     private void onMenuItemClick(int itemId, Music selectedTrack) {
         if (itemId == R.id.menu_text1) {
-            Toast.makeText(context, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
-            // Handle adding to playlist if needed
+//            Toast.makeText(context, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.menu_text2) {
-            Toast.makeText(context, "Add to Favorite Clicked", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Add to Favorite Clicked", Toast.LENGTH_SHORT).show();
             addToFavorites(selectedTrack);
         } else if (itemId == R.id.menu_text3) {
             String trackLink = selectedTrack.getPreview();

@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/playlist_song_item"
+        tools:listitem="@layout/favorite_each_item"
         tools:orientation="vertical" />
 
 
