@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.example.rhythmix.Activites.AddToFavoritesActivity;
 import com.example.rhythmix.Activites.InsidePlaylistActivity;
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.FavoritesHandler;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -41,10 +42,13 @@ import java.util.List;
 public class FavoritesAdapter extends RecyclerView.Adapter {
     List<Favorite> favorites;
     Context callingActivity;
-    public FavoritesAdapter(List<Favorite> favorites,Context callingActivity) {
+    FavoritesHandler favoritesHandler;
 
+
+    public FavoritesAdapter(List<Favorite> favorites,Context callingActivity) {
         this.favorites = favorites;
         this.callingActivity = callingActivity;
+        this.favoritesHandler = new FavoritesHandler(favorites, callingActivity, this);
     }
 
     @NonNull
@@ -74,7 +78,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
         deleteFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteFromFavorites(trackId);
+                favoritesHandler.deleteFromFavorites(trackId);//////////////////////////////////////////////////////////////////////////
             }
         });
 
@@ -110,16 +114,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
             throw new RuntimeException(e);
         }
 
+////======================Not Needed=================================
 
-        holder.itemView.setOnClickListener(view -> {
-                  Intent goToFav = new Intent(callingActivity, InsidePlaylistActivity.class);
-                  goToFav.putExtra("TRACK_TITLE", trackTitle);
-                  goToFav.putExtra("TRACK_ARTIST", artistName);
-                  goToFav.putExtra("TRACK_COVER", albumCover);
-                  goToFav.putExtra("TRACK_MP3", trackPreview);
-
-                  callingActivity.startActivity(goToFav);
-              });
+//        holder.itemView.setOnClickListener(view -> {
+//                  Intent goToFav = new Intent(callingActivity, InsidePlaylistActivity.class);
+//                  goToFav.putExtra("TRACK_TITLE", trackTitle);
+//                  goToFav.putExtra("TRACK_ARTIST", artistName);
+//                  goToFav.putExtra("TRACK_COVER", albumCover);
+//                  goToFav.putExtra("TRACK_MP3", trackPreview);
+//
+//                  callingActivity.startActivity(goToFav);
+//              });
     }
 
     @Override
@@ -136,44 +141,44 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
 
     ////=============== delete from Favorites ================== ////
 
-    private void deleteFromFavorites(String trackId) {
-        AuthUser authUser = Amplify.Auth.getCurrentUser();
-        if (authUser != null) {
-            Amplify.API.query(
-                    ModelQuery.list(Favorite.class, Favorite.FAVORITE_ID.eq(trackId)),
-                    response -> {
-                        if (response.getData() != null && response.getData().getItems() != null) {
-                            Iterator<Favorite> iterator = response.getData().getItems().iterator();
-                            if (iterator.hasNext()) {
-                                // Track exists, delete it
-                                Favorite favoriteToDelete = iterator.next();
-                                Amplify.API.mutate(
-                                        ModelMutation.delete(favoriteToDelete),
-                                        deleteResponse -> {
-                                            showToast("Track deleted from favorites");
-                                            runOnUiThread(() -> {
-                                                favorites.remove(favoriteToDelete);
-                                                notifyDataSetChanged();
-                                            });
-                                        },
-                                        deleteError -> {
-                                            showToast("Error deleting track: " + deleteError.getMessage());
-                                        }
-                                );
-                            } else {
-                                showToast("Track not found in favorites");
-                            }
-                        }
-                    },
-                    error -> {
-                        showToast("Error checking for track: " + error.getMessage());
-                    }
-            );
-        }
-    }
+//    private void deleteFromFavorites(String trackId) {
+//        AuthUser authUser = Amplify.Auth.getCurrentUser();
+//        if (authUser != null) {
+//            Amplify.API.query(
+//                    ModelQuery.list(Favorite.class, Favorite.FAVORITE_ID.eq(trackId)),
+//                    response -> {
+//                        if (response.getData() != null && response.getData().getItems() != null) {
+//                            Iterator<Favorite> iterator = response.getData().getItems().iterator();
+//                            if (iterator.hasNext()) {
+//                                // Track exists, delete it
+//                                Favorite favoriteToDelete = iterator.next();
+//                                Amplify.API.mutate(
+//                                        ModelMutation.delete(favoriteToDelete),
+//                                        deleteResponse -> {
+//                                            showToast("Track deleted from favorites");
+//                                            runOnUiThread(() -> {
+//                                                favorites.remove(favoriteToDelete);
+//                                                notifyDataSetChanged();
+//                                            });
+//                                        },
+//                                        deleteError -> {
+//                                            showToast("Error deleting track: " + deleteError.getMessage());
+//                                        }
+//                                );
+//                            } else {
+//                                showToast("Track not found in favorites");
+//                            }
+//                        }
+//                    },
+//                    error -> {
+//                        showToast("Error checking for track: " + error.getMessage());
+//                    }
+//            );
+//        }
+//    }
 
-    private void showToast(String message) {
-        runOnUiThread(() -> Toast.makeText(callingActivity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
-    }
+//    private void showToast(String message) {
+//        runOnUiThread(() -> Toast.makeText(callingActivity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
+//    }
 
 }

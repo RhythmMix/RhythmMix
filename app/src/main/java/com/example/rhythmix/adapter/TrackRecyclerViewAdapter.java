@@ -30,6 +30,7 @@ import com.amplifyframework.datastore.generated.model.User;
 import com.example.rhythmix.Activites.AddToFavoritesActivity;
 import com.example.rhythmix.Activites.MainActivity;
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.FavoritesHandler;
 import com.example.rhythmix.models.Music;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
@@ -40,12 +41,19 @@ import java.util.List;
 public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecyclerViewAdapter.TrackListViewHolder> {
 
     private List<Music> musicList;
+    private List<Favorite> musicListFavorite;
     private Activity context;
     private static final String TAG = "TrackRecyclerViewAdapter";
 
+    FavoritesHandler favoritesHandler;
+    FavoritesAdapter favoritesAdapter;
+
     public TrackRecyclerViewAdapter(Activity context, List<Music> musicList) {
+
         this.context = context;
         this.musicList = musicList;
+        this.favoritesHandler = new FavoritesHandler(musicListFavorite,context, favoritesAdapter);
+
     }
 
     @NonNull
@@ -184,10 +192,10 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 //            Toast.makeText(context, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.menu_text2) {
 //            Toast.makeText(context, "Add to Favorite Clicked", Toast.LENGTH_SHORT).show();
-            addToFavorites(selectedTrack);
+            favoritesHandler.addToFavorites(selectedTrack);
         } else if (itemId == R.id.menu_text3) {
             String trackLink = selectedTrack.getPreview();
-            shareTrack(trackLink);
+            favoritesHandler.shareTrack(trackLink);
         }
     }
 
@@ -195,77 +203,77 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     ///// =================== Share Track Functionality ==================== ///////////
 
 
-    private void shareTrack(String trackLink) {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Track Link");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, trackLink);
-        context.startActivity(Intent.createChooser(shareIntent, "Share Track Link"));
-    }
+//    private void shareTrack(String trackLink) {
+//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//        shareIntent.setType("text/plain");
+//        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Track Link");
+//        shareIntent.putExtra(Intent.EXTRA_TEXT, trackLink);
+//        context.startActivity(Intent.createChooser(shareIntent, "Share Track Link"));
+//    }
 
 
 
     ///// =================== Add To Favorites Functionality ==================== ///////////
 
 
-    private void addToFavorites(Music selectedTrack) {
-        String trackId = String.valueOf(selectedTrack.getId());
-        String title = selectedTrack.getTitle();
-        String artist = selectedTrack.getArtist().getName();
-        String mp3 = selectedTrack.getPreview();
-        String albumCover = selectedTrack.getAlbum().getCover();
-
-        checkAndAddToFavorites(trackId, title, artist, mp3, albumCover);
-    }
-
-    private void checkAndAddToFavorites(String trackId, String title, String artist,
-                                        String mp3, String cover) {
-        AuthUser authUser = Amplify.Auth.getCurrentUser();
-        if (authUser != null) {
-            Amplify.API.query(
-                    ModelQuery.list(Favorite.class, Favorite.FAVORITE_ID.eq(trackId)),
-                    response -> {
-                        if (response.getData() != null && response.getData().getItems() != null) {
-                            Iterator<Favorite> iterator = response.getData().getItems().iterator();
-                            if (iterator.hasNext()) {
-                                // Track already exists
-                                showToast("Track is already in favorites");
-                            } else {
-                                // Track doesn't exist, add it
-                                addToFavorites(trackId, title, artist, mp3, cover);
-                            }
-                        }
-                    },
-
-                        error -> {
-                        showToast("Error checking for track: " + error.getMessage());
-                    }
-            );
-        }
-    }
-
-    private void addToFavorites(String trackId, String title, String artist,
-                                String mp3, String cover) {
-        AuthUser authUser = Amplify.Auth.getCurrentUser();
-        if (authUser != null) {
-            Favorite favorite = Favorite.builder()
-                    .favoriteId(trackId)
-                    .favoriteTitle(title)
-                    .favoriteArtist(artist)
-                    .favoriteMp3(mp3)
-                    .userId(authUser.getUserId())
-                    .favoriteCover(cover)
-                    .build();
-
-            Amplify.API.mutate(
-                    ModelMutation.create(favorite),
-                    response -> showToast("Track added to favorites"),
-                    error -> showToast("Error adding track to favorites: " + error.getMessage())
-            );
-        }
-    }
-
-    private void showToast(String message) {
-        runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
-    }
+//    private void addToFavorites(Music selectedTrack) {
+//        String trackId = String.valueOf(selectedTrack.getId());
+//        String title = selectedTrack.getTitle();
+//        String artist = selectedTrack.getArtist().getName();
+//        String mp3 = selectedTrack.getPreview();
+//        String albumCover = selectedTrack.getAlbum().getCover();
+//
+//        checkAndAddToFavorites(trackId, title, artist, mp3, albumCover);
+//    }
+//
+//    private void checkAndAddToFavorites(String trackId, String title, String artist,
+//                                        String mp3, String cover) {
+//        AuthUser authUser = Amplify.Auth.getCurrentUser();
+//        if (authUser != null) {
+//            Amplify.API.query(
+//                    ModelQuery.list(Favorite.class, Favorite.FAVORITE_ID.eq(trackId)),
+//                    response -> {
+//                        if (response.getData() != null && response.getData().getItems() != null) {
+//                            Iterator<Favorite> iterator = response.getData().getItems().iterator();
+//                            if (iterator.hasNext()) {
+//                                // Track already exists
+//                                showToast("Track is already in favorites");
+//                            } else {
+//                                // Track doesn't exist, add it
+//                                addToFavorites(trackId, title, artist, mp3, cover);
+//                            }
+//                        }
+//                    },
+//
+//                        error -> {
+//                        showToast("Error checking for track: " + error.getMessage());
+//                    }
+//            );
+//        }
+//    }
+//
+//    private void addToFavorites(String trackId, String title, String artist,
+//                                String mp3, String cover) {
+//        AuthUser authUser = Amplify.Auth.getCurrentUser();
+//        if (authUser != null) {
+//            Favorite favorite = Favorite.builder()
+//                    .favoriteId(trackId)
+//                    .favoriteTitle(title)
+//                    .favoriteArtist(artist)
+//                    .favoriteMp3(mp3)
+//                    .userId(authUser.getUserId())
+//                    .favoriteCover(cover)
+//                    .build();
+//
+//            Amplify.API.mutate(
+//                    ModelMutation.create(favorite),
+//                    response -> showToast("Track added to favorites"),
+//                    error -> showToast("Error adding track to favorites: " + error.getMessage())
+//            );
+//        }
+//    }
+//
+//    private void showToast(String message) {
+//        runOnUiThread(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
+//    }
 }
