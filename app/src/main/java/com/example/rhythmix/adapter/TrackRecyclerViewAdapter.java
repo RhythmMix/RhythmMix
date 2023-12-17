@@ -1,5 +1,4 @@
 package com.example.rhythmix.adapter;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,10 +34,7 @@ import com.example.rhythmix.models.Track;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.List;
-
-
 public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecyclerViewAdapter.TrackListViewHolder> {
-
     private List<Track> trackList;
     private Activity context;
     private static final String TAG = "TrackRecyclerViewAdapter";
@@ -67,10 +63,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 ImageButton toggleButton = holder.itemView.findViewById(R.id.toggleButton);
                 ImageView menuButton = holder.itemView.findViewById(R.id.menu_button_main);
                 initializePopupMenu(menuButton , track);
-
-
                 Picasso.get().load(imageUrl).into(musicImage);
-
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
                     mediaPlayer.setDataSource(context, Uri.parse(track.getPreview()));
@@ -78,7 +71,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
                 String titleArtist = track.getTitle() + " \n \n " + track.getArtist().getName();
                 musicTitle.setText(titleArtist);
 
@@ -99,13 +91,11 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     public int getItemCount() {
         return trackList.size();
     }
-
     public class TrackListViewHolder extends RecyclerView.ViewHolder {
         public TrackListViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
-
     public void initializePopupMenu(View menuButton, Track selectedTrack) {
 
         if (menuButton != null) {
@@ -117,7 +107,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             });
         }
     }
-
     public void showPopupMenu(View view, Track selectedTrack) {
         View popupView = LayoutInflater.from(context).inflate(R.layout.playlist_dropdown_home_page, null);
         PopupWindow popupWindow = new PopupWindow(
@@ -126,9 +115,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 true
         );
-
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         TextView menuText1 = popupView.findViewById(R.id.menu_text1);
         TextView menuText2 = popupView.findViewById(R.id.menu_text2);
         TextView menuText3 = popupView.findViewById(R.id.menu_text3);
@@ -148,7 +135,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 onMenuItemClick(R.id.menu_text2, selectedTrack);
             }
         });
-
         menuText3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +147,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             popupWindow.showAsDropDown(view);
         }
     }
-
     private void onMenuItemClick(int itemId, Track selectedTrack) {
         if (itemId == R.id.menu_text1) {
 //            Toast.makeText(context, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
@@ -180,7 +165,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         AuthUser authUser = Amplify.Auth.getCurrentUser();
         Intent addToPlaylistIntent = new Intent(context, ChoosePlaylistActivity.class);
         if (authUser != null) {
-
             long trackId = selectedTrack.getId();
             String trackTitle = selectedTrack.getTitle();
             String trackArtist = selectedTrack.getArtist().getName();
@@ -192,8 +176,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             addToPlaylistIntent.putExtra("TRACK_ARTIST", trackArtist);
             addToPlaylistIntent.putExtra("TRACK_MP3", trackMp3);
             addToPlaylistIntent.putExtra("TrackCover",cover);
-                addToPlaylistIntent.putExtra("SELECTED_TRACK", selectedTrack);
-
+            addToPlaylistIntent.putExtra("SELECTED_TRACK", selectedTrack);
             context.startActivity(addToPlaylistIntent);
         }
     }
@@ -205,15 +188,12 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
         Intent addToFavoritesIntent = new Intent(context, AddToFavoritesActivity.class);
 
         if (authUser != null) {
-            // Extract relevant information from the selected track
             long trackId = selectedTrack.getId();
             String trackTitle = selectedTrack.getTitle();
             String trackArtist = selectedTrack.getArtist().getName();
             String trackMp3 = selectedTrack.getPreview();
-            String userEmail = authUser.getUsername(); // Assuming the user's email is used as the username
+            String userEmail = authUser.getUsername();
             String cover =selectedTrack.getAlbum().getCover();
-
-
             buildUserAndAddToFavorites(authUser, userEmail, trackId, trackTitle, trackArtist, trackMp3, cover);
             addToFavoritesIntent.putExtra("TRACK_ID", selectedTrack.getId());
             addToFavoritesIntent.putExtra("TRACK_TITLE", selectedTrack.getTitle());
@@ -248,11 +228,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                 failureResponse -> Log.e(TAG, "Error saving item", failureResponse)
         );
     }
-
-
-
-
-
     public void addTrack(Track track) {
         trackList.add(track);
         notifyDataSetChanged();

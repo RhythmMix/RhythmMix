@@ -42,16 +42,10 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
     public static final String TAG = "playlistTag";
     String getPlaylistId;
     Intent getTrackIntent;
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_playlist);
-
-
         String emptyFileName="emptyTestFile";
         File emptyFile =new File(getApplicationContext().getFilesDir(),emptyFileName);
         try {
@@ -76,13 +70,12 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                     Log.i(TAG, "S3 upload failed! " + failure.getMessage());
                 }
         );
-
+        
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();
         setUpPlayListRecyclerView();
         getTrackIntent = getIntent();
         Log.i("TAG","PlaylistId is : "+getPlaylistId);
-
     }
     private void onPlaylistSelected(String playlistId) {
         getPlaylistId = playlistId;
@@ -108,18 +101,9 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
     public void onPlaylistClick(String playlistId) {
         Log.i(TAG, "Selected Playlist Id: " + playlistId);
         onPlaylistSelected(playlistId);
-
-
         Track selectedTrack = (Track) getTrackIntent.getSerializableExtra("SELECTED_TRACK");
         addToPlaylistAndAmplify(selectedTrack);
-
-
-        Intent goToInsidePlaylist = new Intent(this, InsidePlaylistActivity.class);
-        goToInsidePlaylist.putExtra("playlistId", playlistId);
-        Log.i(TAG, "The Playlist Id is: " + playlistId);
-        startActivity(goToInsidePlaylist);
     }
-
     //>>>>>>>>>>>>>>>>>>>>>>>>>Create a track on database<<<<<<<<<<<<<<<<<<<<<<<<
     public void addToPlaylistAndAmplify(Track selectedTrack) {
         String trackTitle = getTrackIntent.getStringExtra("TRACK_TITLE");
@@ -148,7 +132,6 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                     },
                     failureResponse -> Log.e(TAG, "Error saving PlaylistMusic item", failureResponse)
             );
-
             runOnUiThread(() -> {
                 choosePlaylistAdapter.notifyDataSetChanged();
             });
@@ -163,46 +146,6 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                 failureResponse -> Log.e(TAG, "Error saving Music item", failureResponse)
         );
     }
-
-//    public void addToPlaylistAndAmplify(Track selectedTrack) {
-//        String trackTitle = getTrackIntent.getStringExtra("TRACK_TITLE");
-//        String trackArtist = getTrackIntent.getStringExtra("TRACK_ARTIST");
-//        String trackMp3 = getTrackIntent.getStringExtra("TRACK_MP3");
-//        String trackCover = getTrackIntent.getStringExtra("TrackCover");
-//
-//        Music music = Music.builder()
-//                .musicTitle(trackTitle)
-//                .musicArtist(trackArtist)
-//                .musicCover(trackCover)
-//                .musicMp3(trackMp3)
-//                .build();
-//
-//        if (getPlaylistId != null) {
-//            PlaylistMusic playlistMusic = PlaylistMusic.builder()
-//                    .playlist(Playlist.justId(getPlaylistId))
-//                    .track(music)
-//                    .build();
-//
-//            Amplify.API.mutate(
-//                    ModelMutation.create(playlistMusic),
-//                    successResponse -> {
-//                        Log.i(TAG, "Saved PlaylistMusic item: " + successResponse.getData());
-//                        saveMusicItem(music);
-//                    },
-//                    failureResponse -> Log.e(TAG, "Error saving PlaylistMusic item", failureResponse)
-//            );
-//
-//            runOnUiThread(() -> {
-//                choosePlaylistAdapter.notifyDataSetChanged();
-//            });
-//        } else {
-//            Log.e(TAG, "No playlist ID available");
-//        }
-//    }
-
-
-
-
     private void setUpPlayListRecyclerView() {
         RecyclerView playlistRecyclerView = findViewById(R.id.playlistsRecycleView);
         int numberOfColumns = 2;
@@ -213,8 +156,4 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
         playlistRecyclerView.setAdapter(choosePlaylistAdapter);
 
     }
-
-
-
-
 }

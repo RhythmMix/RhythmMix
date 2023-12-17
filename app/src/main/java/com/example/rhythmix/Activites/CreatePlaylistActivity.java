@@ -260,36 +260,4 @@ public class CreatePlaylistActivity extends AppCompatActivity {
             Log.e(TAG, "Exception during mutation: " + e.getMessage(), e);
         }
     }
-
-
-//    private void saveProduct(String imageS3Key) {
-//        AuthUser authUser = Amplify.Auth.getCurrentUser();
-//        User user = User.builder()
-//                .email(authUser.getUsername())
-//                .id(authUser.getUserId())
-//                .username("")
-//                .userImageS3Key("")
-//                .build();
-//
-//        Playlist productToSave = Playlist.builder()
-//                .playlistName(playlistTitle.getText().toString())
-//                .playlistBackground(imageS3Key)
-//                .user(user)
-//                .build();
-//
-//        try {
-//            Amplify.API.mutate(
-//                    ModelMutation.create(productToSave),
-//                    successResponse -> {
-//                        Log.i(TAG, "EditProductActivity.onCreate(): created a product successfully");
-//                        Snackbar.make(findViewById(R.id.playlistaccess), "Product saved!", Snackbar.LENGTH_SHORT).show();
-//                    },
-//                    failureResponse -> Log.i(TAG, "EditProductActivity.onCreate(): failed with this response: " + failureResponse)
-//            );
-//        } catch (Exception e) {
-//            Log.e(TAG, "Exception during mutation: " + e.getMessage(), e);
-//        }
-//    }
-
-
 }
