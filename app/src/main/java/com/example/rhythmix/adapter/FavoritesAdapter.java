@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
         TextView description = holder.itemView.findViewById(R.id.description);
         ImageButton previewBtn = holder.itemView.findViewById(R.id.preview_button);
         RoundedImageView albumCoverView= holder.itemView.findViewById(R.id.image);
+//        ImageView menuBtn= holder.itemView.findViewById(R.id.menu_button);
+
 
         String trackTitle = favorite.getFavoriteTitle();
         String trackPreview= favorite.getFavoriteMp3();

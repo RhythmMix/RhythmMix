@@ -8,7 +8,6 @@
     android:layout_height="@dimen/item_song_child_height"
     android:background="@android:color/transparent">
 
-    <!-- Dummy View as Panel -->
     <View
         android:id="@+id/panel"
         android:layout_width="match_parent"

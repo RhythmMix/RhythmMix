@@ -20,7 +20,9 @@ import com.example.rhythmix.adapter.FavoritesAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AddToFavoritesActivity extends AppCompatActivity {
     private List<Favorite> favorites = new ArrayList<>();
@@ -46,13 +48,20 @@ public class AddToFavoritesActivity extends AppCompatActivity {
     }
 
     private void queryFavorites() {
+        Set<String> uniqueIds = new HashSet<>();
         Amplify.API.query(
                 ModelQuery.list(Favorite.class),
                 response -> {
                     runOnUiThread(() -> {
                         for (Favorite favorite : response.getData()) {
-                            favorites.add(favorite);
-                            Log.d(TAG, "favorites from add to favorites" + favorite);
+                            String favoriteId = favorite.getFavoriteId();
+                            if (uniqueIds.add(favoriteId)) {
+                                // This means the ID was not already in the set
+                                favorites.add(favorite);
+                                Log.d(TAG, "Added to favorites: " + favorite);
+                            } else {
+                                Log.d(TAG, "Duplicate track found, not added: " + favoriteId);
+                            }
                         }
                         favoritesAdapter.notifyDataSetChanged();
                     });
