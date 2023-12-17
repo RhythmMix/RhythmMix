@@ -25,10 +25,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_person_24"
-<<<<<<< HEAD
         android:title="Profile" />
-=======
-        android:title="Profile"/>
->>>>>>> 86573f8be92a98ece6dd8cb5e68933b9a57a512d
-
 </menu>

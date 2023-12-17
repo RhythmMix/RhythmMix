@@ -36,13 +36,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:name=".Activities.ChoosePlaylistActivity"
         android:exported="false" />
     <activity
-        android:name=".Activities.AddToPlaylist"
-        android:exported="false" />
-    <activity
         android:name=".Activities.SongPlayerActivity"
-        android:exported="false" />
-    <activity
-        android:name=".Activities.LibraryActivity"
         android:exported="false" />
     <activity
         android:name=".Activities.SearchActivity"
@@ -60,31 +54,15 @@ xmlns:tools="http://schemas.android.com/tools">
         android:name=".Activities.InsidePlaylistActivity"
         android:exported="false" />
     <activity
-        android:name=".activites.MainActivity"
+        android:name=".Activities.MainActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
     <activity
-        android:name=".activities.ProfileActivity"
-        android:exported="false" />
-    <activity
-        android:name=".Activities.SearchActivity"
-        android:exported="false" />
-    <activity
-        android:name=".activities.SignUpActivity"
-        android:exported="false" />
-    <activity
-        android:name=".Activities.SongPlayerActivity"
-        android:exported="false" />
-    <activity
-        android:name=".ProfileFunctionalityActivity"
-        android:exported="false" />
-    <activity
-        android:name=".SignUpFunctionalityActivity"
+        android:name=".Activities.SignUpActivity"
         android:exported="false" />
 </application>
 
