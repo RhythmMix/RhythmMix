@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+
+    <color name="red">#A10B0B</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="backward_color">#DD000000</color>
+    <item name="FlatWhite" type="color">#F5F5F5</item>
+    <color name="flatOrange">#FF9500</color>
+    <color name="background_panel_color">#080808</color>
+    <color name="color_aaa">#aaa</color>
+    <color name="shuffleColor">#A57C03</color>
+    <color name="SplashColor">@android:color/black</color>
+    <color name="black">#FF000000</color>
+    <item name="SplashBackground" type ="color">#f0f0f0</item>
 </resources>

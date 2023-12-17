@@ -1,3 +1,9 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Rhythmix</string>
+
+    <string name="songs">PLaylist Name</string>
+    <string name="play_all_songs">Play all</string>
+    <string name="play_random">Shuffle play</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="accessibility_overflow">Accessibility Overflow</string>
 </resources>
