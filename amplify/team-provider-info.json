@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rhythmmix-dev-211709-authRole",
+      "UnauthRoleArn": "arn:aws:iam::476114051858:role/amplify-rhythmmix-dev-211709-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::476114051858:role/amplify-rhythmmix-dev-211709-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-rhythmmix-dev-211709-deployment",
+      "UnauthRoleName": "amplify-rhythmmix-dev-211709-unauthRole",
+      "StackName": "amplify-rhythmmix-dev-211709",
+      "StackId": "arn:aws:cloudformation:us-east-2:476114051858:stack/amplify-rhythmmix-dev-211709/ff831190-95f5-11ee-939b-06e465e99fdb",
+      "AmplifyAppId": "d1s8dz16kgismh"
+    },
+    "categories": {
+      "api": {
+        "rhythmmix": {}
+      },
+      "auth": {
+        "rhythmmix2d606791": {}
+      }
+    }
+  }
+}

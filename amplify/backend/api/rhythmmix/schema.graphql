@@ -1,0 +1,69 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+}
+type PlaylistMusic @model {
+  id: ID!
+  playlistID: ID!
+  musicID: ID!
+  playlist: Playlist @belongsTo(fields: ["playlistID"])
+  music: Music @belongsTo(fields: ["musicID"])
+}
+
+type Playlist @model @auth(rules: [{ allow: public }]) {
+  playlistID: ID!
+  playlistName: String!
+  playlistBackground: String
+  userID: ID! # Add the userID field
+  user: User @belongsTo(fields: ["userID"])
+  musics: [Music] @hasMany(fields: ["playlistID"])
+  playlistMusic: [PlaylistMusic] @hasMany(fields: ["playlistID"]) # Establish relationship with PlaylistMusic
+}
+
+
+type Music @model @auth(rules: [{ allow: public }]) {
+  musicID: ID!
+  musicTitle: String!
+  musicArtist: String!
+  musicAlbum: String!
+  musicDuration: Int!
+  musicCover: String!
+  musicMp3: String!
+  playlists: [Playlist] @hasMany(fields: ["musicID"])
+  favoriteMusics: [FavoriteMusic] @hasMany(fields: ["musicID"])
+  playlistMusic: [PlaylistMusic] @hasMany(fields: ["musicID"]) # Establish relationship with PlaylistMusic
+}
+
+
+type User @model @auth(rules: [{ allow: public }]) {
+  userID: ID!
+  email: String!
+  username: String
+  userImageS3Key: String
+  password: String!
+  playlists: [Playlist] @hasMany(fields: ["userID"])
+  favorites: [FavoriteMusic] @hasMany(fields: ["userID"])
+}
+
+type FavoriteMusic @model {
+  id: ID!
+  favoriteID: ID!
+  musicID: ID!
+  favorite: Favorite @belongsTo(fields: ["favoriteID"])
+  music: Music @belongsTo(fields: ["musicID"])
+}
+
+type Favorite @model @auth(rules: [{ allow: public }]) {
+  favoriteID: ID!  # Corrected field name
+  FavoriteTitle: String!
+  FavoriteArtist: String!
+  FavoriteMp3: String!
+  userID: ID!
+  favoriteMusics: [FavoriteMusic] @hasMany(fields: ["favoriteID"])
+}
+
+
