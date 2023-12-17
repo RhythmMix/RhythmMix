@@ -22,10 +22,14 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
     private Activity context;
     private List<Music> dataList;
     private static final String TAG = "HOLDER";
+    private MediaPlayer currentMediaPlayer;
+    private RecyclerView recyclerView;
+    private int currentlyPlayingPosition = -1;
 
-    public DataListAdapter(Activity context, List<Music> dataList) {
+    public DataListAdapter(Activity context, List<Music> dataList, RecyclerView recyclerView) {
         this.context = context;
         this.dataList = dataList;
+        this.recyclerView = recyclerView;
     }
 
 
@@ -71,15 +75,39 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
 
 
             toggleButton.setOnClickListener(v -> {
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.pause();
-                    toggleButton.setImageResource(android.R.drawable.ic_media_play);
+                int clickedPosition = holder.getAdapterPosition();
+
+                if (currentMediaPlayer != null && currentMediaPlayer.isPlaying()) {
+                    if (currentlyPlayingPosition == clickedPosition) {
+                        currentMediaPlayer.pause();
+                        updateToggleIconForItem(android.R.drawable.ic_media_play, clickedPosition);
+                        currentlyPlayingPosition = -1;
+                    } else {
+                        currentMediaPlayer.pause();
+                        updateToggleIconForItem(android.R.drawable.ic_media_play, currentlyPlayingPosition);
+
+                        mediaPlayer.start();
+                        updateToggleIconForItem(android.R.drawable.ic_media_pause, clickedPosition);
+                        currentlyPlayingPosition = clickedPosition;
+                    }
                 } else {
+                    // No song is currently playing or paused, start the clicked song
                     mediaPlayer.start();
-                    toggleButton.setImageResource(android.R.drawable.ic_media_pause);
+                    updateToggleIconForItem(android.R.drawable.ic_media_pause, clickedPosition);
+                    currentlyPlayingPosition = clickedPosition; // Update currentlyPlayingPosition
                 }
+
+                // Update the currentMediaPlayer to the new one
+                currentMediaPlayer = mediaPlayer;
             });
         }
+    }
+
+
+    private void updateToggleIconForItem(int iconResId, int itemPosition) {
+        View itemView = recyclerView.findViewHolderForAdapterPosition(itemPosition).itemView;
+        ImageButton toggleButton = itemView.findViewById(R.id.toggleButton);
+        toggleButton.setImageResource(iconResId);
     }
 
     @Override

@@ -45,9 +45,14 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+
+            bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
+
             if (item.getItemId() == R.id.Home) {
                 startActivity(new Intent(SearchActivity.this, MainActivity.class));
                 return true;
@@ -62,10 +67,9 @@ public class SearchActivity extends AppCompatActivity {
             } else return false;
         });
         bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(true);
-
-        //====================================================================
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         setupAutoComplete();
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -174,7 +178,7 @@ public class SearchActivity extends AppCompatActivity {
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SearchActivity.this);
                             musicListRecyclerView.setLayoutManager(layoutManager);
 
-                            adapter = new DataListAdapter(SearchActivity.this, musicList);
+                            adapter = new DataListAdapter(SearchActivity.this, musicList, musicListRecyclerView);
                             musicListRecyclerView.setAdapter(adapter);
                             Log.d(TAG, "OnSuccess:" + response.body());
 
@@ -199,7 +203,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void onSuggestionSelected(String selectedSuggestion) {
 
-        Intent intent = new Intent(this, SearchBarResultsActivity.class);
+        Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra("selectedSuggestion", selectedSuggestion);
         startActivity(intent);
     }

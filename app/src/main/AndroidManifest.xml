@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Rhythmix"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AddToPlaylistPopUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AlbumTracksActivity"
             android:exported="false" />
         <activity
@@ -32,13 +35,7 @@
             android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SearchBarResultsActivity"
-            android:exported="false" />
-        <activity
             android:name=".Adapter.AlbumTracksAdapter"
-            android:exported="false" />
-        <activity
-            android:name=".models.AlbumTracksActivity"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

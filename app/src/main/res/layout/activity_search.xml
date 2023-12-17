@@ -4,24 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/libraryoverlay"
     tools:context=".activities.SearchActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/autoCompleteLayout"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="32dp"
+        app:boxStrokeColor="@color/white"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
-            android:layout_width="335dp"
-            android:layout_height="41dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/rounded_border"
-            android:backgroundTint="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
-            android:gravity="center"
+            app:boxStrokeColor="@color/white"
+            app:boxStrokeWidth="2dp"
             android:hint="Search"
             android:imeOptions="actionSearch"
             android:inputType="text"
@@ -29,49 +40,29 @@
             android:paddingEnd="8dp"
             android:singleLine="true"
             android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            app:dropDownBackgroundTint="@color/transparent"
-            android:popupBackground="@android:color/transparent"
-            android:dropDownVerticalOffset="20dp"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="56dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="5dp"
-            android:layout_alignStart="@+id/autoCompleteTextView"
-            android:layout_alignTop="@+id/autoCompleteTextView"
-            android:layout_alignEnd="@+id/autoCompleteTextView"
-            android:layout_alignBottom="@+id/autoCompleteTextView"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="248dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@android:drawable/ic_menu_search"
-            tools:ignore="MissingConstraints" />
+            android:textColorHint="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="78dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="70dp"
-            tools:layout_editor_absoluteY="265dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/autoCompleteLayout"/>
 
 
 
-    <!--Main NavBar-->
+    <!-- Main NavBar -->
     <include
         android:id="@+id/bottom_navigation"
         layout="@layout/navbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--try this android:layout_alignParentBottom="true" instead of this app:layout_constraintBottom_toBottomOf="parent" if you add elements -->
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
