@@ -31,6 +31,7 @@ public class AlbumTracksActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://api.deezer.com/";
     private AlbumTracksAdapter albumTracksAdapter;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

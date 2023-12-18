@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class APISongPlayerActivity extends AppCompatActivity {
 
@@ -62,6 +64,21 @@ public class APISongPlayerActivity extends AppCompatActivity {
         initializeUI();
         mediaInitialization();
         playSelectedSong();
+
+        Intent intent = getIntent();
+        Track selectedTrack = (Track) intent.getSerializableExtra("SONG_TRACK_OBJECT");
+
+        CompletableFuture<Boolean> future = favoritesHandlerAddToFav.checkIfInFavorites(selectedTrack);
+
+        future.thenAccept(isFav -> {
+            isFavorite = isFav;
+
+            if (isFavorite) {
+                heartButton.setColorFilter(getResources().getColor(R.color.red));
+            } else {
+                heartButton.setColorFilter(getResources().getColor(R.color.white));
+            }
+        });
     }
 
 
@@ -224,7 +241,6 @@ public class APISongPlayerActivity extends AppCompatActivity {
         if (currentPosition < songPaths.size() - 1) {
             currentPosition++;
         } else {
-            // This is the last song, stop playback
             stopPlayback();
             return;
         }
@@ -336,25 +352,21 @@ public class APISongPlayerActivity extends AppCompatActivity {
             isFavorite = !isFavorite;
             updateHeartButtonColor();
 
+
+
             if (isFavorite) {
                 favoritesHandlerAddToFav.addToFavorites(selectedTrack);
-                showToast("Added to favorites");
             } else {
                 favoritesHandlerRemoveFromFav.deleteFromFavorites(String.valueOf(selectedTrack.getId()));
-                showToast("Removed from favorites");
             }
         } else {
             showToast("Failed to convert the selected song object");
         }
     }
 
-    public boolean isTrackInFavorites(Track track) {
-        for (Favorite favorite : favorites) {
-            if (favorite.getFavoriteId().equals(String.valueOf(track.getId()))) {
-                return true;
-            }
-        }
-        return false;
+    private void updateHeartButtonColor() {
+        int heartButtonColor = isFavorite ? R.color.red : R.color.white;
+        heartButton.setColorFilter(getResources().getColor(heartButtonColor));
     }
 
 
@@ -364,10 +376,6 @@ public class APISongPlayerActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void updateHeartButtonColor() {
-        int heartButtonColor = isFavorite ? R.color.red : R.color.white;
-        heartButton.setColorFilter(getResources().getColor(heartButtonColor));
-    }
 
 
     //==============================
