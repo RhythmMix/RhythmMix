@@ -3,8 +3,11 @@ package com.example.rhythmix.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,11 +40,22 @@ public class AddToFavoritesActivity extends AppCompatActivity {
         favoritesRecyclerView.setLayoutManager(layoutManager);
 
         FavoritesAdapter favoritesAdapter = new FavoritesAdapter(favorites, this);
+        FavoritesAdapter favoritesAdapter2 = new FavoritesAdapter(favorites, this,favoritesRecyclerView);
+        favoritesRecyclerView.setAdapter(favoritesAdapter2);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
 
         FavoritesHandler favoritesHandler = new FavoritesHandler(favorites, this, favoritesAdapter);
         initialization();
         favoritesHandler.queryFavorites();
+
+        ImageView back = findViewById(R.id.backButtonFavorite);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddToFavoritesActivity.this, PlaylistsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

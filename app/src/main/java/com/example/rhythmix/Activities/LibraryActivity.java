@@ -357,7 +357,8 @@ public class LibraryActivity extends AppCompatActivity {
     // Play Song Controls
     //==============================
     private void playSelectedSong() {
-        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty() && mediaPlayer.isPlaying() ) {
+        Log.i(LOG_TAG,"Insideee playSelectedSong");
+        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty() ) {
             stopPlayback();
             currentPosition = songPaths.indexOf(selectedSongInLibraryPath);
             playSong(selectedSongInLibraryPath);

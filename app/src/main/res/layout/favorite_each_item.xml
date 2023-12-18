@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
@@ -8,124 +7,68 @@
     android:layout_height="@dimen/item_song_child_height"
     android:background="@android:color/transparent">
 
-    <View
-        android:id="@+id/panel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_music_style"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="10dp"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:scaleType="centerInside"
-        android:padding="6dp"
-        app:riv_corner_radius="4dp"
-        tools:src="@drawable/ic_music_style"
-        app:riv_border_width="1dp"
-        app:riv_border_color="#44F5F5F5"
-        tools:ignore="MissingConstraints" />
-
-    <RelativeLayout
-        android:id="@+id/preview_button_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@id/panel"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/menu_button"
-    android:padding="8dp">
+        app:layout_constraintVertical_bias="0.5" />
 
-        <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/FlatWhite"/>
-</RelativeLayout>
-
-<TextView
-android:id="@+id/title"
-android:maxLines="1"
-android:ellipsize="end"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:textColor="@color/FlatWhite"
-android:textStyle="bold"
-android:textSize="7sp"
-tools:text="Galaxy Supernova"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintStart_toEndOf="@id/image"
-app:layout_constraintEnd_toStartOf="@id/preview_button_container"
-app:layout_constraintBottom_toTopOf="@id/description"
-app:layout_constraintVertical_chainStyle="packed"
-android:layout_marginStart="10dp"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/FlatWhite"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintTop_toTopOf="@id/image"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Galaxy Supernova" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="#AAF5F5F5"
-        android:textSize="12sp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/FlatWhite"
+        android:textSize="14sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/title"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="@id/image"
+        app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="Girls 'Generation" />
-
-    <ImageView
-        android:id="@+id/menu_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:background="@drawable/ripple_oval"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/preview_button_container"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.555"
-        app:srcCompat="@drawable/delete_favorite"
-        app:tint="#DDF5F5F5" />
-
-    <ImageView
-android:id="@+id/quick_play_pause"
-android:layout_width="0dp"
-android:layout_height="0dp"
-
-app:layout_constraintBottom_toBottomOf="@id/image"
-app:layout_constraintEnd_toEndOf="@id/image"
-app:layout_constraintStart_toStartOf="@id/image"
-app:layout_constraintTop_toTopOf="@id/image"
-tools:src="@drawable/ic_volume_up_black_24dp"
-tools:visibility="gone"
-app:tint="@color/FlatWhite" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Subtitle Text" />
 
     <ImageButton
         android:id="@+id/preview_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:alpha="0.9"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/ripple_oval"
-        android:src="@drawable/ic_pause"
-        app:tint="@color/FlatWhite"
-        tools:layout_editor_absoluteX="183dp"
-        tools:layout_editor_absoluteY="5dp"
-        tools:ignore="MissingConstraints" />
+        android:src="@drawable/round_play_circle_24"
+        app:layout_constraintBottom_toBottomOf="@id/description"
+        app:layout_constraintEnd_toStartOf="@+id/menu_button"
+        app:layout_constraintTop_toTopOf="@id/title"
+        app:layout_constraintVertical_bias="0.523" />
 
+    <ImageButton
+        android:id="@+id/menu_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/ripple_oval"
+        android:src="@drawable/delete_favorite"
+        app:layout_constraintBottom_toBottomOf="@id/preview_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/preview_button"
+        app:layout_constraintVertical_bias="0.4"
+        app:tint="#DDF5F5F5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

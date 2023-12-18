@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         Log.i(TAG, "Login failed: "+failure.toString());
                         runOnUiThread(() -> {
-                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Wrong credentials, Please try again", Toast.LENGTH_LONG).show();
                         });
 
                     }
