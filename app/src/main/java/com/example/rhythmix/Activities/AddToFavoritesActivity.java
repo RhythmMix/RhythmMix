@@ -39,9 +39,7 @@ public class AddToFavoritesActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         favoritesRecyclerView.setLayoutManager(layoutManager);
 
-        FavoritesAdapter favoritesAdapter = new FavoritesAdapter(favorites, this);
-        FavoritesAdapter favoritesAdapter2 = new FavoritesAdapter(favorites, this,favoritesRecyclerView);
-        favoritesRecyclerView.setAdapter(favoritesAdapter2);
+        FavoritesAdapter favoritesAdapter = new FavoritesAdapter(favorites, this,favoritesRecyclerView);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
 
         FavoritesHandler favoritesHandler = new FavoritesHandler(favorites, this, favoritesAdapter);

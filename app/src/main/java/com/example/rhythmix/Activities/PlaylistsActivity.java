@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -83,8 +84,8 @@ public class PlaylistsActivity extends AppCompatActivity {
         addListImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PlaylistsActivity.this, CreatePlaylistActivity.class);
-                startActivity(intent);
+                AddToPlaylistPopUpActivity popUp = new AddToPlaylistPopUpActivity();
+                popUp.show(getSupportFragmentManager(),"exp");
             }
         });
 

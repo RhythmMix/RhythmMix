@@ -15,15 +15,22 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.datastore.generated.model.Favorite;
+import com.example.rhythmix.Adapter.FavoritesAdapter;
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.FavoritesHandler;
+import com.example.rhythmix.models.Track;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class APISongPlayerActivity extends AppCompatActivity {
 
-    final static String TAG="songPlayerActivity";
+    final static String TAG = "songPlayerActivity";
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
     private boolean isShuffleActive;
@@ -31,7 +38,7 @@ public class APISongPlayerActivity extends AppCompatActivity {
     TextView songNameTextView;
     TextView artistNameTextView;
     private String songPath;
-    private  List<String> songPaths;
+    private List<String> songPaths;
     private int currentPosition;
     private int lastPlayedPosition = 0;
     private TextView txtStart, txtStop;
@@ -40,6 +47,11 @@ public class APISongPlayerActivity extends AppCompatActivity {
     private ImageView shuffleButton;
     private ImageView heartButton;
     private boolean isFavorite = false;
+    private List<Favorite> favorites =new ArrayList<>();
+    private FavoritesAdapter favoritesAdapter = new FavoritesAdapter(favorites,this);
+    private FavoritesHandler favoritesHandlerAddToFav = new FavoritesHandler(this, favoritesAdapter);
+    private FavoritesHandler favoritesHandlerRemoveFromFav = new FavoritesHandler(favorites,this, favoritesAdapter);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +64,29 @@ public class APISongPlayerActivity extends AppCompatActivity {
         initializeUI();
         mediaInitialization();
         playSelectedSong();
+
+        Intent intent = getIntent();
+        Track selectedTrack = (Track) intent.getSerializableExtra("SONG_TRACK_OBJECT");
+
+        CompletableFuture<Boolean> future = favoritesHandlerAddToFav.checkIfInFavorites(selectedTrack);
+
+        future.thenAccept(isFav -> {
+            isFavorite = isFav;
+
+            if (isFavorite) {
+                heartButton.setColorFilter(getResources().getColor(R.color.red));
+            } else {
+                heartButton.setColorFilter(getResources().getColor(R.color.white));
+            }
+        });
     }
 
 
     //==============================
     // backButton
     //==============================
-    private void backButton(){
-        ImageButton backButton=findViewById(R.id.ApiBackButton);
+    private void backButton() {
+        ImageButton backButton = findViewById(R.id.ApiBackButton);
         backButton.setOnClickListener(view -> {
             Intent intent = new Intent(APISongPlayerActivity.this, MainActivity.class);
             stopPlayback();
@@ -73,7 +100,7 @@ public class APISongPlayerActivity extends AppCompatActivity {
     private void initializeUI() {
         // UI elements initialization
         songNameTextView = findViewById(R.id.ApiPlayerActivitySongName);
-        artistNameTextView=findViewById(R.id.ApiArtistName);
+        artistNameTextView = findViewById(R.id.ApiArtistName);
         txtStart = findViewById(R.id.ApiPlayerActivityTxtStart);
         txtStop = findViewById(R.id.ApiPlayerActivityTxtStop);
         Button playButton = findViewById(R.id.ApiPlayButton);
@@ -134,13 +161,14 @@ public class APISongPlayerActivity extends AppCompatActivity {
     //============================
     public void mediaInitialization() {
         mediaPlayer = new MediaPlayer();
-        Log.i(TAG,"song paths"+ songPaths);
+        Log.i(TAG, "song paths" + songPaths);
         Intent intent = getIntent();
         String songPath = intent.getStringExtra("SONG_PATH");
 
-        try {mediaPlayer.setOnCompletionListener(mp -> {
-            playNextSong();
-        });
+        try {
+            mediaPlayer.setOnCompletionListener(mp -> {
+                playNextSong();
+            });
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 isPlaying = true;
@@ -157,9 +185,13 @@ public class APISongPlayerActivity extends AppCompatActivity {
     //==============================
     // Playback Control
     //==============================
+
     private void playSelectedSong() {
         Intent intent = getIntent();
         String selectedSongPath = intent.getStringExtra("SONG_PATH");
+//        String selectedSongTitle = intent.getStringExtra("SONG_TITLE");
+//        String selectedSongArtist = intent.getStringExtra("SONG_ARTIST");
+//        String selectedSongID = intent.getStringExtra("SONG_ID");
 
 
         if (songPaths != null && !songPaths.isEmpty()) {
@@ -180,10 +212,10 @@ public class APISongPlayerActivity extends AppCompatActivity {
 
         if (currentPosition >= 0 && currentPosition < titlesList.size()) {
 
-            Log.i(TAG,"Current position in playSong: " + currentPosition);
+            Log.i(TAG, "Current position in playSong: " + currentPosition);
             String songTitle = titlesList.get(currentPosition);
             String songArtist = artistsList.get(currentPosition);
-            Log.i(TAG,"Current position in playSong after setters: " + currentPosition);
+            Log.i(TAG, "Current position in playSong after setters: " + currentPosition);
             songNameTextView.setText(songTitle);
             artistNameTextView.setText(songArtist);
         }
@@ -209,7 +241,6 @@ public class APISongPlayerActivity extends AppCompatActivity {
         if (currentPosition < songPaths.size() - 1) {
             currentPosition++;
         } else {
-            // This is the last song, stop playback
             stopPlayback();
             return;
         }
@@ -223,8 +254,6 @@ public class APISongPlayerActivity extends AppCompatActivity {
             updatePlayButton();
         }
     }
-
-
 
 
     private void playPreviousSong() {
@@ -315,19 +344,38 @@ public class APISongPlayerActivity extends AppCompatActivity {
     //==============================
 
     private void onHeartButtonClick() {
-        isFavorite = !isFavorite;
-        updateHeartButtonColor();
+        Intent intent = getIntent();
+        Track selectedTrack = (Track) intent.getSerializableExtra("SONG_TRACK_OBJECT");
+        Log.d(TAG, "selected track in fav button: " + selectedTrack);
 
-        String message = isFavorite ? "Added to favorites" : "Removed from favorites";
-        showToast(message);
+        if (selectedTrack != null) {
+            isFavorite = !isFavorite;
+            updateHeartButtonColor();
+
+
+
+            if (isFavorite) {
+                favoritesHandlerAddToFav.addToFavorites(selectedTrack);
+            } else {
+                favoritesHandlerRemoveFromFav.deleteFromFavorites(String.valueOf(selectedTrack.getId()));
+            }
+        } else {
+            showToast("Failed to convert the selected song object");
+        }
     }
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
+
     private void updateHeartButtonColor() {
         int heartButtonColor = isFavorite ? R.color.red : R.color.white;
         heartButton.setColorFilter(getResources().getColor(heartButtonColor));
     }
+
+
+
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 
 
     //==============================

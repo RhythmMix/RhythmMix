@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -110,18 +111,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpLoginAndLogoutButton() {
-        Button loginButton = findViewById(R.id.login);
+        ImageButton loginButton = findViewById(R.id.login);
+
         if (Amplify.Auth.getCurrentUser() != null) {
-            loginButton.setText("Logout");
+            loginButton.setContentDescription("Logout");
+            loginButton.setImageResource(R.drawable.logout);
         } else {
-            loginButton.setText("Login");
+            loginButton.setContentDescription("Login");
+            loginButton.setImageResource(R.drawable.login);
         }
+
         loginButton.setOnClickListener(v -> {
             if (Amplify.Auth.getCurrentUser() != null) {
                 Amplify.Auth.signOut(
                         () -> {
                             Log.i(TAG, "Logout succeeded");
-                            loginButton.setText("Login");
+                            loginButton.setContentDescription("Login");
+                            loginButton.setImageResource(R.drawable.login);
                             Intent goToLogInIntent = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(goToLogInIntent);
                         },
@@ -138,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     private void displayMultipleAlbums(List<Long> albumIds) {

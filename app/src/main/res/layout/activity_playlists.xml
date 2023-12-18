@@ -32,7 +32,7 @@
       android:layout_marginStart="32dp"
       android:layout_marginTop="40dp"
       android:layout_marginEnd="32dp"
-      android:background="@android:color/transparent"
+      android:background="@drawable/navbar_background"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +49,12 @@
         android:text="Songs"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        />
 
     <RadioButton
         android:id="@+id/playlistsButton"

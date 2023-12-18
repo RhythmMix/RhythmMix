@@ -97,11 +97,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
             if (currentMediaPlayer != null && currentMediaPlayer.isPlaying()) {
                 if (currentlyPlayingPosition == clickedPosition) {
                     currentMediaPlayer.pause();
-                    updateToggleIconForItem(android.R.drawable.ic_media_play, clickedPosition);
+                    updateToggleIconForItem(R.drawable.round_play_circle_24, clickedPosition);
                     currentlyPlayingPosition = -1;
                 } else {
                     currentMediaPlayer.pause();
-                    updateToggleIconForItem(android.R.drawable.ic_media_play, currentlyPlayingPosition);
+                    updateToggleIconForItem(R.drawable.round_play_circle_24, currentlyPlayingPosition);
 
                     mediaPlayer.start();
                     updateToggleIconForItem(android.R.drawable.ic_media_pause, clickedPosition);
@@ -121,7 +121,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
 
     private void updateToggleIconForItem(int iconResId, int itemPosition) {
         View itemView = recyclerView.findViewHolderForAdapterPosition(itemPosition).itemView;
-        ImageButton toggleButton = itemView.findViewById(R.id.toggleButton);
+        ImageButton toggleButton = itemView.findViewById(R.id.preview_button);
         toggleButton.setImageResource(iconResId);
     }
 

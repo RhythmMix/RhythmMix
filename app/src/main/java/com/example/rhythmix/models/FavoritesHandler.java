@@ -2,7 +2,7 @@ package com.example.rhythmix.models;
 
 
 import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
-
+import java.util.concurrent.CompletableFuture;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FavoritesHandler implements FavoritesHandlerInterface {
     List<Favorite> favorites;
@@ -29,6 +30,11 @@ public class FavoritesHandler implements FavoritesHandlerInterface {
 
     public FavoritesHandler(List<Favorite> favorites, Context context, FavoritesAdapter favoritesAdapter) {
         this.favorites = favorites;
+        this.context = context;
+        this.favoritesAdapter = favoritesAdapter;
+    }
+
+    public FavoritesHandler(Context context, FavoritesAdapter favoritesAdapter) {
         this.context = context;
         this.favoritesAdapter = favoritesAdapter;
     }
@@ -50,8 +56,8 @@ public class FavoritesHandler implements FavoritesHandlerInterface {
 
 
 
-    private void checkAndAddToFavorites(String trackId, String title, String artist,
-                                        String mp3, String cover) {
+    public void checkAndAddToFavorites(String trackId, String title, String artist,
+                                       String mp3, String cover) {
         AuthUser authUser = Amplify.Auth.getCurrentUser();
         if (authUser != null) {
             Amplify.API.query(
@@ -72,6 +78,38 @@ public class FavoritesHandler implements FavoritesHandlerInterface {
             );
         }
     }
+
+
+
+    public CompletableFuture<Boolean> checkIfInFavorites(Track selectedTrack) {
+        AuthUser authUser = Amplify.Auth.getCurrentUser();
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        if (authUser != null) {
+            Amplify.API.query(
+                    ModelQuery.list(Favorite.class, Favorite.FAVORITE_ID.eq(selectedTrack.getId())),
+                    response -> {
+                        Iterable<Favorite> favorites = response.getData().getItems();
+                        if (favorites.iterator().hasNext()) {
+                            future.complete(true);
+                        } else {
+                            future.complete(false);
+                        }
+                    },
+                    error -> {
+                        showToast("Error checking for track: " + error.getMessage());
+                        future.complete(false);
+                    }
+            );
+        } else {
+            future.complete(false);
+        }
+
+        return future;
+    }
+
+
+
 
     private void addToFavorites(String trackId, String title, String artist,
                                 String mp3, String cover) {
