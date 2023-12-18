@@ -33,6 +33,11 @@ public class FavoritesHandler implements FavoritesHandlerInterface {
         this.favoritesAdapter = favoritesAdapter;
     }
 
+    public FavoritesHandler(Context context, FavoritesAdapter favoritesAdapter) {
+        this.context = context;
+        this.favoritesAdapter = favoritesAdapter;
+    }
+
     public void addToFavorites(Track selectedTrack) {
         AuthUser authUser = Amplify.Auth.getCurrentUser();
         if (authUser != null) {
@@ -50,7 +55,7 @@ public class FavoritesHandler implements FavoritesHandlerInterface {
 
 
 
-    private void checkAndAddToFavorites(String trackId, String title, String artist,
+    public void checkAndAddToFavorites(String trackId, String title, String artist,
                                         String mp3, String cover) {
         AuthUser authUser = Amplify.Auth.getCurrentUser();
         if (authUser != null) {

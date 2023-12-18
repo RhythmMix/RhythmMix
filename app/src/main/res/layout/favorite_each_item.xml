@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_song_child_height"
+    android:layout_height="54dp"
     android:background="@android:color/transparent">
 
     <View
@@ -13,119 +13,101 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="10dp"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:scaleType="centerInside"
+        android:layout_marginStart="16dp"
         android:padding="6dp"
-        app:riv_corner_radius="4dp"
-        tools:src="@drawable/ic_music_style"
-        app:riv_border_width="1dp"
-        app:riv_border_color="#44F5F5F5"
-        tools:ignore="MissingConstraints" />
-
-    <RelativeLayout
-        android:id="@+id/preview_button_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/panel"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@id/panel"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/menu_button"
-    android:padding="8dp">
+        app:layout_constraintVertical_bias="0.444"
+        app:riv_border_color="#44F5F5F5"
+        app:riv_border_width="1dp"
+        app:riv_corner_radius="4dp"
+        tools:ignore="MissingConstraints"
+        tools:src="@drawable/ic_music_style" />
 
-        <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/FlatWhite"/>
-</RelativeLayout>
-
-<TextView
-android:id="@+id/title"
-android:maxLines="1"
-android:ellipsize="end"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:textColor="@color/FlatWhite"
-android:textStyle="bold"
-android:textSize="7sp"
-tools:text="Galaxy Supernova"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintStart_toEndOf="@id/image"
-app:layout_constraintEnd_toStartOf="@id/preview_button_container"
-app:layout_constraintBottom_toTopOf="@id/description"
-app:layout_constraintVertical_chainStyle="packed"
-android:layout_marginStart="10dp"/>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/FlatWhite"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/preview_button"
+        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Galaxy Supernova" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="#AAF5F5F5"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/title"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        tools:text="Girls 'Generation" />
-
-    <ImageView
-        android:id="@+id/menu_button"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:background="@drawable/ripple_oval"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/preview_button_container"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.555"
-        app:srcCompat="@drawable/delete_favorite"
-        app:tint="#DDF5F5F5" />
-
-    <ImageView
-android:id="@+id/quick_play_pause"
-android:layout_width="0dp"
-android:layout_height="0dp"
-
-app:layout_constraintBottom_toBottomOf="@id/image"
-app:layout_constraintEnd_toEndOf="@id/image"
-app:layout_constraintStart_toStartOf="@id/image"
-app:layout_constraintTop_toTopOf="@id/image"
-tools:src="@drawable/ic_volume_up_black_24dp"
-tools:visibility="gone"
-app:tint="@color/FlatWhite" />
+        app:layout_constraintEnd_toStartOf="@+id/preview_button"
+        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="Girls' Generation" />
 
     <ImageButton
         android:id="@+id/preview_button"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_marginTop="2dp"
         android:alpha="0.9"
         android:background="@drawable/ripple_oval"
         android:src="@drawable/ic_pause"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/FlatWhite"
-        tools:layout_editor_absoluteX="183dp"
-        tools:layout_editor_absoluteY="5dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toEndOf="@+id/description"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="293dp" />
+
+    <ImageView
+        android:id="@+id/menu_button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ripple_oval"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/panel"
+        app:layout_constraintStart_toEndOf="@+id/preview_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.444"
+        app:srcCompat="@drawable/delete_favorite"
+        app:tint="#DDF5F5F5"
+        android:layout_marginTop="2dp" />
+
+    <ImageView
+        android:id="@+id/quick_play_pause"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/image"
+        app:layout_constraintEnd_toEndOf="@id/image"
+        app:layout_constraintStart_toStartOf="@id/image"
+        app:layout_constraintTop_toTopOf="@id/image"
+        tools:src="@drawable/ic_volume_up_black_24dp"
+        tools:visibility="gone"
+        app:tint="@color/FlatWhite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

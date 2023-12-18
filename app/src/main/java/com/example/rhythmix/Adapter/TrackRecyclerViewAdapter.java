@@ -64,6 +64,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     public TrackRecyclerViewAdapter(Activity context, List<Track> musicList) {
         this.context = context;
         this.musicList = musicList;
+        this.favoritesHandler = new FavoritesHandler(musicListFavorite,context, favoritesAdapter);
     }
 
 
@@ -108,10 +109,11 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
                     if (clickedMusic != null) {
 
                         Intent intent = new Intent(context, APISongPlayerActivity.class);
+                        intent.putExtra("SONG_TRACK_OBJECT", clickedMusic);
                         intent.putExtra("SONG_TITLE", clickedMusic.getTitle());
                         intent.putExtra("SONG_ARTIST", clickedMusic.getArtist().getName());
                         intent.putExtra("SONG_PATH", clickedMusic.getPreview());
-
+                        intent.putExtra("SONG_ID", clickedMusic.getId());
                         Log.i(TAG,"previewUrlsSSS"+previewUrls);
 
                         intent.putStringArrayListExtra("PREVIEW_URLS", new ArrayList<>(previewUrls));
