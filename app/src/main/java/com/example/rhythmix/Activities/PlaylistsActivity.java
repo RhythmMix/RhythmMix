@@ -1,5 +1,7 @@
 package com.example.rhythmix.Activities;
 
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,8 +14,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Favorite;
 import com.amplifyframework.datastore.generated.model.Playlist;
 import com.example.rhythmix.Adapter.PlaylistRecyclerViewAdapter;
 import com.example.rhythmix.R;
@@ -25,6 +30,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PlaylistsActivity extends AppCompatActivity {
@@ -158,5 +164,7 @@ public class PlaylistsActivity extends AppCompatActivity {
         });
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
     }
+
+
 
 }

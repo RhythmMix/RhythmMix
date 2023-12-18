@@ -2,9 +2,6 @@ package com.example.rhythmix.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +77,6 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter {
 
         public playlistViewHolder(@NonNull View itemView) {
             super(itemView);
-        }
-    }
+ }
+}
 }

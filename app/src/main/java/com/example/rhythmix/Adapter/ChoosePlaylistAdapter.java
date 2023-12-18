@@ -98,9 +98,6 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .musicCover(trackCover)
                     .musicMp3(trackMp3)
                     .build();
-
-
-
             PlaylistMusic playlistMusic = PlaylistMusic.builder()
                     .playlist(Playlist.justId(getPlaylistId))
                     .track(music)
