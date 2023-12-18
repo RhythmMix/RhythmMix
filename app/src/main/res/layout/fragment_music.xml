@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.MusicFragment">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+    <ImageView
+        android:id="@+id/musicCover"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/rhythemix" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp">
+        <TextView
+            android:id="@+id/musicTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#d6d4d4"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#9e9d9d"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/musicTitle"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/preview_button"
+        android:layout_width="45dp"
+        android:layout_height="44dp"
+        android:alpha="0.9"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/ripple_oval"
+        android:src="@drawable/ic_pause" />
+    <ImageButton
+        android:id="@+id/deleteMusicButton"
+        android:layout_width="?attr/actionBarSize"
         android:layout_height="match_parent"
-        android:textColor="@color/flatOrange"
-        android:text="TeSt" />
-
-</FrameLayout>
+        android:layout_gravity="end"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/ripple_oval"
+        android:padding="18dp"
+        android:src="@drawable/delete_favorite"
+        android:tintMode="@color/thisWhiteColor" />
+</LinearLayout>

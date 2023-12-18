@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backward_color"
+    android:background="@drawable/home_background_overlay"
     tools:context=".Activities.InsidePlaylistActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -76,7 +76,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="18dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="44dp"
                         android:layout_marginEnd="?attr/actionBarSize"
                         android:layout_marginBottom="78dp"
                         android:ellipsize="end"
@@ -84,8 +84,8 @@
                         android:maxLines="2"
                         android:minHeight="30dp"
                         android:text="@string/songs"
-                        android:textColor="#852746"
-                        android:textSize="18sp"
+                        android:textColor="#9e9d9d"
+                        android:textSize="26sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/play_option_panel"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -93,13 +93,15 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/art"
                         app:layout_constraintTop_toTopOf="@+id/art"
+                        app:layout_constraintVertical_bias="0.0"
                         app:layout_constraintVertical_chainStyle="packed" />
 
                     <View
                         android:id="@+id/play_option_panel"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:layout_constraintTop_toBottomOf="@id/art" />
+                        app:layout_constraintTop_toBottomOf="@id/art"
+                        tools:layout_editor_absoluteX="-16dp" />
 
                     <View
                         android:id="@+id/play_all_panel"
@@ -115,7 +117,7 @@
                         android:id="@+id/play_all_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_marginStart="?attr/actionBarSize"
+                        android:layout_marginStart="44dp"
                         android:paddingStart="8dp"
                         android:paddingTop="5dp"
                         android:paddingEnd="0dp"
@@ -123,7 +125,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/play_all_button"
                         app:srcCompat="@drawable/ic_play_arrow_black_24dp"
-                        app:tint="#852746" />
+                        app:tint="#9e9d9d" />
 
                     <TextView
                         android:id="@+id/play_all_button"
@@ -133,27 +135,10 @@
                         android:paddingStart="0dp"
                         android:paddingEnd="14dp"
                         android:text="@string/play_all_songs"
-                        android:textColor="#852746"
+                        android:textColor="#9e9d9d"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/play_option_panel"
                         app:layout_constraintStart_toEndOf="@id/play_all_icon"
-                        app:layout_constraintTop_toTopOf="@id/play_option_panel" />
-
-                    <TextView
-                        android:id="@+id/shuffle_play_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_toEndOf="@id/play_all_button"
-                        android:background="@drawable/ripple_effect_15dp_radius"
-                        android:gravity="center"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
-                        android:text="@string/play_random"
-                        android:textColor="#852746"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@id/play_option_panel"
-                        app:layout_constraintStart_toEndOf="@id/play_all_button"
                         app:layout_constraintTop_toTopOf="@id/play_option_panel" />
                 </com.example.rhythmix.ui.BlurImageViewChildConstraintLayout>
 
@@ -181,19 +166,4 @@
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/playlist_song_item"
         tools:orientation="vertical" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="@color/flatOrange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
