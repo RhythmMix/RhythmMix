@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rhythmix.Activities.LibraryActivity;
 import com.example.rhythmix.R;
-import com.example.rhythmix.activities.LibraryActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,8 +79,6 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
                 }
             }
         });
-
-
 
         int playPauseIcon = isPlayingArray[position] ? R.drawable.ic_pause : R.drawable.round_play_circle_24;
         Log.i(TAG,"SONG status" +  isPlayingArray[position] );

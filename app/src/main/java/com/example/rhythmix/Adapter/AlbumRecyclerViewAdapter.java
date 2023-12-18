@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rhythmix.activities.AlbumTracksActivity;
+
+import com.example.rhythmix.Activities.AlbumTracksActivity;
 import com.example.rhythmix.models.Album;
 
 import com.example.rhythmix.R;
