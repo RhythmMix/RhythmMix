@@ -1,0 +1,309 @@
+# this is an auto generated file. This will be overwritten
+
+query GetTodo($id: ID!) {
+  getTodo(id: $id) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListTodos(
+  $filter: ModelTodoFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetPlaylistMusic($id: ID!) {
+  getPlaylistMusic(id: $id) {
+    id
+    playlistID
+    musicID
+    playlist {
+      id
+      playlistName
+      playlistBackground
+      userID
+      createdAt
+      updatedAt
+      __typename
+    }
+    track {
+      id
+      musicTitle
+      musicArtist
+      musicCover
+      musicMp3
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListPlaylistMusics(
+  $filter: ModelPlaylistMusicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPlaylistMusics(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      playlistID
+      musicID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetPlaylist($id: ID!) {
+  getPlaylist(id: $id) {
+    id
+    playlistName
+    playlistBackground
+    userID
+    user {
+      id
+      email
+      username
+      userImageS3Key
+      createdAt
+      updatedAt
+      __typename
+    }
+    musics {
+      nextToken
+      __typename
+    }
+    playlistMusic {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListPlaylists(
+  $filter: ModelPlaylistFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPlaylists(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      playlistName
+      playlistBackground
+      userID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetMusic($id: ID!) {
+  getMusic(id: $id) {
+    id
+    musicTitle
+    musicArtist
+    musicCover
+    musicMp3
+    playlists {
+      nextToken
+      __typename
+    }
+    favoriteMusics {
+      nextToken
+      __typename
+    }
+    playlistMusic {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListMusic(
+  $filter: ModelMusicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listMusic(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      musicTitle
+      musicArtist
+      musicCover
+      musicMp3
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    email
+    username
+    userImageS3Key
+    playlists {
+      nextToken
+      __typename
+    }
+    favorites {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      email
+      username
+      userImageS3Key
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetFavoriteMusic($id: ID!) {
+  getFavoriteMusic(id: $id) {
+    id
+    favoriteID
+    musicID
+    favorite {
+      favoriteID
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
+      userID
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+    track {
+      id
+      musicTitle
+      musicArtist
+      musicCover
+      musicMp3
+      createdAt
+      updatedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListFavoriteMusics(
+  $filter: ModelFavoriteMusicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFavoriteMusics(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      favoriteID
+      musicID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+
+query GetFavorite($id: ID!) {
+  getFavorite(id: $id) {
+    favoriteID
+    favoriteTitle
+    favoriteArtist
+    favoriteMp3
+    favoriteCover
+    userID
+    favoriteMusics {
+      nextToken
+      __typename
+    }
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+
+query ListFavorites(
+  $filter: ModelFavoriteFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFavorites(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      favoriteID
+      favoriteTitle
+      favoriteArtist
+      favoriteMp3
+      favoriteCover
+      userID
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}

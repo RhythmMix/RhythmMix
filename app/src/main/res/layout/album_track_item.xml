@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_gravity="fill_horizontal"
+    android:layout_marginTop="10dp">
+
+
+            <!-- Image -->
+    <ImageView
+        android:id="@+id/albumImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="6dp"
+        android:padding="6dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/rounded_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_border_color="#44F5F5F5"
+        app:riv_border_width="1dp"
+        app:riv_corner_radius="4dp"
+        app:srcCompat="@drawable/ic_music_style"
+        tools:src="@drawable/ic_music_style"
+        tools:ignore="MissingConstraints" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/albumTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:textColor="@color/FlatWhite"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/albumImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Galaxy Supernova" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelinePauseEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <RelativeLayout
+        android:id="@+id/preview_button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="8dp">
+
+            <!-- Play/Pause Button -->
+        <ImageButton
+            android:id="@+id/albumToggleButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:alpha="0.9"
+            android:background="@drawable/ripple_oval"
+            android:padding="8dp"
+            app:iconTint="@color/FlatWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

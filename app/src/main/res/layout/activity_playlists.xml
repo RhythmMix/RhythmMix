@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/allsongsoverly"
+    tools:context=".Activities.PlaylistsActivity">
+
+  <!--Playlists Text-->
+  <TextView
+      android:id="@+id/playlistTitleTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:text="Playlists"
+      android:textColor="#FFFFFF"
+      android:textSize="30sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+  <!--Songs/Playlist NavBar-->
+  <RadioGroup
+      android:id="@+id/navigationBarPlaylist"
+      android:layout_width="0dp"
+      android:layout_height="48dp"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="40dp"
+      android:layout_marginEnd="32dp"
+      android:background="@android:color/transparent"
+      android:orientation="horizontal"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/playlistTitleTextView">
+
+    <RadioButton
+        android:id="@+id/songsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:button="@android:color/transparent"
+        android:gravity="center"
+        android:text="Songs"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <RadioButton
+        android:id="@+id/playlistsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:button="@android:color/transparent"
+        android:gravity="center"
+        android:text="Playlists"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+  </RadioGroup>
+
+  <!--RecyclerView-->
+
+  <ImageView
+      android:id="@+id/add_list"
+      android:layout_width="169dp"
+      android:layout_height="141dp"
+      android:paddingTop="13dp"
+      android:paddingBottom="13dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.132"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.324"
+      app:srcCompat="@drawable/plus"
+      app:tint="@color/FlatWhite"
+      tools:ignore="MissingConstraints" />
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/playlistsRecycleView"
+      android:layout_width="350dp"
+      android:layout_height="271dp"
+      app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.475"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/FavoriteSong" />
+
+  <ImageButton
+      android:id="@+id/FavoriteImageButton"
+      android:layout_width="155dp"
+      android:layout_height="137dp"
+      android:scaleType="fitXY"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.875"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.323"
+      app:srcCompat="@drawable/favsongoverly" />
+
+  <!--Main NavBar-->
+  <TextView
+      android:id="@+id/FavoriteSong"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/ios_bold"
+      android:text="Favorite Tracks"
+      android:textColor="@color/white"
+      android:textSize="16dp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.808"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.496" />
+
+  <include
+      android:id="@+id/bottom_navigation"
+      layout="@layout/navbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

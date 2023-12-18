@@ -1,0 +1,174 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#000000"
+    tools:context=".Activities.APISongPlayerActivity">
+
+
+    <!-- Default Image for Songs  -->
+    <ImageView
+        android:id="@+id/ApiPlayerActivitySongImage"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/cover" />
+
+    <!-- ImageButton for Back -->
+    <ImageButton
+        android:id="@+id/ApiBackButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/arrow_back" />
+
+    <!-- Song Information (Centered on the Image) -->
+    <LinearLayout
+        android:id="@+id/layoutSongInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ApiPlayerActivitySongImage"
+        android:layout_marginTop="-166dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Song Name -->
+        <TextView
+            android:id="@+id/ApiPlayerActivitySongName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="28sp" />
+
+        <!-- Artist Name -->
+        <TextView
+            android:id="@+id/ApiArtistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_below="@id/playerActivitySongName"
+            android:layout_marginTop="4dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <!-- Duration-->
+        <LinearLayout
+            android:id="@+id/durationContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playerActivitySongName"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_border"
+            android:padding="8dp">
+
+            <!-- Start Time TextView -->
+            <TextView
+                android:id="@+id/ApiPlayerActivityTxtStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" | "
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <!-- Stop Time TextView -->
+            <TextView
+                android:id="@+id/ApiPlayerActivityTxtStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:30"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Designed gap between image and SeekBar -->
+    <View
+        android:id="@+id/gapView"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@id/ApiPlayerActivitySongImage"/>
+
+
+    <!-- Designed SeekBar -->
+    <SeekBar
+        android:id="@+id/ApiSeekBar"
+        style="@style/CustomSeekBar"
+        android:layout_width="300dp"
+        android:layout_height="10dp"
+        android:layout_below="@+id/ApiPlayerActivitySongImage"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Media Controls (Play, Previous, Next) -->
+    <LinearLayout
+        android:id="@+id/layoutMediaControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@id/ApiSeekBar">
+
+        <!-- Shuffle Icon -->
+        <ImageView
+            android:id="@+id/shuffleButton"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:onClick="onShuffleButtonClick"
+            android:src="@drawable/ic_shuffle"
+            app:tint="@color/shuffleColor"/>
+
+        <!-- Previous Button -->
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/prevButton"
+            android:layout_toLeftOf="@+id/playButton"
+            android:background="@drawable/ic_skip_previous_24"/>
+
+        <!-- Play Button -->
+        <Button
+            android:id="@+id/ApiPlayButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/ic_pause_24" />
+
+        <!-- Next Button -->
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@+id/playButton"
+            android:background="@drawable/ic_skip_next_24" />
+
+        <!-- Heart Icon -->
+        <ImageView
+            android:id="@+id/heartButton"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:onClick="onHeartButtonClick"
+            android:src="@drawable/ic_favorite" />
+    </LinearLayout>
+</RelativeLayout>
