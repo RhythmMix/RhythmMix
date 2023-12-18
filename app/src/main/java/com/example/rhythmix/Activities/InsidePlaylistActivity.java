@@ -12,27 +12,32 @@ import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.PaginatedResult;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Music;
 import com.amplifyframework.datastore.generated.model.PlaylistMusic;
 import com.bumptech.glide.Glide;
-import com.example.rhythmix.R;
 import com.example.rhythmix.Adapter.MusicAdapter;
+import com.example.rhythmix.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class InsidePlaylistActivity extends AppCompatActivity {
     private List<Music> musicList = new ArrayList<>();
     private RecyclerView recyclerView;
     private MusicAdapter musicAdapter;
+    private String playlistId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inside_playlist);
 
         Intent intent = getIntent();
-        String playlistId = intent.getStringExtra("playlistID");
+        playlistId = intent.getStringExtra("playlistId");
         String playlistName = intent.getStringExtra("playlistName");
         String playlistBackground = intent.getStringExtra("playlistBackground");
         TextView playlistTitle = findViewById(R.id.title);
@@ -44,13 +49,15 @@ public class InsidePlaylistActivity extends AppCompatActivity {
                 .into(playlistImage);
         Log.i("IDTAG", "MYYYYYY IDDDDD ISSS : " + playlistId);
 
-
-
         // Get The Recycler View
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         musicAdapter = new MusicAdapter(musicList);
         recyclerView.setAdapter(musicAdapter);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (playlistId != null) {
             fetchMusicForPlaylist(playlistId);
         } else {
@@ -58,24 +65,26 @@ public class InsidePlaylistActivity extends AppCompatActivity {
         }
     }
     private void fetchMusicForPlaylist(String playlistId) {
-        Amplify.API.query(
-                ModelQuery.list(PlaylistMusic.class, PlaylistMusic.PLAYLIST.contains(playlistId)),
-                response -> {
-                    Log.i("InsidePlaylistActivity", "Successfully retrieved playlist music items");
-                    PaginatedResult<PlaylistMusic> playlistMusicList = response.getData();
-                    musicList.clear();
-                    // Iterate through the playlistMusicList and retrieve the associated music
-                    for (PlaylistMusic playlistMusic : playlistMusicList) {
-                        Music music = playlistMusic.getTrack();
-                        if (music != null) {
-                            musicList.add(music);
+        Set<String> uniqueIds = new HashSet<>();
+        AuthUser authUser = Amplify.Auth.getCurrentUser();
+        if (authUser != null) {
+            String currentUserId = authUser.getUserId();
+            Amplify.API.query(
+                    ModelQuery.list(PlaylistMusic.class, PlaylistMusic.PLAYLIST.contains(playlistId)),
+                    response -> {
+                        Log.i("InsidePlaylistActivity", "Successfully retrieved playlist music items");
+                        PaginatedResult<PlaylistMusic> playlistMusicList = response.getData();
+                        musicList.clear();
+                        for (PlaylistMusic playlistMusic : playlistMusicList) {
+                            Music music = playlistMusic.getTrack();
+                            if (music != null) {
+                                musicList.add(music);
+                            }
                         }
-                    }
-
-                    runOnUiThread(() -> musicAdapter.notifyDataSetChanged());
-                },
-                error -> Log.e("InsidePlaylistActivity", "Error fetching playlist music items", error)
-        );
+                        runOnUiThread(() -> musicAdapter.notifyDataSetChanged());
+                    },
+                    error -> Log.e("InsidePlaylistActivity", "Error fetching playlist music items", error)
+            );
+        }
     }
-
 }

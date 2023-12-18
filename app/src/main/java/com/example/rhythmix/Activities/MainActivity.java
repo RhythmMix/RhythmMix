@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.amplifyframework.core.Amplify;
 import com.example.rhythmix.Adapter.AlbumRecyclerViewAdapter;
 import com.example.rhythmix.Adapter.TrackRecyclerViewAdapter;
 import com.example.rhythmix.models.Album;
@@ -89,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
             } else return false;
         });
         bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(true);
-        goToLogIn();
-        initializePopupMenu();
+        setUpLoginAndLogoutButton();
 
         //=======================================================================================================================================
         retrofit = new Retrofit.Builder()
@@ -103,13 +103,36 @@ public class MainActivity extends AppCompatActivity {
         displayMultipleTracks(fetchingTracksId());
     }
 
-    public void goToLogIn(){
-        Button logIn = findViewById(R.id.login);
-        logIn.setOnClickListener(view -> {
-            Intent goToAllSongs = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(goToAllSongs);
+    private void setUpLoginAndLogoutButton() {
+        Button loginButton = findViewById(R.id.login);
+        if (Amplify.Auth.getCurrentUser() != null) {
+            loginButton.setText("Logout");
+        } else {
+            loginButton.setText("Login");
+        }
+        loginButton.setOnClickListener(v -> {
+            if (Amplify.Auth.getCurrentUser() != null) {
+                Amplify.Auth.signOut(
+                        () -> {
+                            Log.i(TAG, "Logout succeeded");
+                            loginButton.setText("Login");
+                            Intent goToLogInIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(goToLogInIntent);
+                        },
+                        failure -> {
+                            Log.i(TAG, "Logout failed");
+                            runOnUiThread(() -> {
+                                Log.i(TAG, "Logout failed");
+                            });
+                        }
+                );
+            } else {
+                Intent goToLogInIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(goToLogInIntent);
+            }
         });
     }
+
 
     private void displayMultipleAlbums(List<Long> albumIds) {
         albumRecyclerView = findViewById(R.id.horizontalRecyclerView);
@@ -280,86 +303,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //==============================
-    // Add To Playlist functionality
-    //==============================
 
-    public void initializePopupMenu() {
-        ImageView menuButton = findViewById(R.id.menu_button_main);
 
-        if (menuButton != null) {
-            menuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPopupMenu(view);
-                }
-            });
-        }
-    }
-
-    public void showPopupMenu(View view) {
-        View popupView = getLayoutInflater().inflate(R.layout.playlist_dropdown_home_page, null);
-
-        // Create the PopupWindow
-        popupWindow = new PopupWindow(
-                popupView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
-
-        // Set the background to allow touch outside to dismiss
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        // Find your custom menu items
-        TextView menuText1 = popupView.findViewById(R.id.menu_text1);
-        TextView menuText2 = popupView.findViewById(R.id.menu_text2);
-        TextView menuText3 = popupView.findViewById(R.id.menu_text3);
-
-        // Set onClickListener for your custom menu items
-        menuText1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle custom menu item click
-                popupWindow.dismiss();
-                onMenuItemClick(R.id.menu_text1);
-            }
-        });
-
-        menuText2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle custom menu item click
-                popupWindow.dismiss();
-                onMenuItemClick(R.id.menu_text2);
-            }
-        });
-
-        menuText3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle custom menu item click
-                popupWindow.dismiss();
-                onMenuItemClick(R.id.menu_text3);
-            }
-        });
-
-        // Show the PopupWindow
-        if (!popupWindow.isShowing()) {
-            popupWindow.showAsDropDown(view);
-        }
-    }
-
-    private void onMenuItemClick(int itemId) {
-        if (itemId == R.id.menu_text1) {
-            Toast.makeText(MainActivity.this, "Add to Playlist Clicked", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.menu_text2) {
-            Toast.makeText(MainActivity.this, "Add to Favorite Clicked", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.menu_text3) {
-            Toast.makeText(MainActivity.this, "Share Clicked", Toast.LENGTH_SHORT).show();
-
-        }
-    }
 
 
 }

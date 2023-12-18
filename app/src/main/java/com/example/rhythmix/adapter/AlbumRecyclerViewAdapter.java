@@ -10,8 +10,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.rhythmix.R;
+
+
+import com.example.rhythmix.Activities.AlbumTracksActivity;
 import com.example.rhythmix.models.Album;
+
+import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -41,17 +45,20 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
                 Log.d(TAG, "Album Image in HRV" + imageUrl);
 
                 ImageButton albumCoverButton = holder.itemView.findViewById(R.id.HRImageButtonRecyclerView);
-//                albumCoverButton.setOnClickListener(view -> {
-//                    Intent albumTracksActivity = new Intent(view.getContext(), AlbumTracksActivity.class);
-//                    albumTracksActivity.putExtra("Album Cover", album.getCover());
-//                    albumTracksActivity.putExtra("Album tracks", album.getTrackList());
-//                    albumTracksActivity.putExtra("Album title", album.getTitle());
-//                    albumTracksActivity.putExtra("Album ID", album.getId());
-//                    view.getContext().startActivity(albumTracksActivity);
-//                });
+                TextView albumTitle = holder.itemView.findViewById(R.id.HRAlbumTitle);
+                albumCoverButton.setOnClickListener(view -> {
+                    Intent albumTracksActivity = new Intent(view.getContext(), AlbumTracksActivity.class);
+                    albumTracksActivity.putExtra("Album Cover", album.getCover());
+                    albumTracksActivity.putExtra("Album tracks", album.getTrackList());
+                    albumTracksActivity.putExtra("Album title", album.getTitle());
+                    albumTracksActivity.putExtra("Album ID", album.getId());
+                    view.getContext().startActivity(albumTracksActivity);
+                });
 
                 Picasso.get().load(imageUrl).into(albumCoverButton);
+
                 String albumTitle1 = album.getTitle();
+                albumTitle.setText(albumTitle1);
             }
 
             holder.bind(album);
@@ -69,8 +76,8 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
 
         public AlbumListViewHolder(@NonNull View itemView) {
             super(itemView);
-            albumCoverButton = itemView.findViewById(R.id.HRImageButtonRecyclerView);
-//            albumTitle = itemView.findViewById(R.id.albumTitle);
+//            albumCoverButton = itemView.findViewById(R.id.HRImageButtonRecyclerView);
+            albumTitle = itemView.findViewById(R.id.HRAlbumTitle);
         }
 
         public void bind(Album album) {
@@ -85,4 +92,3 @@ public class AlbumRecyclerViewAdapter extends RecyclerView.Adapter<AlbumRecycler
 
 
 }
-

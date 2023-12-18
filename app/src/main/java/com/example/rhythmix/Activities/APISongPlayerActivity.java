@@ -86,7 +86,7 @@ public class APISongPlayerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         songPaths = intent.getStringArrayListExtra("PREVIEW_URLS");
-  ;
+        ;
 
         playButton.setOnClickListener(view -> {
             if (isPlaying) {

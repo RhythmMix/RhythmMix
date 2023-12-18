@@ -2,11 +2,15 @@ package com.example.rhythmix.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,19 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amplifyframework.datastore.generated.model.Playlist;
 import com.bumptech.glide.Glide;
+
 import com.example.rhythmix.Activities.InsidePlaylistActivity;
 import com.example.rhythmix.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter {
     List<Playlist> playlists;
     Context callingActivity;
-    public PlaylistRecyclerViewAdapter(List<Playlist> playlists, Context callingActivity) {
+    public PlaylistRecyclerViewAdapter(List<Playlist> playlists,Context callingActivity) {
 
         this.playlists = playlists;
         this.callingActivity = callingActivity;
-
     }
 
     @NonNull
@@ -43,6 +50,7 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter {
 
         ImageButton playlistFragmentImage = holder.itemView.findViewById(R.id.playlistImageButton);
         String playlistImagePath = playlists.get(position).getPlaylistBackground();
+        String playlistIDD=playlists.get(position).getId();
 
         playlistFragmentText.setText(playlistName);
 
@@ -55,6 +63,8 @@ public class PlaylistRecyclerViewAdapter extends RecyclerView.Adapter {
 
         holder.itemView.setOnClickListener(view -> {
             Intent goToInsidePlaylist = new Intent(callingActivity, InsidePlaylistActivity.class);
+            Log.i("TAG From playlist","This id coming from playlis adapter: "+playlistIDD);
+            goToInsidePlaylist.putExtra("playlistId", playlistIDD);
             goToInsidePlaylist.putExtra("playlistName", playlistName);
             goToInsidePlaylist.putExtra("playlistBackground", playlistImagePath);
             callingActivity.startActivity(goToInsidePlaylist);

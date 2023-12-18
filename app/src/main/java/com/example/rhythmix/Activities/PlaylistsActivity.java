@@ -16,6 +16,8 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Playlist;
 import com.example.rhythmix.Adapter.PlaylistRecyclerViewAdapter;
 import com.example.rhythmix.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,7 +35,8 @@ public class PlaylistsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
 
-
+        setupBottomNavigationView();
+     
         String emptyFileName="emptyTestFile";
         File emptyFile =new File(getApplicationContext().getFilesDir(),emptyFileName);
         try {
@@ -76,17 +79,14 @@ public class PlaylistsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Songs/Playlist Navbar
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.playlistsButton) {
                 RecyclerView playlistsRecyclerView = findViewById(R.id.playlistsRecycleView);
                 playlistsRecyclerView.setVisibility(View.VISIBLE);
             } else if (checkedId == R.id.songsButton) {
-//                startActivity(new Intent(PlaylistsActivity.this, LibraryActivity.class));
             }
         });
-        // Set the default selection to "Playlists"
         navigationBar.check(R.id.playlistsButton);
 
 
@@ -123,6 +123,31 @@ public class PlaylistsActivity extends AppCompatActivity {
         playlistRecyclerViewAdapter=new PlaylistRecyclerViewAdapter(playlists,this);
         playlistRecyclerView.setAdapter(playlistRecyclerViewAdapter);
     }
-
+    //==============================
+    // Main Navbar
+    //==============================
+    private void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(false);
+            bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
+            if (item.getItemId() == R.id.Home) {
+                startActivity(new Intent(PlaylistsActivity.this, MainActivity.class));
+                return true;
+            } else if (item.getItemId() == R.id.Search) {
+                startActivity(new Intent(PlaylistsActivity.this, SearchActivity.class));
+                return true;
+            } else if (item.getItemId() == R.id.Library) {
+                return true;
+            } else if (item.getItemId() == R.id.Profile) {
+                startActivity(new Intent(PlaylistsActivity.this, ProfileActivity.class));
+                ;
+                return true;
+            } else return false;
+        });
+        bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
+    }
 
 }

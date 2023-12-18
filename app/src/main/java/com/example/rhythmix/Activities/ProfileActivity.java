@@ -42,9 +42,6 @@ public class ProfileActivity extends AppCompatActivity {
         bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(true);
 
 
-
-
-
         TextView usernameTextView = findViewById(R.id.username);
         TextView emailTextView = findViewById(R.id.email);
 
