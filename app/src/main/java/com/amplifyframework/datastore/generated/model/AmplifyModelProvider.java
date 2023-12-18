@@ -13,7 +13,7 @@ import java.util.Set;
  */
 
 public final class AmplifyModelProvider implements ModelProvider {
-  private static final String AMPLIFY_MODEL_VERSION = "52ad9526323a5c0992f95c0788f528db";
+  private static final String AMPLIFY_MODEL_VERSION = "a6ac830c65771c428ec82b299811b46f";
   private static AmplifyModelProvider amplifyGeneratedModelInstance;
   private AmplifyModelProvider() {
     

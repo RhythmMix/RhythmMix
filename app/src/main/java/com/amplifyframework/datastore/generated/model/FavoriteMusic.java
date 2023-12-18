@@ -9,7 +9,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -19,14 +22,16 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the FavoriteMusic type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "FavoriteMusics")
+@ModelConfig(pluralName = "FavoriteMusics",  authRules = {
+  @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
 public final class FavoriteMusic implements Model {
   public static final QueryField ID = field("FavoriteMusic", "id");
   public static final QueryField FAVORITE = field("FavoriteMusic", "favoriteID");
-  public static final QueryField MUSIC = field("FavoriteMusic", "musicID");
+  public static final QueryField TRACK = field("FavoriteMusic", "musicID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="Favorite") @BelongsTo(targetName = "favoriteID",  type = Favorite.class) Favorite favorite;
-  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID", type = Music.class) Music music;
+  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID",  type = Music.class) Music track;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */
@@ -43,8 +48,8 @@ public final class FavoriteMusic implements Model {
       return favorite;
   }
   
-  public Music getMusic() {
-      return music;
+  public Music getTrack() {
+      return track;
   }
   
   public Temporal.DateTime getCreatedAt() {
@@ -55,10 +60,10 @@ public final class FavoriteMusic implements Model {
       return updatedAt;
   }
   
-  private FavoriteMusic(String id, Favorite favorite, Music music) {
+  private FavoriteMusic(String id, Favorite favorite, Music track) {
     this.id = id;
     this.favorite = favorite;
-    this.music = music;
+    this.track = track;
   }
   
   @Override
@@ -71,7 +76,7 @@ public final class FavoriteMusic implements Model {
       FavoriteMusic favoriteMusic = (FavoriteMusic) obj;
       return ObjectsCompat.equals(getId(), favoriteMusic.getId()) &&
               ObjectsCompat.equals(getFavorite(), favoriteMusic.getFavorite()) &&
-              ObjectsCompat.equals(getMusic(), favoriteMusic.getMusic()) &&
+              ObjectsCompat.equals(getTrack(), favoriteMusic.getTrack()) &&
               ObjectsCompat.equals(getCreatedAt(), favoriteMusic.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), favoriteMusic.getUpdatedAt());
       }
@@ -82,7 +87,7 @@ public final class FavoriteMusic implements Model {
     return new StringBuilder()
       .append(getId())
       .append(getFavorite())
-      .append(getMusic())
+      .append(getTrack())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -95,7 +100,7 @@ public final class FavoriteMusic implements Model {
       .append("FavoriteMusic {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("favorite=" + String.valueOf(getFavorite()) + ", ")
-      .append("music=" + String.valueOf(getMusic()) + ", ")
+      .append("track=" + String.valueOf(getTrack()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -125,28 +130,28 @@ public final class FavoriteMusic implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       favorite,
-      music);
+      track);
   }
   public interface BuildStep {
     FavoriteMusic build();
     BuildStep id(String id);
     BuildStep favorite(Favorite favorite);
-    BuildStep music(Music music);
+    BuildStep track(Music track);
   }
   
 
   public static class Builder implements BuildStep {
     private String id;
     private Favorite favorite;
-    private Music music;
+    private Music track;
     public Builder() {
       
     }
     
-    private Builder(String id, Favorite favorite, Music music) {
+    private Builder(String id, Favorite favorite, Music track) {
       this.id = id;
       this.favorite = favorite;
-      this.music = music;
+      this.track = track;
     }
     
     @Override
@@ -156,7 +161,7 @@ public final class FavoriteMusic implements Model {
         return new FavoriteMusic(
           id,
           favorite,
-          music);
+          track);
     }
     
     @Override
@@ -166,8 +171,8 @@ public final class FavoriteMusic implements Model {
     }
     
     @Override
-     public BuildStep music(Music music) {
-        this.music = music;
+     public BuildStep track(Music track) {
+        this.track = track;
         return this;
     }
     
@@ -183,8 +188,8 @@ public final class FavoriteMusic implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, Favorite favorite, Music music) {
-      super(id, favorite, music);
+    private CopyOfBuilder(String id, Favorite favorite, Music track) {
+      super(id, favorite, track);
       
     }
     
@@ -194,10 +199,12 @@ public final class FavoriteMusic implements Model {
     }
     
     @Override
-     public CopyOfBuilder music(Music music) {
-      return (CopyOfBuilder) super.music(music);
+     public CopyOfBuilder track(Music track) {
+      return (CopyOfBuilder) super.track(track);
     }
   }
+  
+
 
   
 }

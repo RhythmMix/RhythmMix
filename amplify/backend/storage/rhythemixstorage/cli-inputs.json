@@ -1,0 +1,18 @@
+{
+  "resourceName": "rhythemixstorage",
+  "policyUUID": "9e2fa6bf",
+  "bucketName": "rhythmmix90bba48f17b9485194f4a1c4ae1c9bc1",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

@@ -28,15 +28,13 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 })
 public final class Playlist implements Model {
   public static final QueryField ID = field("Playlist", "id");
-  public static final QueryField PLAYLIST_ID = field("Playlist", "playlistID");
   public static final QueryField PLAYLIST_NAME = field("Playlist", "playlistName");
   public static final QueryField PLAYLIST_BACKGROUND = field("Playlist", "playlistBackground");
   public static final QueryField USER = field("Playlist", "userID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="ID", isRequired = true) String playlistID;
   private final @ModelField(targetType="String", isRequired = true) String playlistName;
   private final @ModelField(targetType="String") String playlistBackground;
-  private final @ModelField(targetType="User") @BelongsTo(targetName = "userID", type = User.class) User user;
+  private final @ModelField(targetType="User") @BelongsTo(targetName = "userID",  type = User.class) User user;
   private final @ModelField(targetType="Music") @HasMany(associatedWith = "id", type = Music.class) List<Music> musics = null;
   private final @ModelField(targetType="PlaylistMusic") @HasMany(associatedWith = "playlist", type = PlaylistMusic.class) List<PlaylistMusic> playlistMusic = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
@@ -49,10 +47,6 @@ public final class Playlist implements Model {
   
   public String getId() {
       return id;
-  }
-  
-  public String getPlaylistId() {
-      return playlistID;
   }
   
   public String getPlaylistName() {
@@ -83,9 +77,8 @@ public final class Playlist implements Model {
       return updatedAt;
   }
   
-  private Playlist(String id, String playlistID, String playlistName, String playlistBackground, User user) {
+  private Playlist(String id, String playlistName, String playlistBackground, User user) {
     this.id = id;
-    this.playlistID = playlistID;
     this.playlistName = playlistName;
     this.playlistBackground = playlistBackground;
     this.user = user;
@@ -100,7 +93,6 @@ public final class Playlist implements Model {
       } else {
       Playlist playlist = (Playlist) obj;
       return ObjectsCompat.equals(getId(), playlist.getId()) &&
-              ObjectsCompat.equals(getPlaylistId(), playlist.getPlaylistId()) &&
               ObjectsCompat.equals(getPlaylistName(), playlist.getPlaylistName()) &&
               ObjectsCompat.equals(getPlaylistBackground(), playlist.getPlaylistBackground()) &&
               ObjectsCompat.equals(getUser(), playlist.getUser()) &&
@@ -113,7 +105,6 @@ public final class Playlist implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getPlaylistId())
       .append(getPlaylistName())
       .append(getPlaylistBackground())
       .append(getUser())
@@ -128,7 +119,6 @@ public final class Playlist implements Model {
     return new StringBuilder()
       .append("Playlist {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("playlistID=" + String.valueOf(getPlaylistId()) + ", ")
       .append("playlistName=" + String.valueOf(getPlaylistName()) + ", ")
       .append("playlistBackground=" + String.valueOf(getPlaylistBackground()) + ", ")
       .append("user=" + String.valueOf(getUser()) + ", ")
@@ -138,7 +128,7 @@ public final class Playlist implements Model {
       .toString();
   }
   
-  public static PlaylistIdStep builder() {
+  public static PlaylistNameStep builder() {
       return new Builder();
   }
   
@@ -155,23 +145,16 @@ public final class Playlist implements Model {
       id,
       null,
       null,
-      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      playlistID,
       playlistName,
       playlistBackground,
       user);
   }
-  public interface PlaylistIdStep {
-    PlaylistNameStep playlistId(String playlistId);
-  }
-  
-
   public interface PlaylistNameStep {
     BuildStep playlistName(String playlistName);
   }
@@ -182,14 +165,11 @@ public final class Playlist implements Model {
     BuildStep id(String id);
     BuildStep playlistBackground(String playlistBackground);
     BuildStep user(User user);
-
-      Object userID(String userId);
   }
   
 
-  public static class Builder implements PlaylistIdStep, PlaylistNameStep, BuildStep {
+  public static class Builder implements PlaylistNameStep, BuildStep {
     private String id;
-    private String playlistID;
     private String playlistName;
     private String playlistBackground;
     private User user;
@@ -197,9 +177,8 @@ public final class Playlist implements Model {
       
     }
     
-    private Builder(String id, String playlistID, String playlistName, String playlistBackground, User user) {
+    private Builder(String id, String playlistName, String playlistBackground, User user) {
       this.id = id;
-      this.playlistID = playlistID;
       this.playlistName = playlistName;
       this.playlistBackground = playlistBackground;
       this.user = user;
@@ -211,17 +190,9 @@ public final class Playlist implements Model {
         
         return new Playlist(
           id,
-          playlistID,
           playlistName,
           playlistBackground,
           user);
-    }
-    
-    @Override
-     public PlaylistNameStep playlistId(String playlistId) {
-        Objects.requireNonNull(playlistId);
-        this.playlistID = playlistId;
-        return this;
     }
     
     @Override
@@ -242,13 +213,8 @@ public final class Playlist implements Model {
         this.user = user;
         return this;
     }
-
-      @Override
-      public Object userID(String userId) {
-          return null;
-      }
-
-      /**
+    
+    /**
      * @param id id
      * @return Current Builder instance, for fluent method chaining
      */
@@ -260,15 +226,9 @@ public final class Playlist implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String playlistId, String playlistName, String playlistBackground, User user) {
-      super(id, playlistID, playlistName, playlistBackground, user);
-      Objects.requireNonNull(playlistID);
+    private CopyOfBuilder(String id, String playlistName, String playlistBackground, User user) {
+      super(id, playlistName, playlistBackground, user);
       Objects.requireNonNull(playlistName);
-    }
-    
-    @Override
-     public CopyOfBuilder playlistId(String playlistId) {
-      return (CopyOfBuilder) super.playlistId(playlistId);
     }
     
     @Override
@@ -287,7 +247,6 @@ public final class Playlist implements Model {
     }
   }
   
-
 
   
 }

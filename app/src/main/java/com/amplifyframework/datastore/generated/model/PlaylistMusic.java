@@ -9,7 +9,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -19,14 +22,16 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the PlaylistMusic type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "PlaylistMusics")
+@ModelConfig(pluralName = "PlaylistMusics",  authRules = {
+  @AuthRule(allow = AuthStrategy.PUBLIC, operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
 public final class PlaylistMusic implements Model {
   public static final QueryField ID = field("PlaylistMusic", "id");
   public static final QueryField PLAYLIST = field("PlaylistMusic", "playlistID");
-  public static final QueryField MUSIC = field("PlaylistMusic", "musicID");
+  public static final QueryField TRACK = field("PlaylistMusic", "musicID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="Playlist") @BelongsTo(targetName = "playlistID", type = Playlist.class) Playlist playlist;
-  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID", type = Music.class) Music music;
+  private final @ModelField(targetType="Playlist") @BelongsTo(targetName = "playlistID",  type = Playlist.class) Playlist playlist;
+  private final @ModelField(targetType="Music") @BelongsTo(targetName = "musicID",  type = Music.class) Music track;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   /** @deprecated This API is internal to Amplify and should not be used. */
@@ -43,8 +48,8 @@ public final class PlaylistMusic implements Model {
       return playlist;
   }
   
-  public Music getMusic() {
-      return music;
+  public Music getTrack() {
+      return track;
   }
   
   public Temporal.DateTime getCreatedAt() {
@@ -55,10 +60,10 @@ public final class PlaylistMusic implements Model {
       return updatedAt;
   }
   
-  private PlaylistMusic(String id, Playlist playlist, Music music) {
+  private PlaylistMusic(String id, Playlist playlist, Music track) {
     this.id = id;
     this.playlist = playlist;
-    this.music = music;
+    this.track = track;
   }
   
   @Override
@@ -71,7 +76,7 @@ public final class PlaylistMusic implements Model {
       PlaylistMusic playlistMusic = (PlaylistMusic) obj;
       return ObjectsCompat.equals(getId(), playlistMusic.getId()) &&
               ObjectsCompat.equals(getPlaylist(), playlistMusic.getPlaylist()) &&
-              ObjectsCompat.equals(getMusic(), playlistMusic.getMusic()) &&
+              ObjectsCompat.equals(getTrack(), playlistMusic.getTrack()) &&
               ObjectsCompat.equals(getCreatedAt(), playlistMusic.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), playlistMusic.getUpdatedAt());
       }
@@ -82,7 +87,7 @@ public final class PlaylistMusic implements Model {
     return new StringBuilder()
       .append(getId())
       .append(getPlaylist())
-      .append(getMusic())
+      .append(getTrack())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -95,7 +100,7 @@ public final class PlaylistMusic implements Model {
       .append("PlaylistMusic {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("playlist=" + String.valueOf(getPlaylist()) + ", ")
-      .append("music=" + String.valueOf(getMusic()) + ", ")
+      .append("track=" + String.valueOf(getTrack()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -125,28 +130,28 @@ public final class PlaylistMusic implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       playlist,
-      music);
+      track);
   }
   public interface BuildStep {
     PlaylistMusic build();
     BuildStep id(String id);
     BuildStep playlist(Playlist playlist);
-    BuildStep music(Music music);
+    BuildStep track(Music track);
   }
   
 
   public static class Builder implements BuildStep {
     private String id;
     private Playlist playlist;
-    private Music music;
+    private Music track;
     public Builder() {
       
     }
     
-    private Builder(String id, Playlist playlist, Music music) {
+    private Builder(String id, Playlist playlist, Music track) {
       this.id = id;
       this.playlist = playlist;
-      this.music = music;
+      this.track = track;
     }
     
     @Override
@@ -156,7 +161,7 @@ public final class PlaylistMusic implements Model {
         return new PlaylistMusic(
           id,
           playlist,
-          music);
+          track);
     }
     
     @Override
@@ -166,8 +171,8 @@ public final class PlaylistMusic implements Model {
     }
     
     @Override
-     public BuildStep music(Music music) {
-        this.music = music;
+     public BuildStep track(Music track) {
+        this.track = track;
         return this;
     }
     
@@ -183,8 +188,8 @@ public final class PlaylistMusic implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, Playlist playlist, Music music) {
-      super(id, playlist, music);
+    private CopyOfBuilder(String id, Playlist playlist, Music track) {
+      super(id, playlist, track);
       
     }
     
@@ -194,8 +199,8 @@ public final class PlaylistMusic implements Model {
     }
     
     @Override
-     public CopyOfBuilder music(Music music) {
-      return (CopyOfBuilder) super.music(music);
+     public CopyOfBuilder track(Music track) {
+      return (CopyOfBuilder) super.track(track);
     }
   }
   
