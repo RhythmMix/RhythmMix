@@ -21,7 +21,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
     @NonNull
     @Override
     public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_music, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.playlist_song_item, parent, false);
         return new MusicViewHolder(view);
     }
 
@@ -41,7 +41,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
         public final TextView titleTextView;
         public MusicViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.musicTitle);
+            titleTextView = itemView.findViewById(R.id.title);
         }
     }
 }

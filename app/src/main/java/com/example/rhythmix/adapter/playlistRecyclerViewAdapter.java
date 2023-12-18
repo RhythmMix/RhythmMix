@@ -33,7 +33,6 @@ public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
 
         this.playlists = playlists;
         this.callingActivity = callingActivity;
-
     }
 
     @NonNull
@@ -50,6 +49,7 @@ public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
 
         ImageButton playlistFragmentImage = holder.itemView.findViewById(R.id.playlistImageButton);
         String playlistImagePath = playlists.get(position).getPlaylistBackground();
+        String playlistIDD=playlists.get(position).getId();
 
         playlistFragmentText.setText(playlistName);
 
@@ -62,6 +62,8 @@ public class playlistRecyclerViewAdapter extends RecyclerView.Adapter {
 
         holder.itemView.setOnClickListener(view -> {
             Intent goToInsidePlaylist = new Intent(callingActivity, InsidePlaylistActivity.class);
+            Log.i("TAG From playlist","This id coming from playlis adapter: "+playlistIDD);
+            goToInsidePlaylist.putExtra("playlistId", playlistIDD);
             goToInsidePlaylist.putExtra("playlistName", playlistName);
             goToInsidePlaylist.putExtra("playlistBackground", playlistImagePath);
             callingActivity.startActivity(goToInsidePlaylist);

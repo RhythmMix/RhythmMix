@@ -76,17 +76,14 @@ public class PlaylistsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Songs/Playlist Navbar
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.playlistsButton) {
                 RecyclerView playlistsRecyclerView = findViewById(R.id.playlistsRecycleView);
                 playlistsRecyclerView.setVisibility(View.VISIBLE);
             } else if (checkedId == R.id.songsButton) {
-//                startActivity(new Intent(PlaylistsActivity.this, LibraryActivity.class));
             }
         });
-        // Set the default selection to "Playlists"
         navigationBar.check(R.id.playlistsButton);
 
 

@@ -39,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
         Button gotoplaylist=findViewById(R.id.goToplaylist);
         gotoplaylist.setOnClickListener(view -> {
-            Intent intent=new Intent(SearchActivity.this,AddToFavoritesActivity.class);
+            Intent intent=new Intent(SearchActivity.this,PlaylistsActivity.class);
             startActivity(intent);
         });
 
