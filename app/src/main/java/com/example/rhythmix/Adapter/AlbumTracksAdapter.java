@@ -51,7 +51,6 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
         holder.trackTitle.setHorizontallyScrolling(true);
         holder.trackTitle.setSingleLine(true);
         holder.trackTitle.setText(music.getTitle());
-        holder.albumNumber.setText(String.valueOf(position + 1));
 
         holder.trackToggleButton.setOnClickListener(v -> {
             int adapterPosition = holder.getAdapterPosition();
@@ -101,14 +100,12 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
     }
 
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
-       public TextView albumNumber;
         public ImageView trackImage;
         public TextView trackTitle;
         public ImageButton trackToggleButton;
 
         public TrackViewHolder(View view) {
             super(view);
-            albumNumber=view.findViewById(R.id.albumNumber);
             trackImage = view.findViewById(R.id.albumImage);
             trackTitle = view.findViewById(R.id.albumTitle);
             trackToggleButton = view.findViewById(R.id.albumToggleButton);

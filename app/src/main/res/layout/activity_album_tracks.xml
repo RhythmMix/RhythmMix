@@ -5,20 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_background_overlay"
+    android:background="@drawable/libraryoverlay"
     tools:context=".Activities.AlbumTracksActivity">
-
-
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_back_album_track"
-            android:background="@color/transparent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- Album Info Layout -->
         <LinearLayout
@@ -57,7 +45,7 @@
                     android:layout_marginStart="16dp"
                     android:text="Library"
                     android:textColor="#FFFFFF"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     android:textStyle="bold"
                     android:layout_marginTop="25dp"/>
         </LinearLayout>
@@ -69,6 +57,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:clipToPadding="false"
+            android:layout_marginLeft="18dp"
             android:overScrollMode="never"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintTop_toBottomOf="@+id/albumInfoLayout"

@@ -99,6 +99,8 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .musicMp3(trackMp3)
                     .build();
 
+
+
             PlaylistMusic playlistMusic = PlaylistMusic.builder()
                     .playlist(Playlist.justId(getPlaylistId))
                     .track(music)
@@ -114,6 +116,16 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             );
             ((ChoosePlaylistActivity) callingActivity).runOnUiThread(() -> notifyDataSetChanged());
         }
+    }
+
+    private boolean isTrackAlreadyInPlaylist(List<PlaylistMusic> playlistMusicList, String musicId) {
+        for (PlaylistMusic playlistMusic : playlistMusicList) {
+            // Assuming musicId is a unique identifier for Music
+            if (playlistMusic.getTrack().getId().equals(musicId)) {
+                return true; // Track already exists in the playlist
+            }
+        }
+        return false; // Track is not in the playlist
     }
 
     private void saveMusicItem(Music music) {

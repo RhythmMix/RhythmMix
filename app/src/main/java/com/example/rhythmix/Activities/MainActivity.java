@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.core.Amplify;
 import com.example.rhythmix.Adapter.AlbumRecyclerViewAdapter;
 import com.example.rhythmix.Adapter.TrackRecyclerViewAdapter;
@@ -60,14 +61,30 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView albumRecyclerView;
     private RecyclerView trackRecyclerView;
     private PopupWindow popupWindow;
+    private AuthUser authUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        //=======================================================================================================================================
+
+        navBar();
+        setUpLoginAndLogoutButton();
+        init();
+        displayMultipleAlbums(fetchingAlbumsId());
+        displayMultipleTracks(fetchingTracksId());
+    }
 
 
+    private void navBar(){
+        authUser=Amplify.Auth.getCurrentUser();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
@@ -81,26 +98,15 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.Search) {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 return true;
-            } else if (item.getItemId() == R.id.Library) {
+            } else if (item.getItemId() == R.id.Library  && authUser!=null) {
                 startActivity(new Intent(MainActivity.this, LibraryActivity.class));
                 return true;
-            } else if (item.getItemId() == R.id.Profile) {
+            } else if (item.getItemId() == R.id.Profile && authUser!=null) {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 return true;
             } else return false;
         });
         bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(true);
-        setUpLoginAndLogoutButton();
-
-        //=======================================================================================================================================
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        init();
-        displayMultipleAlbums(fetchingAlbumsId());
-        displayMultipleTracks(fetchingTracksId());
     }
 
     private void setUpLoginAndLogoutButton() {

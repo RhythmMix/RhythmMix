@@ -1,7 +1,12 @@
 package com.example.rhythmix.Adapter;
 
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -10,14 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rhythmix.activities.APISongPlayerActivity;
-import com.example.rhythmix.activities.MainActivity;
-import com.example.rhythmix.models.Music;
+import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Favorite;
+import com.example.rhythmix.Activities.APISongPlayerActivity;
+import com.example.rhythmix.Activities.ChoosePlaylistActivity;
+import com.example.rhythmix.Activities.MainActivity;
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.FavoritesHandler;
+import com.example.rhythmix.models.Track;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,25 +36,34 @@ import java.util.List;
 
 public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecyclerViewAdapter.TrackListViewHolder> {
 
-    private List<Music> musicList;
+    private List<Track> musicList;
     private List<String> previewUrls;
     private List<String> titleList;
     private List<String> artistsList;
+    private List<Favorite> musicListFavorite;
     private Activity context;
     private MediaPlayer currentMediaPlayer;
+
     private RecyclerView recyclerView;
     private int currentlyPlayingPosition = -1;
+    private static final String TAG = "TrackRecyclerViewAdapter";
     private MainActivity mainActivity;
+    FavoritesHandler favoritesHandler;
+    FavoritesAdapter favoritesAdapter;
 
-    private static final String TAG = "Vertical_HOLDER";
 
-    public TrackRecyclerViewAdapter(Activity context, List<Music> musicList,List<String> previewUrls, RecyclerView recyclerView,List<String> titleList,List<String> artistsList) {
+    public TrackRecyclerViewAdapter(Activity context, List<Track> musicList,List<String> previewUrls, RecyclerView recyclerView,List<String> titleList,List<String> artistsList) {
         this.context = context;
         this.musicList = musicList;
         this.recyclerView = recyclerView;
         this.previewUrls=previewUrls;
         this.titleList=titleList;
         this.artistsList=artistsList;
+        this.favoritesHandler = new FavoritesHandler(musicListFavorite,context, favoritesAdapter);
+    }
+    public TrackRecyclerViewAdapter(Activity context, List<Track> musicList) {
+        this.context = context;
+        this.musicList = musicList;
     }
 
 
@@ -57,14 +77,17 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     @Override
     public void onBindViewHolder(@NonNull TrackListViewHolder holder, int position) {
         if (musicList != null && position >= 0 && position < musicList.size()) {
-            Music music = musicList.get(position);
+            Track music = musicList.get(position);
             if (music != null && music.getPreview() != null && music.getArtist().getName() != null && music.getArtist().getPicture() != null) {
                 String imageUrl = music.getArtist().getPicture();
                 ImageView musicImage = holder.itemView.findViewById(R.id.musicImage);
                 TextView musicTitle = holder.itemView.findViewById(R.id.musicTitle);
                 ImageButton toggleButton = holder.itemView.findViewById(R.id.toggleButton);
                 TextView artistName = holder.itemView.findViewById(R.id.musicArtistName);
+                ImageView menuButton = holder.itemView.findViewById(R.id.menu_button_main);
 
+
+                initializePopupMenu(menuButton , music);
                 Picasso.get().load(imageUrl).into(musicImage);
 
                 // Displaying title & Artist name & path
@@ -76,14 +99,12 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
                 String songPath = music.getPreview();
 
-
-
                 // Set click listener for the entire item view
                 holder.itemView.setOnClickListener(v -> {
                     int clickedPosition = holder.getAdapterPosition();
 
                     // Pass data to SongPlayerActivity
-                    Music clickedMusic = musicList.get(clickedPosition);
+                    Track clickedMusic = musicList.get(clickedPosition);
                     if (clickedMusic != null) {
 
                         Intent intent = new Intent(context, APISongPlayerActivity.class);
@@ -171,9 +192,108 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
 
     }
 
-    public void addTrack(Music music) {
+    public void addTrack(Track music) {
         musicList.add(music);
         notifyDataSetChanged();
     }
 
+    //==============================
+    // Menu popup  functionality
+    //==============================
+    public void initializePopupMenu(View menuButton, Track selectedTrack) {
+
+        if (menuButton != null) {
+            menuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(view, selectedTrack);
+                }
+            });
+        }
+    }
+
+    public void showPopupMenu(View view, Track selectedTrack) {
+        View popupView = LayoutInflater.from(context).inflate(R.layout.playlist_dropdown_home_page, null);
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView menuText1 = popupView.findViewById(R.id.menu_text1);
+        TextView menuText2 = popupView.findViewById(R.id.menu_text2);
+        TextView menuText3 = popupView.findViewById(R.id.menu_text3);
+
+        menuText1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_text1, selectedTrack);
+            }
+        });
+
+        menuText2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_text2, selectedTrack);
+            }
+        });
+
+        menuText3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                onMenuItemClick(R.id.menu_text3, selectedTrack);
+            }
+        });
+
+        if (!popupWindow.isShowing()) {
+            popupWindow.showAsDropDown(view);
+        }
+    }
+
+    private void onMenuItemClick(int itemId, Track selectedTrack) {
+        if (itemId == R.id.menu_text1) {
+            addToPlaylist(selectedTrack);
+        } else if (itemId == R.id.menu_text2) {
+            favoritesHandler.addToFavorites(selectedTrack);
+        } else if (itemId == R.id.menu_text3) {
+            String trackLink = selectedTrack.getPreview();
+            favoritesHandler.shareTrack(trackLink);
+        }
+    }
+
+    private void addToPlaylist(Track selectedTrack) {
+        AuthUser authUser = Amplify.Auth.getCurrentUser();
+        Intent addToPlaylistIntent = new Intent(context, ChoosePlaylistActivity.class);
+        if (authUser != null) {
+            long trackId = selectedTrack.getId();
+            String trackTitle = selectedTrack.getTitle();
+            String trackArtist = selectedTrack.getArtist().getName();
+            String trackMp3 = selectedTrack.getPreview();
+            String userEmail = authUser.getUsername();
+            String cover = selectedTrack.getAlbum().getCover();
+            addToPlaylistIntent.putExtra("TRACK_ID", trackId);
+            addToPlaylistIntent.putExtra("TRACK_TITLE", trackTitle);
+            addToPlaylistIntent.putExtra("TRACK_ARTIST", trackArtist);
+            addToPlaylistIntent.putExtra("TRACK_MP3", trackMp3);
+            addToPlaylistIntent.putExtra("TrackCover", cover);
+            addToPlaylistIntent.putExtra("SELECTED_TRACK", selectedTrack);
+            context.startActivity(addToPlaylistIntent);
+        } else {
+            runOnUiThread(() -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Please log in or sign up to add tracks to playlists.")
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .show();
+            });
+        }
+
+    }
 }

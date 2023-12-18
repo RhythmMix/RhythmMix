@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.core.Amplify;
 import com.example.rhythmix.Adapter.DataListAdapter;
 import com.example.rhythmix.MusicApiInterface;
 import com.example.rhythmix.R;
@@ -40,12 +42,26 @@ public class SearchActivity extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> autoCompleteAdapter;
     private DataListAdapter adapter;
+    private AuthUser authUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+        setupAutoComplete();
 
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        navBar();
+    }
+
+    private void navBar(){
+        authUser=Amplify.Auth.getCurrentUser();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
@@ -59,23 +75,15 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
             } else if (item.getItemId() == R.id.Search) {
                 return true;
-            } else if (item.getItemId() == R.id.Library) {
+            } else if (item.getItemId() == R.id.Library  && authUser!=null) {
                 startActivity(new Intent(SearchActivity.this, LibraryActivity.class));
                 return true;
-            } else if (item.getItemId() == R.id.Profile) {
+            } else if (item.getItemId() == R.id.Profile && authUser!=null) {
                 startActivity(new Intent(SearchActivity.this, ProfileActivity.class));
                 return true;
             } else return false;
         });
         bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(true);
-        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
-        setupAutoComplete();
-
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
     }
 
     private void setupAutoComplete() {

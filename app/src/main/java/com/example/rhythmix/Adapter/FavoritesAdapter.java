@@ -96,6 +96,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
     }
 
     @Override

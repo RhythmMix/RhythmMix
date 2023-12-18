@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
@@ -35,8 +36,6 @@ public class PlaylistsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
 
-        setupBottomNavigationView();
-     
         String emptyFileName="emptyTestFile";
         File emptyFile =new File(getApplicationContext().getFilesDir(),emptyFileName);
         try {
@@ -62,12 +61,21 @@ public class PlaylistsActivity extends AppCompatActivity {
                 }
         );
 
+        //==========================================================================
 
+        ImageButton FavoriteImageButton= findViewById(R.id.FavoriteImageButton);
+        FavoriteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToFavPage= new Intent(PlaylistsActivity.this, AddToFavoritesActivity.class);
+                startActivity(goToFavPage);
+            }
+        });
 
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();
         setUpPlayListRecyclerView();
-
+        setupBottomNavigationView();
 
         //////////////////////>>Click here to create a playlist<<<<
 
@@ -79,17 +87,18 @@ public class PlaylistsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Navigation songs/playlists
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.playlistsButton) {
                 RecyclerView playlistsRecyclerView = findViewById(R.id.playlistsRecycleView);
                 playlistsRecyclerView.setVisibility(View.VISIBLE);
             } else if (checkedId == R.id.songsButton) {
+                startActivity(new Intent(PlaylistsActivity.this, LibraryActivity.class));
             }
         });
         navigationBar.check(R.id.playlistsButton);
-
-
     }
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>CREATE RECYCLERVIEW<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

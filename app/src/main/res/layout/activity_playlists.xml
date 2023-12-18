@@ -63,6 +63,8 @@
         android:textSize="16sp" />
   </RadioGroup>
 
+  <!--RecyclerView-->
+
   <ImageView
       android:id="@+id/add_list"
       android:layout_width="169dp"
@@ -71,26 +73,23 @@
       android:paddingBottom="13dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.165"
+      app:layout_constraintHorizontal_bias="0.132"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.383"
+      app:layout_constraintVertical_bias="0.324"
       app:srcCompat="@drawable/plus"
       app:tint="@color/FlatWhite"
       tools:ignore="MissingConstraints" />
-
-  <!--RecyclerView-->
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/playlistsRecycleView"
       android:layout_width="350dp"
       android:layout_height="271dp"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.475"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.965" />
+      app:layout_constraintTop_toBottomOf="@+id/FavoriteSong" />
 
   <ImageButton
       android:id="@+id/FavoriteImageButton"
@@ -102,9 +101,10 @@
       app:layout_constraintHorizontal_bias="0.875"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.387"
+      app:layout_constraintVertical_bias="0.323"
       app:srcCompat="@drawable/favsongoverly" />
 
+  <!--Main NavBar-->
   <TextView
       android:id="@+id/FavoriteSong"
       android:layout_width="wrap_content"
@@ -116,12 +116,11 @@
       android:textStyle="bold"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.835"
+      app:layout_constraintHorizontal_bias="0.808"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.534" />
+      app:layout_constraintVertical_bias="0.496" />
 
-  <!--Main NavBar-->
   <include
       android:id="@+id/bottom_navigation"
       layout="@layout/navbar"
