@@ -1,9 +1,11 @@
 package com.example.rhythmix.activities;
 
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -86,7 +88,8 @@ public class LibraryActivity extends AppCompatActivity {
         // Go to player Activity click item
         librarySongsAdapter = new LibrarySongsAdapter(this, songList, songPaths, artistNames, this);
         recyclerView.setAdapter(librarySongsAdapter); // using the adapter as our data source for encapsulation and separation of responsibilities
-
+        SharedPreferences sharedPreferences = getSharedPreferences("LibrarySongsAdapterPrefs", MODE_PRIVATE);
+        librarySongsAdapter.setSharedPreferences(sharedPreferences);
         librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
             isItemClickListenerActive = true;
             isPlayAllClicked = false;
@@ -100,6 +103,8 @@ public class LibraryActivity extends AppCompatActivity {
             startActivity(intent);
             stopPlayback();
             isItemClickListenerActive = false;
+            librarySongsAdapter.updatePlayPauseState(position, !librarySongsAdapter.getPlayPauseState(position));
+
         });
 
         // Play/Pause Button
@@ -153,10 +158,6 @@ public class LibraryActivity extends AppCompatActivity {
 
     }
 
-
-    //==============================
-    // Songs/Playlist Navbar
-    //==============================
     private void setupNavigationBar() {
         RadioGroup navigationBar = findViewById(R.id.navigationBar);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
@@ -169,11 +170,7 @@ public class LibraryActivity extends AppCompatActivity {
         });
         navigationBar.check(R.id.songsButton);
     }
-    //================================================================================================================================
 
-    //==============================
-    // Main Navbar
-    //==============================
     private void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -197,12 +194,7 @@ public class LibraryActivity extends AppCompatActivity {
         });
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
     }
-    //================================================================================================================================
 
-
-    //==============================
-    // Permissions
-    //==============================
     private void handleLibraryPermissions() {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
@@ -226,11 +218,7 @@ public class LibraryActivity extends AppCompatActivity {
             }
         }
     }
-    //================================================================================================================================
 
-    //==============================
-    // Search Bar
-    //==============================
     private void searchBar() {
         TextInputEditText searchEditText = findViewById(R.id.searchEditText);
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -249,12 +237,7 @@ public class LibraryActivity extends AppCompatActivity {
             }
         });
     }
-    //==========================================================================================
 
-
-    //==============================
-    // DisplaySongs
-    //==============================
     private void displaySongs() {
         Log.i(LOG_TAG, "entered displaySongs");
         songList = new ArrayList<>();
@@ -302,12 +285,7 @@ public class LibraryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //==========================================================================================
 
-
-    //==============================
-    // MediaPlayer Initialization
-    //==============================
     private void initializeMediaPlayer() {
         // play the audio of fetched songs
 
@@ -350,16 +328,14 @@ public class LibraryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //==============================================================================================================
 
-    //==============================
-    // Play Song Controls
-    //==============================
-    private void playSelectedSong() {
-        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty() && mediaPlayer.isPlaying() ) {
-            stopPlayback();
-            currentPosition = songPaths.indexOf(selectedSongInLibraryPath);
-            playSong(selectedSongInLibraryPath);
+    public void playSelectedSong() {
+        if (selectedSongInLibraryPath != null && !selectedSongInLibraryPath.isEmpty()) {
+            if (isPlaying) {
+                pausePlayback();
+            } else {
+                startPlayback();
+            }
         }
     }
 
@@ -393,17 +369,18 @@ public class LibraryActivity extends AppCompatActivity {
         if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             isPlaying = true;
-            Log.i(LOG_TAG,"Is playing inside resumePlayback");
             updatePlayButton();
             updatePlayAllButtonState(currentPosition);
         }
     }
+    private void startPlayback() {
+        initializeMediaPlayer();
+        mediaPlayer.start();
+        isPlaying = true;
+        updatePlayButton();
+        updatePlayAllButtonState(currentPosition);
+    }
 
-    //======================================================================================
-
-    //==============================
-    // PlayAll functionality
-    //==============================
     private void playAllSongs() throws IOException {
         if (librarySongsAdapter != null && librarySongsAdapter.getItemCount() > 0) {
             ArrayList<String> songPaths = librarySongsAdapter.songPaths;
@@ -530,11 +507,6 @@ public class LibraryActivity extends AppCompatActivity {
     public boolean isPlayAllClicked() {
         return isPlayAllClicked;
     }
-    //======================================================================================
-
-    //==============================
-    // Add To Playlist functionality
-    //==============================
 
     public void initializePopupMenu() {
         ImageView menuButton = findViewById(R.id.menu_button);
@@ -632,21 +604,16 @@ public class LibraryActivity extends AppCompatActivity {
         }
     }
 
-    //======================================================================================
-
-    //==============================
-    // UI Updates
-    //==============================
 
     private void updatePlayButton() {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             isPlaying = true;
         }
     }
-private void updatePlayAllButtonState(int position) {
-    boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
-    librarySongsAdapter.setPlaying(isPlaying, position);
-}
+    private void updatePlayAllButtonState(int position) {
+        boolean isPlaying = mediaPlayer != null && mediaPlayer.isPlaying();
+        librarySongsAdapter.setPlaying(isPlaying, position);
+    }
 
 
     private void updateNoSongsFoundVisibility() {
@@ -658,8 +625,6 @@ private void updatePlayAllButtonState(int position) {
         }
     }
 
-    //========================================================================================================================
-
     private String formatDuration(String duration) {
         long millis = Long.parseLong(duration);
         long minutes = (millis / 1000) / 60;
@@ -667,27 +632,11 @@ private void updatePlayAllButtonState(int position) {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
-
-    //==============================
-    // Media Player Lifecycle
-    //==============================
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        pausePlayback();
-//    }
-
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        stopPlayback();
-//    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        resumePlayback();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePlayButton();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

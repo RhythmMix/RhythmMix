@@ -1,6 +1,7 @@
 package com.example.rhythmix.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
     private AdapterView.OnItemClickListener playPauseButtonClickListener;
     private LibraryActivity libraryActivity;
 
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "LibrarySongsAdapterPrefs";
 
     public LibrarySongsAdapter(Context context, ArrayList<String> songList, ArrayList<String> songPaths, ArrayList<String> artistList, LibraryActivity libraryActivity) {
         this.originalSongList = new ArrayList<>(songList);
@@ -45,7 +48,30 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
         Arrays.fill(isPlayingArray, false);
         this.libraryActivity = libraryActivity;
     }
+    public void setSharedPreferences(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+    }
+    private void savePlayPauseState(int position, boolean isPlaying) {
+        if (sharedPreferences != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("play_pause_state_" + position, isPlaying);
+            editor.apply();
+        }
+    }
 
+    public boolean getPlayPauseState(int position) {
+        if (sharedPreferences != null) {
+            return sharedPreferences.getBoolean("play_pause_state_" + position, false);
+        }
+        return false;
+    }
+
+    public void updatePlayPauseState(int position, boolean isPlaying) {
+        isPlayingArray[position] = isPlaying;
+        savePlayPauseState(position, isPlaying);
+        notifyItemChanged(position); // Use notifyItemChanged to update a specific item
+
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.song_item_library, parent, false);
@@ -78,14 +104,15 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
                     playPauseButtonClickListener.onItemClick(null, holder.itemView, clickedPosition, clickedPosition);
                 }
             }
+
+            // Update play/pause state when button is clicked
+            updatePlayPauseState(clickedPosition, !getPlayPauseState(clickedPosition));
         });
 
-
-
-        int playPauseIcon = isPlayingArray[position] ? R.drawable.ic_pause : R.drawable.round_play_circle_24;
-        Log.i(TAG,"SONG status" +  isPlayingArray[position] );
+        int playPauseIcon = getPlayPauseState(position) ? R.drawable.ic_pause : R.drawable.round_play_circle_24;
         holder.playPauseButton.setImageResource(playPauseIcon);
     }
+
 
 
     // change the song play state used in functionality in libraryActivity
