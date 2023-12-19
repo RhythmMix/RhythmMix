@@ -39,9 +39,7 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
         File emptyFile =new File(getApplicationContext().getFilesDir(),emptyFileName);
         try {
             BufferedWriter emptyFileBufferedWriter= new BufferedWriter(new FileWriter(emptyFile));
-
             emptyFileBufferedWriter.append("Some text here from Farah\nAnother libe from Farah");
-
             emptyFileBufferedWriter.close();
         }catch (IOException ioe){
             Log.i(TAG, "could not write locally with filename: "+ emptyFileName);
@@ -59,7 +57,6 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                     Log.i(TAG, "S3 upload failed! " + failure.getMessage());
                 }
         );
-
         //>>>>>>>>>>>>>>>>Handel BackCase<<<<<<<<<<<<<<<<<<<
 
         ImageButton backToMain =findViewById(R.id.backButton);
