@@ -11,8 +11,6 @@
         <item name="android:progressDrawable">@drawable/custom_seekbar_progress</item>
         <item name="android:thumb">@drawable/custom_seekbar_thumb</item>
     </style>
-
-
     <!--Farah Styles-->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowShowWallpaper">true</item>
@@ -34,7 +32,6 @@
         <item name="android:background">@drawable/rounded_button_background</item>
         <item name="android:scaleType">fitXY</item>
     </style>
-
     <style name="YourCustomDialogTheme" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
@@ -42,10 +39,11 @@
         <item name="android:windowAnimationStyle">@style/YourPopupAnimation</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.6</item>
-        <item name="android:layout">@layout/custom_dialog_layout</item>
+        <item name="android:layout">@layout/activity_create_playlist</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">900px</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
+
 
 
     <style name="YourPopupAnimation">

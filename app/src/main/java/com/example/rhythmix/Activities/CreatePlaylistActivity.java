@@ -13,6 +13,7 @@
     import android.widget.EditText;
     import android.widget.ImageButton;
     import android.widget.ImageView;
+    import android.widget.TextView;
 
     import androidx.activity.result.ActivityResult;
     import androidx.activity.result.ActivityResultCallback;
@@ -130,11 +131,14 @@
 
                         ImageView productImageView = findViewById(R.id.editProductImageImageView);
                         ImageButton uploadSection = findViewById(R.id.playlistBackground);
+                        TextView text =findViewById(R.id.textView);
                         InputStream pickedImageInputStreamCopy = null;
                         try {
                             pickedImageInputStreamCopy = getContentResolver().openInputStream(pickedImageFileUri);
                             uploadSection.setVisibility(View.INVISIBLE);
+                            text.setVisibility(View.INVISIBLE);
                             productImageView.setVisibility(View.VISIBLE);
+
 
                         } catch (FileNotFoundException fnfe) {
                             Log.e(TAG, "Could not get file stream from URI! " + fnfe.getMessage(), fnfe);
