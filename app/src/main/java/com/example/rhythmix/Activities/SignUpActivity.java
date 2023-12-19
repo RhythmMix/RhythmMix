@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
                     bad -> {
                         Log.i(TAG, "Signup failed with username: " + username + " with this message: " + bad.toString());
                         runOnUiThread(() -> {
-                            Toast.makeText(SignUpActivity.this, "Signup failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignUpActivity.this, "Used credentials, try again!", Toast.LENGTH_LONG).show();
                         });
                     }
             );

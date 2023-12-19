@@ -163,6 +163,7 @@
             android:id="@+id/nextButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginEnd="15dp"
             android:layout_toRightOf="@+id/ApiPlayButton"
             android:background="@drawable/ic_skip_next_24" />
 
