@@ -17,5 +17,8 @@
     <string name="play_random">Shuffle play</string>
     <string name="add_to_playlist">Add to playlist</string>
     <string name="accessibility_overflow">Accessibility Overflow</string>
+    <string name="add_playList_background">Add playlist cover</string>
+    <string name="addPlayListButton">Add Playlist</string>
+    <string name="playlist_fragment">Name</string>
 </resources>
 

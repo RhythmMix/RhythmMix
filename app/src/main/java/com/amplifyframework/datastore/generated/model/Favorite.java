@@ -28,15 +28,17 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 public final class Favorite implements Model {
   public static final QueryField ID = field("Favorite", "id");
   public static final QueryField FAVORITE_ID = field("Favorite", "favoriteID");
-  public static final QueryField FAVORITE_TITLE = field("Favorite", "FavoriteTitle");
-  public static final QueryField FAVORITE_ARTIST = field("Favorite", "FavoriteArtist");
-  public static final QueryField FAVORITE_MP3 = field("Favorite", "FavoriteMp3");
+  public static final QueryField FAVORITE_TITLE = field("Favorite", "favoriteTitle");
+  public static final QueryField FAVORITE_ARTIST = field("Favorite", "favoriteArtist");
+  public static final QueryField FAVORITE_MP3 = field("Favorite", "favoriteMp3");
+  public static final QueryField FAVORITE_COVER = field("Favorite", "favoriteCover");
   public static final QueryField USER_ID = field("Favorite", "userID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="ID", isRequired = true) String favoriteID;
-  private final @ModelField(targetType="String", isRequired = true) String FavoriteTitle;
-  private final @ModelField(targetType="String", isRequired = true) String FavoriteArtist;
-  private final @ModelField(targetType="String", isRequired = true) String FavoriteMp3;
+  private final @ModelField(targetType="String", isRequired = true) String favoriteTitle;
+  private final @ModelField(targetType="String", isRequired = true) String favoriteArtist;
+  private final @ModelField(targetType="String", isRequired = true) String favoriteMp3;
+  private final @ModelField(targetType="String") String favoriteCover;
   private final @ModelField(targetType="ID", isRequired = true) String userID;
   private final @ModelField(targetType="FavoriteMusic") @HasMany(associatedWith = "favorite", type = FavoriteMusic.class) List<FavoriteMusic> favoriteMusics = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
@@ -56,15 +58,19 @@ public final class Favorite implements Model {
   }
   
   public String getFavoriteTitle() {
-      return FavoriteTitle;
+      return favoriteTitle;
   }
   
   public String getFavoriteArtist() {
-      return FavoriteArtist;
+      return favoriteArtist;
   }
   
   public String getFavoriteMp3() {
-      return FavoriteMp3;
+      return favoriteMp3;
+  }
+  
+  public String getFavoriteCover() {
+      return favoriteCover;
   }
   
   public String getUserId() {
@@ -83,12 +89,13 @@ public final class Favorite implements Model {
       return updatedAt;
   }
   
-  private Favorite(String id, String favoriteID, String FavoriteTitle, String FavoriteArtist, String FavoriteMp3, String userID) {
+  private Favorite(String id, String favoriteID, String favoriteTitle, String favoriteArtist, String favoriteMp3, String favoriteCover, String userID) {
     this.id = id;
     this.favoriteID = favoriteID;
-    this.FavoriteTitle = FavoriteTitle;
-    this.FavoriteArtist = FavoriteArtist;
-    this.FavoriteMp3 = FavoriteMp3;
+    this.favoriteTitle = favoriteTitle;
+    this.favoriteArtist = favoriteArtist;
+    this.favoriteMp3 = favoriteMp3;
+    this.favoriteCover = favoriteCover;
     this.userID = userID;
   }
   
@@ -105,6 +112,7 @@ public final class Favorite implements Model {
               ObjectsCompat.equals(getFavoriteTitle(), favorite.getFavoriteTitle()) &&
               ObjectsCompat.equals(getFavoriteArtist(), favorite.getFavoriteArtist()) &&
               ObjectsCompat.equals(getFavoriteMp3(), favorite.getFavoriteMp3()) &&
+              ObjectsCompat.equals(getFavoriteCover(), favorite.getFavoriteCover()) &&
               ObjectsCompat.equals(getUserId(), favorite.getUserId()) &&
               ObjectsCompat.equals(getCreatedAt(), favorite.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), favorite.getUpdatedAt());
@@ -119,6 +127,7 @@ public final class Favorite implements Model {
       .append(getFavoriteTitle())
       .append(getFavoriteArtist())
       .append(getFavoriteMp3())
+      .append(getFavoriteCover())
       .append(getUserId())
       .append(getCreatedAt())
       .append(getUpdatedAt())
@@ -132,9 +141,10 @@ public final class Favorite implements Model {
       .append("Favorite {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("favoriteID=" + String.valueOf(getFavoriteId()) + ", ")
-      .append("FavoriteTitle=" + String.valueOf(getFavoriteTitle()) + ", ")
-      .append("FavoriteArtist=" + String.valueOf(getFavoriteArtist()) + ", ")
-      .append("FavoriteMp3=" + String.valueOf(getFavoriteMp3()) + ", ")
+      .append("favoriteTitle=" + String.valueOf(getFavoriteTitle()) + ", ")
+      .append("favoriteArtist=" + String.valueOf(getFavoriteArtist()) + ", ")
+      .append("favoriteMp3=" + String.valueOf(getFavoriteMp3()) + ", ")
+      .append("favoriteCover=" + String.valueOf(getFavoriteCover()) + ", ")
       .append("userID=" + String.valueOf(getUserId()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
@@ -161,6 +171,7 @@ public final class Favorite implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -168,9 +179,10 @@ public final class Favorite implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       favoriteID,
-      FavoriteTitle,
-      FavoriteArtist,
-      FavoriteMp3,
+      favoriteTitle,
+      favoriteArtist,
+      favoriteMp3,
+      favoriteCover,
       userID);
   }
   public interface FavoriteIdStep {
@@ -201,26 +213,29 @@ public final class Favorite implements Model {
   public interface BuildStep {
     Favorite build();
     BuildStep id(String id);
+    BuildStep favoriteCover(String favoriteCover);
   }
   
 
   public static class Builder implements FavoriteIdStep, FavoriteTitleStep, FavoriteArtistStep, FavoriteMp3Step, UserIdStep, BuildStep {
     private String id;
     private String favoriteID;
-    private String FavoriteTitle;
-    private String FavoriteArtist;
-    private String FavoriteMp3;
+    private String favoriteTitle;
+    private String favoriteArtist;
+    private String favoriteMp3;
     private String userID;
+    private String favoriteCover;
     public Builder() {
       
     }
     
-    private Builder(String id, String favoriteID, String FavoriteTitle, String FavoriteArtist, String FavoriteMp3, String userID) {
+    private Builder(String id, String favoriteID, String favoriteTitle, String favoriteArtist, String favoriteMp3, String favoriteCover, String userID) {
       this.id = id;
       this.favoriteID = favoriteID;
-      this.FavoriteTitle = FavoriteTitle;
-      this.FavoriteArtist = FavoriteArtist;
-      this.FavoriteMp3 = FavoriteMp3;
+      this.favoriteTitle = favoriteTitle;
+      this.favoriteArtist = favoriteArtist;
+      this.favoriteMp3 = favoriteMp3;
+      this.favoriteCover = favoriteCover;
       this.userID = userID;
     }
     
@@ -231,9 +246,10 @@ public final class Favorite implements Model {
         return new Favorite(
           id,
           favoriteID,
-          FavoriteTitle,
-          FavoriteArtist,
-          FavoriteMp3,
+          favoriteTitle,
+          favoriteArtist,
+          favoriteMp3,
+          favoriteCover,
           userID);
     }
     
@@ -247,21 +263,21 @@ public final class Favorite implements Model {
     @Override
      public FavoriteArtistStep favoriteTitle(String favoriteTitle) {
         Objects.requireNonNull(favoriteTitle);
-        this.FavoriteTitle = favoriteTitle;
+        this.favoriteTitle = favoriteTitle;
         return this;
     }
     
     @Override
      public FavoriteMp3Step favoriteArtist(String favoriteArtist) {
         Objects.requireNonNull(favoriteArtist);
-        this.FavoriteArtist = favoriteArtist;
+        this.favoriteArtist = favoriteArtist;
         return this;
     }
     
     @Override
      public UserIdStep favoriteMp3(String favoriteMp3) {
         Objects.requireNonNull(favoriteMp3);
-        this.FavoriteMp3 = favoriteMp3;
+        this.favoriteMp3 = favoriteMp3;
         return this;
     }
     
@@ -269,6 +285,12 @@ public final class Favorite implements Model {
      public BuildStep userId(String userId) {
         Objects.requireNonNull(userId);
         this.userID = userId;
+        return this;
+    }
+    
+    @Override
+     public BuildStep favoriteCover(String favoriteCover) {
+        this.favoriteCover = favoriteCover;
         return this;
     }
     
@@ -284,12 +306,12 @@ public final class Favorite implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String favoriteId, String favoriteTitle, String favoriteArtist, String favoriteMp3, String userId) {
-      super(id, favoriteID, FavoriteTitle, FavoriteArtist, FavoriteMp3, userID);
+    private CopyOfBuilder(String id, String favoriteId, String favoriteTitle, String favoriteArtist, String favoriteMp3, String favoriteCover, String userId) {
+      super(id, favoriteID, favoriteTitle, favoriteArtist, favoriteMp3, favoriteCover, userID);
       Objects.requireNonNull(favoriteID);
-      Objects.requireNonNull(FavoriteTitle);
-      Objects.requireNonNull(FavoriteArtist);
-      Objects.requireNonNull(FavoriteMp3);
+      Objects.requireNonNull(favoriteTitle);
+      Objects.requireNonNull(favoriteArtist);
+      Objects.requireNonNull(favoriteMp3);
       Objects.requireNonNull(userID);
     }
     
@@ -316,6 +338,11 @@ public final class Favorite implements Model {
     @Override
      public CopyOfBuilder userId(String userId) {
       return (CopyOfBuilder) super.userId(userId);
+    }
+    
+    @Override
+     public CopyOfBuilder favoriteCover(String favoriteCover) {
+      return (CopyOfBuilder) super.favoriteCover(favoriteCover);
     }
   }
 
