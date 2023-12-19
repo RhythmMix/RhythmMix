@@ -151,4 +151,4 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
             playPauseButton = itemView.findViewById(R.id.preview_button);
         }
     }
-}
+ }

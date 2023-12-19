@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.amplifyframework.auth.AuthUserAttribute;
@@ -72,5 +74,24 @@ public class ProfileActivity extends AppCompatActivity {
                     Log.e(TAG, "Fetch user attributes failed: " + failure.toString());
                 }
         );
+
+
+        ImageButton goToFavorite=findViewById(R.id.goToFavorite);
+        goToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, AddToFavoritesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton goToPlaylists=findViewById(R.id.goToPlaylists);
+        goToPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, PlaylistsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

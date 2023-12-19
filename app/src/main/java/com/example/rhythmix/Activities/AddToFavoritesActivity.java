@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +57,15 @@ public class AddToFavoritesActivity extends AppCompatActivity {
             }
         });
 
+//        Log.i(TAG,"Favorites" + favorites);
+//        TextView emptyFavoritePage =findViewById(R.id.emptyFavoritePage);
+//            if (favorites.isEmpty()) {
+//                emptyFavoritePage.setVisibility(View.VISIBLE);
+//            } else {
+//                emptyFavoritePage.setVisibility(View.GONE);
+//            }
     }
+
 
     private void initialization() {
 

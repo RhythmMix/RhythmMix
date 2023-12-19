@@ -1,6 +1,9 @@
 package com.example.rhythmix.Activities;
 
 
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
+
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -84,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void navBar(){
-        authUser=Amplify.Auth.getCurrentUser();
+    private void navBar() {
+        authUser = Amplify.Auth.getCurrentUser();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
@@ -95,20 +98,41 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
 
             if (item.getItemId() == R.id.Home) {
+                // Handle Home click
+                bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(true);
                 return true;
             } else if (item.getItemId() == R.id.Search) {
+                // Handle Search click
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 return true;
-            } else if (item.getItemId() == R.id.Library  && authUser!=null) {
+            } else if (item.getItemId() == R.id.Library && authUser != null) {
+                // Handle Library click for authenticated user
                 startActivity(new Intent(MainActivity.this, LibraryActivity.class));
                 return true;
-            } else if (item.getItemId() == R.id.Profile && authUser!=null) {
+            } else if (item.getItemId() == R.id.Profile && authUser != null) {
+                // Handle Profile click for authenticated user
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 return true;
-            } else return false;
+            } else {
+                // User is not authenticated, show authentication message
+                showAuthenticationMessage();
+                return false;
+            }
         });
         bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(true);
     }
+
+    private void showAuthenticationMessage() {
+        runOnUiThread(() -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please log in or sign up to access this feature.")
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+        });
+    }
+
 
     private void setUpLoginAndLogoutButton() {
         ImageButton loginButton = findViewById(R.id.login);
@@ -197,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Long> fetchingAlbumsId() {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
-                595243L, 7040437L,11674708L,278981762L,464273655L, 418542097L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 315512547L, 12231484L, 117053822L, 306544897L, 129186032L, 8113734L, 280436792L, 6475501L
+                595243L, 7040437L,11674708L,278981762L,464273655L, 418542097L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 117053822L, 129186032L, 8113734L, 280436792L, 6475501L, 245855762L, 973317062L, 9007781L
         );
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
@@ -215,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
                 1842063587L, 2372912335L, 1586852522L, 2582294482L, 435491442L, 11747937L,  1409072752L, 117797212L,
-                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L,2504808871L);
+                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L,2504808871L,1740069577L, 1854463507L, 1584495792L, 145557490L);
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {
@@ -224,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
 
         return shuffled;
     }
-
 
 
     private void displayMultipleTracks(List<Long> tracksId) {

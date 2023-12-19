@@ -76,7 +76,7 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Track selectedTrack = (Track) getTrackIntent.getSerializableExtra("SELECTED_TRACK");
             getPlaylistId = playlists.get(position).getId();
             addToPlaylistAndAmplify(selectedTrack);
-            Toast.makeText(callingActivity, "Playlist Added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(callingActivity, "Song Added", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -98,9 +98,6 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .musicCover(trackCover)
                     .musicMp3(trackMp3)
                     .build();
-
-
-
             PlaylistMusic playlistMusic = PlaylistMusic.builder()
                     .playlist(Playlist.justId(getPlaylistId))
                     .track(music)

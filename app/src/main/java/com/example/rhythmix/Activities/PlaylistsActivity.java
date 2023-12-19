@@ -1,5 +1,7 @@
 package com.example.rhythmix.Activities;
 
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,13 +10,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Favorite;
 import com.amplifyframework.datastore.generated.model.Playlist;
 import com.example.rhythmix.Adapter.PlaylistRecyclerViewAdapter;
 import com.example.rhythmix.R;
@@ -26,6 +30,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PlaylistsActivity extends AppCompatActivity {
@@ -61,9 +66,7 @@ public class PlaylistsActivity extends AppCompatActivity {
                     Log.i(TAG, "S3 upload failed! " + failure.getMessage());
                 }
         );
-
         //==========================================================================
-
         ImageButton FavoriteImageButton= findViewById(R.id.FavoriteImageButton);
         FavoriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,23 +75,26 @@ public class PlaylistsActivity extends AppCompatActivity {
                 startActivity(goToFavPage);
             }
         });
-
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();
         setUpPlayListRecyclerView();
         setupBottomNavigationView();
-
-        //////////////////////>>Click here to create a playlist<<<<
-
+        //>>Click here to create a playlist<<<<
         ImageView addListImageView = findViewById(R.id.add_list);
         addListImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddToPlaylistPopUpActivity popUp = new AddToPlaylistPopUpActivity();
-                popUp.show(getSupportFragmentManager(),"exp");
+                addListImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        AddToPlaylistPopUpActivity popUp = new AddToPlaylistPopUpActivity();
+//                        popUp.show(getSupportFragmentManager(),"exp");
+                        Intent in =new Intent(PlaylistsActivity.this,CreatePlaylistActivity.class);
+                        startActivity(in);
+                    }
+                });
             }
         });
-
         // Navigation songs/playlists
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
@@ -159,5 +165,7 @@ public class PlaylistsActivity extends AppCompatActivity {
         });
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
     }
+
+
 
 }

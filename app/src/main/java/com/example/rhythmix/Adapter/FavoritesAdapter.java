@@ -68,6 +68,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter {
         String artistName = favorite.getFavoriteArtist();
         String albumCover = favorite.getFavoriteCover();
 
+
+
+
         deleteFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
