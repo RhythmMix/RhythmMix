@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rhythmix.Adapter.AlbumTracksAdapter;
 import com.example.rhythmix.MusicApiInterface;
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.APIConfig;
 import com.example.rhythmix.models.Data;
 import com.example.rhythmix.models.Track;
 import com.squareup.picasso.Picasso;
@@ -36,6 +37,7 @@ public class AlbumTracksActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_tracks);
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

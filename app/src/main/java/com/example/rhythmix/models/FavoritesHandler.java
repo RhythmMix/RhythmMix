@@ -57,7 +57,7 @@ public class FavoritesHandler implements FavoritesHandlerInterface {
 
 
     public void checkAndAddToFavorites(String trackId, String title, String artist,
-                                        String mp3, String cover) {
+                                       String mp3, String cover) {
         AuthUser authUser = Amplify.Auth.getCurrentUser();
         if (authUser != null) {
             Amplify.API.query(

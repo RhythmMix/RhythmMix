@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Long> fetchingAlbumsId() {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
-                595243L, 7040437L,11674708L,278981762L,464273655L, 418542097L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 315512547L, 12231484L, 117053822L, 306544897L, 129186032L, 8113734L, 280436792L, 6475501L
+                595243L, 7040437L,11674708L,278981762L,464273655L, 418542097L, 104188L, 265655342L, 510479581L, 100856872L, 15478674L, 117053822L, 129186032L, 8113734L, 280436792L, 6475501L, 245855762L, 973317062L, 9007781L
         );
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         List<Long> ids = new ArrayList<>();
         Collections.addAll(ids,
                 1842063587L, 2372912335L, 1586852522L, 2582294482L, 435491442L, 11747937L,  1409072752L, 117797212L,
-                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L,2504808871L);
+                447098092L, 1584508822L, 2129775057L, 1058814092L, 727429062L, 1582561882L,2504808871L,1740069577L, 1854463507L, 1584495792L, 145557490L);
         Collections.shuffle(ids);
         List<Long> shuffled = new ArrayList<>();
         for (int i = 0; i < ids.size(); i++) {

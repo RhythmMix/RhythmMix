@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,11 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amplifyframework.datastore.generated.model.Favorite;
 
 import com.example.rhythmix.Adapter.FavoritesAdapter;
+import com.example.rhythmix.MusicApiInterface;
 import com.example.rhythmix.R;
+import com.example.rhythmix.models.APIConfig;
+import com.example.rhythmix.models.Data;
 import com.example.rhythmix.models.FavoritesHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
 
 
 public class AddToFavoritesActivity extends AppCompatActivity {
@@ -27,10 +34,21 @@ public class AddToFavoritesActivity extends AppCompatActivity {
     private Context context;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_favorites);
+
+
+        TextView noFavoritesMessage = findViewById(R.id.noFavoritesMessage);
+
+        if (favorites.isEmpty()) {
+            noFavoritesMessage.setVisibility(View.VISIBLE);
+        } else {
+            noFavoritesMessage.setVisibility(View.GONE);
+        }
+
 
         RecyclerView favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -44,6 +62,7 @@ public class AddToFavoritesActivity extends AppCompatActivity {
         favoritesHandler.queryFavorites();
 
     }
+
 
     private void initialization() {
 

@@ -7,7 +7,17 @@
     android:background="@color/black"
     tools:context=".Activities.AddToFavoritesActivity">
 
-
+    <TextView
+        android:id="@+id/noFavoritesMessage"
+        android:layout_width="72dp"
+        android:layout_height="49dp"
+        android:layout_centerInParent="true"
+        android:text="No favorites"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/favoritesRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/favoritesRecyclerView"
+        tools:ignore="MissingConstraints" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesRecyclerView"
         android:layout_width="409dp"
@@ -23,10 +33,12 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         tools:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/favorite_each_item"
         tools:orientation="vertical" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
