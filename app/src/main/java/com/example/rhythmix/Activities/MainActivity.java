@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 return true;
             } else {
-                // User is not authenticated, show authentication message
+                bottomNavigationView.getMenu().findItem(R.id.Home).setChecked(true);
                 showAuthenticationMessage();
                 return false;
             }

@@ -89,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(new Intent(SearchActivity.this, ProfileActivity.class));
                 return true;
             } else {
-                // User is not authenticated, show authentication message
+                bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(true);
                 showAuthenticationMessage();
                 return false;
             }

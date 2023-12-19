@@ -127,12 +127,8 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
                     updateToggleIconForItem(android.R.drawable.ic_media_pause, clickedPosition);
                     currentlyPlayingPosition = clickedPosition; // Update currentlyPlayingPosition
                 }
-
                 // Update the currentMediaPlayer to the new one
                 currentMediaPlayer = mediaPlayer;
-
-
-
             });
         }
     }

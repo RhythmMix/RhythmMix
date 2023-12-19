@@ -122,11 +122,12 @@
     <!-- Heart Icon -->
     <ImageView
         android:id="@+id/heartButton"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:layout_below="@id/ApiSeekBar"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="15dp"
         android:clickable="true"
         android:onClick="onHeartButtonClick"
         android:src="@drawable/ic_favorite" />
@@ -146,6 +147,7 @@
             android:layout_height="50dp"
             android:id="@+id/prevButton"
             android:layout_toLeftOf="@+id/ApiPlayButton"
+            android:layout_marginLeft="15dp"
             android:background="@drawable/ic_skip_previous_24" />
 
         <!-- Play Button -->

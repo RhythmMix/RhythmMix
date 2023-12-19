@@ -108,7 +108,7 @@ public class APISongPlayerActivity extends AppCompatActivity {
         Button prevButton = findViewById(R.id.prevButton);
         seekBar = findViewById(R.id.ApiSeekBar);
         handler = new Handler();
-        shuffleButton = findViewById(R.id.shuffleButton);
+//        shuffleButton = findViewById(R.id.shuffleButton);
         heartButton = findViewById(R.id.heartButton);
 
         Intent intent = getIntent();
@@ -149,8 +149,8 @@ public class APISongPlayerActivity extends AppCompatActivity {
         });
 
         // Set up shuffle listener
-        shuffleButton.setOnClickListener(view -> toggleShuffle());
-        updateShuffleButtonColor();
+//        shuffleButton.setOnClickListener(view -> toggleShuffle());
+//        updateShuffleButtonColor();
 
         // Set up favorite listener
         heartButton.setOnClickListener(view -> onHeartButtonClick());
@@ -229,31 +229,23 @@ public class APISongPlayerActivity extends AppCompatActivity {
     }
 
     private void playNextSong() {
-        if (isShuffleActive) {
-            playRandomSong();
-        } else {
             playSequentialNextSong();
-        }
+
     }
 
 
     private void playSequentialNextSong() {
         if (currentPosition < songPaths.size() - 1) {
             currentPosition++;
-        } else {
-            stopPlayback();
-            return;
-        }
-
-        if (isShuffleActive) {
-            playRandomSong();
-        } else {
             String nextSongPath = songPaths.get(currentPosition);
             playSong(nextSongPath);
             isPlaying = true;
             updatePlayButton();
+        } else {
+            stopPlayback();
         }
     }
+
 
 
     private void playPreviousSong() {
@@ -303,41 +295,41 @@ public class APISongPlayerActivity extends AppCompatActivity {
     //==============================
     // Shuffle Methods
     //==============================
-    private void toggleShuffle() {
-        if (!isShuffleActive) {
-            lastPlayedPosition = currentPosition;
-        }
-        isShuffleActive = !isShuffleActive;
-        updateShuffleButtonColor();
-    }
-
-
-    private void playRandomSong() {
-        if (songPaths != null && songPaths.size() > 1) {
-            ArrayList<String> availableSongs = new ArrayList<>(songPaths);
-            availableSongs.remove(songPath);
-
-            int originalPosition = currentPosition;
-
-            if (!isShuffleActive) {
-                if (currentPosition < songPaths.size() - 1) {
-                    currentPosition++;
-                } else {
-                    stopPlayback();
-                    return;
-                }
-            } else {
-                lastPlayedPosition = originalPosition;
-            }
-
-            int randomIndex = (int) (Math.random() * availableSongs.size());
-
-            currentPosition = randomIndex;
-            Log.i(TAG, "Current position in random: " + currentPosition);
-
-            playSong(availableSongs.get(randomIndex));
-        }
-    }
+//    private void toggleShuffle() {
+//        if (!isShuffleActive) {
+//            lastPlayedPosition = currentPosition;
+//        }
+//        isShuffleActive = !isShuffleActive;
+//        updateShuffleButtonColor();
+//    }
+//
+//
+//    private void playRandomSong() {
+//        if (songPaths != null && songPaths.size() > 1) {
+//            ArrayList<String> availableSongs = new ArrayList<>(songPaths);
+//            availableSongs.remove(songPath);
+//
+//            int originalPosition = currentPosition;
+//
+//            if (!isShuffleActive) {
+//                if (currentPosition < songPaths.size() - 1) {
+//                    currentPosition++;
+//                } else {
+//                    stopPlayback();
+//                    return;
+//                }
+//            } else {
+//                lastPlayedPosition = originalPosition;
+//            }
+//
+//            int randomIndex = (int) (Math.random() * availableSongs.size());
+//
+//            currentPosition = randomIndex;
+//            Log.i(TAG, "Current position in random: " + currentPosition);
+//
+//            playSong(availableSongs.get(randomIndex));
+//        }
+//    }
 
     //==============================
     // Favorite Methods
