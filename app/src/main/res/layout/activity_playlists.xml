@@ -98,6 +98,7 @@
       app:layout_constraintTop_toBottomOf="@+id/FavoriteSong" />
 
   <!--Main NavBar-->
+
   <ImageButton
       android:id="@+id/FavoriteImageButton"
       android:layout_width="165dp"
@@ -105,7 +106,7 @@
       android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.934"
+      app:layout_constraintHorizontal_bias="0.873"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.319"
@@ -122,7 +123,7 @@
       android:textStyle="bold"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.851"
+      app:layout_constraintHorizontal_bias="0.811"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.477" />
