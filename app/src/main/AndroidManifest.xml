@@ -46,7 +46,11 @@ xmlns:tools="http://schemas.android.com/tools">
         android:exported="false" />
     <activity
         android:name=".Activities.CreatePlaylistActivity"
-        android:exported="false" />
+        android:label="@string/app_name"
+        android:theme="@style/YourCustomDialogTheme">
+    </activity>
+
+
     <activity
         android:name=".Activities.PlaylistsActivity"
         android:exported="false" />

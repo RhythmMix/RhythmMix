@@ -2,10 +2,13 @@ package com.example.rhythmix.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
+
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
@@ -57,6 +60,14 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                 }
         );
 
+        //>>>>>>>>>>>>>>>>Handel BackCase<<<<<<<<<<<<<<<<<<<
+
+        ImageButton backToMain =findViewById(R.id.backButton);
+        backToMain.setOnClickListener(view -> {
+            Intent backToMainG =new Intent(this,MainActivity.class);
+            startActivity(backToMainG);
+        });
+
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();
         setUpPlayListRecyclerView();
@@ -94,9 +105,7 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
 
     private void setUpPlayListRecyclerView() {
         RecyclerView playlistRecyclerView = findViewById(R.id.playlistsRecycleView);
-        int numberOfColumns = 2;
-
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         playlistRecyclerView.setLayoutManager(layoutManager);
         choosePlaylistAdapter = new ChoosePlaylistAdapter(playlists, this, this);
         playlistRecyclerView.setAdapter(choosePlaylistAdapter);

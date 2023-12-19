@@ -14,14 +14,12 @@
         android:elevation="0dp"
         tools:ignore="MissingConstraints"
         tools:targetApi="lollipop">
-
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/playlist_pager_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -65,7 +63,6 @@
                         android:layout_height="124dp"
                         android:layout_marginStart="44dp"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/white_rounded"
                         android:padding="3dp"
                         android:src="@drawable/head"
                         app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +137,19 @@
                         app:layout_constraintBottom_toBottomOf="@id/play_option_panel"
                         app:layout_constraintStart_toEndOf="@id/play_all_icon"
                         app:layout_constraintTop_toTopOf="@id/play_option_panel" />
+
+                    <ImageButton
+                        android:id="@+id/backButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="#E6121111"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.006"
+                        app:srcCompat="@drawable/arrow_back" />
                 </com.example.rhythmix.ui.BlurImageViewChildConstraintLayout>
 
             </RelativeLayout>

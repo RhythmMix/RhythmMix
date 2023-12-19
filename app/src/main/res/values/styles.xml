@@ -33,7 +33,23 @@
     <style name="MyImageButtonStyle" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@drawable/rounded_button_background</item>
         <item name="android:scaleType">fitXY</item>
-        <!-- Add any other style attributes you want to customize -->
     </style>
 
+    <style name="YourCustomDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/YourPopupAnimation</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:layout">@layout/custom_dialog_layout</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">900px</item>
+    </style>
+
+
+    <style name="YourPopupAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
 </resources>

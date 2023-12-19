@@ -1,6 +1,7 @@
 package com.example.rhythmix.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Music;
+import com.example.rhythmix.Activities.InsidePlaylistActivity;
 import com.example.rhythmix.R;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
@@ -68,12 +70,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
             throw new RuntimeException(e);
         }
         holder.deleteMusicButton.setOnClickListener(v -> deleteMusicItem(position));
+//
     }
     @Override
     public int getItemCount() {
         return musicList.size();
     }
-
     public static class MusicViewHolder extends RecyclerView.ViewHolder {
         public final TextView titleTextView;
         public final ImageView musicCover;
@@ -89,7 +91,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
             deleteMusicButton = itemView.findViewById(R.id.deleteMusicButton);
         }
     }
-
     private void deleteMusicItem(int position) {
         Music musicToDelete = musicList.get(position);
         AlertDialog.Builder builder = new AlertDialog.Builder(callingActivity);
@@ -98,8 +99,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                     Amplify.API.mutate(
                             ModelMutation.delete(musicToDelete),
                             response -> {
+                                // Remove the item from the list
                                 musicList.remove(position);
+                                // Notify the adapter about the removal
                                 notifyItemRemoved(position);
+                                // Notify the adapter about the data set change
+                                notifyDataSetChanged();
                             },
                             error -> {
                                 Log.e("MusicAdapter", "Error deleting music item", error);
@@ -109,4 +114,5 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                 .show();
     }
+
 }

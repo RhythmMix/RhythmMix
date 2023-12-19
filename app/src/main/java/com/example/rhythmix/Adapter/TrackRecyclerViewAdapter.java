@@ -182,8 +182,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
     public int getItemCount() {
         return musicList.size();
     }
-
-
     public class TrackListViewHolder extends RecyclerView.ViewHolder {
         public TrackListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -255,7 +253,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             popupWindow.showAsDropDown(view);
         }
     }
-
     private void onMenuItemClick(int itemId, Track selectedTrack) {
         if (itemId == R.id.menu_text1) {
             addToPlaylist(selectedTrack);
@@ -266,7 +263,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackRecycler
             favoritesHandler.shareTrack(trackLink);
         }
     }
-
     private void addToPlaylist(Track selectedTrack) {
         AuthUser authUser = Amplify.Auth.getCurrentUser();
         Intent addToPlaylistIntent = new Intent(context, ChoosePlaylistActivity.class);

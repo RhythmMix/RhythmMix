@@ -46,43 +46,42 @@ public class InsidePlaylistActivity extends AppCompatActivity {
         playlistId = intent.getStringExtra("playlistId");
         String playlistName = intent.getStringExtra("playlistName");
         String playlistBackground = intent.getStringExtra("playlistBackground");
-
         TextView playlistTitle = findViewById(R.id.title);
         playlistTitle.setText(playlistName);
-
         ImageView playlistImage = findViewById(R.id.art);
         Glide.with(this)
                 .load("https://rhythmmix90bba48f17b9485194f4a1c4ae1c9bc1200138-dev.s3.us-east-2.amazonaws.com/public/" + playlistBackground)
                 .error(R.drawable.rhythemix)
                 .into(playlistImage);
-
         Log.i("IDTAG", "MYYYYYY IDDDDD ISSS : " + playlistId);
-
         // Get The Recycler View
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         musicAdapter = new MusicAdapter(musicList, InsidePlaylistActivity.this);
         recyclerView.setAdapter(musicAdapter);
-
         // Fetch music data
         fetchMusicForPlaylist(playlistId);
-
         deletePlaylist = findViewById(R.id.deletePlaylist);
         deletePlaylist.setOnClickListener(view -> {
-
         });
 
-    }
+        //>>>>>>>>>>>>>>>>Handel BackCase<<<<<<<<<<<<<<<<<<<
 
+        ImageButton backToMain =findViewById(R.id.backButton);
+        backToMain.setOnClickListener(view -> {
+            Intent backToMainG =new Intent(this,MainActivity.class);
+            startActivity(backToMainG);
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();
-
         //>>>>>>>>>>Delete Playlist<<<<<<<<<<<<<<<<<<<<<<
         ImageButton deletePlaylist = findViewById(R.id.deletePlaylist);
-        deletePlaylist.setOnClickListener(view -> deletePlaylist());
+        deletePlaylist.setOnClickListener(view -> {
+            deletePlaylist();
+        });
     }
-
     private void fetchMusicForPlaylist(String playlistId) {
         Set<String> uniqueIds = new HashSet<>();
         AuthUser authUser = Amplify.Auth.getCurrentUser();
@@ -106,7 +105,6 @@ public class InsidePlaylistActivity extends AppCompatActivity {
             );
         }
     }
-
     private void deletePlaylist() {
         if (playlistId != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -118,6 +116,8 @@ public class InsidePlaylistActivity extends AppCompatActivity {
                                 response -> {
                                     Log.i("InsidePlaylistActivity", "Playlist deleted successfully");
                                     playlistRecyclerViewAdapter.notifyDataSetChanged();
+                                    Intent reloadePage=new Intent(this, InsidePlaylistActivity.class);
+                                    startActivity(reloadePage);
                                     finish();
                                 },
                                 error -> {

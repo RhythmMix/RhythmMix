@@ -66,9 +66,7 @@ public class PlaylistsActivity extends AppCompatActivity {
                     Log.i(TAG, "S3 upload failed! " + failure.getMessage());
                 }
         );
-
         //==========================================================================
-
         ImageButton FavoriteImageButton= findViewById(R.id.FavoriteImageButton);
         FavoriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,23 +75,26 @@ public class PlaylistsActivity extends AppCompatActivity {
                 startActivity(goToFavPage);
             }
         });
-
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();
         setUpPlayListRecyclerView();
         setupBottomNavigationView();
-
-        //////////////////////>>Click here to create a playlist<<<<
-
+        //>>Click here to create a playlist<<<<
         ImageView addListImageView = findViewById(R.id.add_list);
         addListImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PlaylistsActivity.this, CreatePlaylistActivity.class);
-                startActivity(intent);
+                addListImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        AddToPlaylistPopUpActivity popUp = new AddToPlaylistPopUpActivity();
+//                        popUp.show(getSupportFragmentManager(),"exp");
+                        Intent in =new Intent(PlaylistsActivity.this,CreatePlaylistActivity.class);
+                        startActivity(in);
+         }
+});
             }
         });
-
         // Navigation songs/playlists
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
