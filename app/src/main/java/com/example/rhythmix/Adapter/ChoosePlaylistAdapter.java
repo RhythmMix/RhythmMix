@@ -1,8 +1,5 @@
 package com.example.rhythmix.Adapter;
 
-import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
-
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -10,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.core.Amplify;
@@ -26,8 +22,8 @@ import com.bumptech.glide.Glide;
 import com.example.rhythmix.Activities.ChoosePlaylistActivity;
 import com.example.rhythmix.R;
 import com.example.rhythmix.models.Track;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +34,6 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final String TAG = "playlistTagAdapter";
     String getPlaylistId;
     Intent getTrackIntent;
-
     public interface OnPlaylistClickListener {
         void onPlaylistClick(String playlistId);
     }
@@ -52,7 +47,7 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View playListFragment = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_playlist, parent, false);
+        View playListFragment = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_choose_playlist, parent, false);
         return new ChooseplaylistViewHolder(playListFragment);
     }
 
@@ -61,7 +56,7 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView playlistFragmentText = holder.itemView.findViewById(R.id.playlistTitle);
         String playlistName = playlists.get(position).getPlaylistName();
 
-        ImageButton playlistFragmentImage = holder.itemView.findViewById(R.id.playlistImageButton);
+        ImageView playlistFragmentImage = holder.itemView.findViewById(R.id.playlistImageButton); // Change to ImageView
         String playlistImagePath = playlists.get(position).getPlaylistBackground();
         playlistFragmentText.setText(playlistName);
         Log.d("TaskDetailActivity", "Image URL: " + playlistImagePath);
@@ -76,11 +71,17 @@ public class ChoosePlaylistAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Track selectedTrack = (Track) getTrackIntent.getSerializableExtra("SELECTED_TRACK");
             getPlaylistId = playlists.get(position).getId();
             addToPlaylistAndAmplify(selectedTrack);
-            Toast.makeText(callingActivity, "Song Added", Toast.LENGTH_SHORT).show();
+
+            showSnackbar(holder.itemView, "Song was added successfully.");
         });
     }
+    private void showSnackbar(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
 
-    public void addToPlaylistAndAmplify(Track selectedTrack) {
+
+        public void addToPlaylistAndAmplify(Track selectedTrack) {
         String trackTitle = getTrackIntent.getStringExtra("TRACK_TITLE");
         String trackArtist = getTrackIntent.getStringExtra("TRACK_ARTIST");
         String trackMp3 = getTrackIntent.getStringExtra("TRACK_MP3");

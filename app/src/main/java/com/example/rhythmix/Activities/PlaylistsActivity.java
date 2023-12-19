@@ -95,6 +95,7 @@ public class PlaylistsActivity extends AppCompatActivity {
                 });
             }
         });
+
         // Navigation songs/playlists
         RadioGroup navigationBar = findViewById(R.id.navigationBarPlaylist);
         navigationBar.setOnCheckedChangeListener((group, checkedId) -> {
@@ -165,7 +166,4 @@ public class PlaylistsActivity extends AppCompatActivity {
         });
         bottomNavigationView.getMenu().findItem(R.id.Library).setChecked(true);
     }
-
-
-
 }

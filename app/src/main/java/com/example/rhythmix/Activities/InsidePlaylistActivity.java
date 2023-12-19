@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,17 +29,19 @@ import java.util.Set;
 
 public class InsidePlaylistActivity extends AppCompatActivity {
     private List<Music> musicList = new ArrayList<>();
-    private List<Playlist> playlists = new ArrayList<>();
     private RecyclerView recyclerView;
     private MusicAdapter musicAdapter;
     private String playlistId;
     private ImageButton deletePlaylist;
+
     private PlaylistRecyclerViewAdapter playlistRecyclerViewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inside_playlist);
+
         Intent intent = getIntent();
         playlistId = intent.getStringExtra("playlistId");
         String playlistName = intent.getStringExtra("playlistName");
@@ -53,39 +54,34 @@ public class InsidePlaylistActivity extends AppCompatActivity {
                 .error(R.drawable.rhythemix)
                 .into(playlistImage);
         Log.i("IDTAG", "MYYYYYY IDDDDD ISSS : " + playlistId);
+        // Get The Recycler View
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        musicAdapter = new MusicAdapter(musicList, InsidePlaylistActivity.this,recyclerView);
+        recyclerView.setAdapter(musicAdapter);
         // Fetch music data
         fetchMusicForPlaylist(playlistId);
         deletePlaylist = findViewById(R.id.deletePlaylist);
         deletePlaylist.setOnClickListener(view -> {
         });
-    }
 
+        //>>>>>>>>>>>>>>>>Handel BackCase<<<<<<<<<<<<<<<<<<<
+
+        ImageButton backToMain =findViewById(R.id.backButton);
+        backToMain.setOnClickListener(view -> {
+            Intent backToMainG =new Intent(this,PlaylistsActivity.class);
+            startActivity(backToMainG);
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        setUpRecyclerView();
         //>>>>>>>>>>Delete Playlist<<<<<<<<<<<<<<<<<<<<<<
         ImageButton deletePlaylist = findViewById(R.id.deletePlaylist);
-        deletePlaylist.setOnClickListener(view -> deletePlaylist());
+        deletePlaylist.setOnClickListener(view -> {
+            deletePlaylist();
+        });
     }
-
-    private void setUpRecyclerView() {
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        musicAdapter = new MusicAdapter(musicList, InsidePlaylistActivity.this);
-        recyclerView.setAdapter(musicAdapter);
-
-        playlistRecyclerViewAdapter = new PlaylistRecyclerViewAdapter(playlists, this);
-        recyclerView.setAdapter(playlistRecyclerViewAdapter);
-
-        TextView emptyPlaylistMessage = findViewById(R.id.emptyPlaylistMessage);
-        if (musicList.isEmpty()) {
-            emptyPlaylistMessage.setVisibility(View.VISIBLE);
-        } else {
-            emptyPlaylistMessage.setVisibility(View.GONE);
-        }
-    }
-
     private void fetchMusicForPlaylist(String playlistId) {
         Set<String> uniqueIds = new HashSet<>();
         AuthUser authUser = Amplify.Auth.getCurrentUser();
@@ -103,57 +99,38 @@ public class InsidePlaylistActivity extends AppCompatActivity {
                                 musicList.add(music);
                             }
                         }
-                        runOnUiThread(() -> {
-                            musicAdapter.notifyDataSetChanged();
-                            updateEmptyPlaylistMessageVisibility();
-                        });
+                        runOnUiThread(() -> musicAdapter.notifyDataSetChanged());
                     },
                     error -> Log.e("InsidePlaylistActivity", "Error fetching playlist music items", error)
             );
         }
     }
-
-    private void updateEmptyPlaylistMessageVisibility() {
-        TextView emptyPlaylistMessage = findViewById(R.id.emptyPlaylistMessage);
-        if (musicList.isEmpty()) {
-            emptyPlaylistMessage.setVisibility(View.VISIBLE);
+    private void deletePlaylist() {
+        if (playlistId != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to delete this playlist?")
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        dialog.dismiss();
+                        Amplify.API.mutate(
+                                ModelMutation.delete(Playlist.justId(playlistId)),
+                                response -> {
+                                    Log.i("InsidePlaylistActivity", "Playlist deleted successfully");
+                                    playlistRecyclerViewAdapter.notifyDataSetChanged();
+                                    Intent reloadePage=new Intent(this, InsidePlaylistActivity.class);
+                                    startActivity(reloadePage);
+                                    finish();
+                                },
+                                error -> {
+                                    Log.e("InsidePlaylistActivity", "Error deleting playlist", error);
+                                }
+                        );
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         } else {
-            emptyPlaylistMessage.setVisibility(View.GONE);
+            Log.e("InsidePlaylistActivity", "No playlistId provided for deletion");
         }
     }
-        private void deletePlaylist () {
-            if (playlistId != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Are you sure you want to delete this playlist?")
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            dialog.dismiss();
-
-                            Amplify.API.mutate(
-                                    ModelMutation.delete(Playlist.justId(playlistId)),
-                                    response -> {
-                                        Log.i("InsidePlaylistActivity", "Playlist deleted successfully");
-                                        runOnUiThread(() -> {
-                                            if (playlistRecyclerViewAdapter != null) {
-                                                playlistRecyclerViewAdapter.notifyDataSetChanged();
-                                                Intent reload = new Intent(this, PlaylistsActivity.class);
-                                                startActivity(reload);
-                                            } else {
-                                                Log.e("InsidePlaylistActivity", "playlistRecyclerViewAdapter is null");
-                                            }
-                                            finish();
-                                        });
-                                    },
-                                    error -> {
-                                        Log.e("InsidePlaylistActivity", "Error deleting playlist", error);
-                                    }
-                            );
-                        })
-                        .setNegativeButton("Cancel", (dialog, which) -> {
-                            dialog.dismiss();
-                        })
-                        .show();
-            } else {
-                Log.e("InsidePlaylistActivity", "No playlistId provided for deletion");
-            }
-        }
-    }
+}

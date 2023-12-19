@@ -111,11 +111,11 @@ public class DataListAdapter extends RecyclerView.Adapter<DataListAdapter.DataLi
                 if (currentMediaPlayer != null && currentMediaPlayer.isPlaying()) {
                     if (currentlyPlayingPosition == clickedPosition) {
                         currentMediaPlayer.pause();
-                        updateToggleIconForItem(android.R.drawable.ic_media_play, clickedPosition);
+                        updateToggleIconForItem(R.drawable.round_play_circle_24, clickedPosition);
                         currentlyPlayingPosition = -1;
                     } else {
                         currentMediaPlayer.pause();
-                        updateToggleIconForItem(android.R.drawable.ic_media_play, currentlyPlayingPosition);
+                        updateToggleIconForItem(R.drawable.round_play_circle_24, currentlyPlayingPosition);
 
                         mediaPlayer.start();
                         updateToggleIconForItem(android.R.drawable.ic_media_pause, clickedPosition);

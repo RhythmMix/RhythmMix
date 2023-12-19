@@ -55,7 +55,7 @@
         android:contentDescription="TODO"
         android:gravity="center"
         android:hapticFeedbackEnabled="true"
-        android:src="@android:drawable/ic_media_play"/>
+        android:src="@drawable/round_play_circle_24"/>
 
     <ImageView
         android:id="@+id/menu_button_main"

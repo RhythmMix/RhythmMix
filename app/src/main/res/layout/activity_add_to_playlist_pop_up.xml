@@ -9,7 +9,7 @@
     >
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/playlistNameEditText"
         android:layout_width="229dp"
         android:layout_height="63dp"
         android:layout_marginStart="40dp"
@@ -39,15 +39,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/selectimg"
+        android:id="@+id/createPlaylistButton"
+        android:layout_width="187dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/playlistNameEditText"
+        android:backgroundTint="#852746"
+        android:fontFamily="@font/ios_bold"
+        android:text="@string/addPlayListButton"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.64"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/playlistBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="196dp"
         android:text="select image"
         app:icon="@drawable/baseline_add_photo_alternate_24"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/playlistNameEditText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
