@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,7 +41,23 @@
             android:textColorHint="#FFFFFF" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- TextView above RecyclerView -->
+    <TextView
+        android:id="@+id/emptySearchPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No result found"
+        android:textSize="25dp"
+        android:layout_marginTop="80dp"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/autoCompleteLayout"
+        app:layout_constraintVertical_bias="0.5" />
 
+    <!-- Main NavBar -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -48,12 +65,11 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="@id/bottom_navigation"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/autoCompleteLayout"/>
+        app:layout_constraintTop_toBottomOf="@id/autoCompleteLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
-
-
-    <!-- Main NavBar -->
     <include
         android:id="@+id/bottom_navigation"
         layout="@layout/navbar"

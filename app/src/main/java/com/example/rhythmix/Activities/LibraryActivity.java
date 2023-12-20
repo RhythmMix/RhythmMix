@@ -89,6 +89,7 @@ public class LibraryActivity extends AppCompatActivity {
         recyclerView.setAdapter(librarySongsAdapter); // using the adapter as our data source for encapsulation and separation of responsibilities
 
         librarySongsAdapter.setOnItemClickListener((parent, view, position, id) -> {
+            Log.i(LOG_TAG,"Inside librarySongsAdapter.setOnItemClickListener in activity");
             isItemClickListenerActive = true;
             isPlayAllClicked = false;
 

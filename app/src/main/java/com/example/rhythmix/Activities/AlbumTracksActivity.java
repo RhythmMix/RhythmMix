@@ -1,7 +1,10 @@
 package com.example.rhythmix.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,6 +55,17 @@ public class AlbumTracksActivity extends AppCompatActivity {
         Picasso.get().load(activityTitleImage).into(cover);
 
         displayAlbumTracks(albumId);
+
+        ImageButton back = findViewById(R.id.backButtonAlbumTracks);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AlbumTracksActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     private void displayAlbumTracks(long albumId) {

@@ -24,20 +24,21 @@
                 android:layout_height="wrap_content"
                 android:text="Rhythmix"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_gravity="start"/>
+                android:layout_gravity="start"
+                style="@style/AppNameTextStyle"/>
 
             <!-- Button -->
-            <Button
+            <ImageButton
                 android:id="@+id/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Login"
                 android:textColor="@android:color/white"
                 android:layout_gravity="end"
-                android:background="@color/transparent"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_marginEnd="16dp"
-                android:drawableStart="@drawable/ic_login_icon"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logout"
+                android:scaleType="fitCenter" />
+
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

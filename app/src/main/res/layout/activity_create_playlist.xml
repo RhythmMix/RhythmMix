@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/overlay_create_playlist"
+    android:background="@drawable/home_background_overlay"
     android:id="@+id/playlistaccess"
-    tools:context=".Activities.CreatePlaylistActivity">
+    tools:context=".Activities.CreatePlaylistActivity"
+    style="@style/YourCustomDialogTheme">
 
     <EditText
         android:id="@+id/playlistNameEditText"
@@ -14,8 +14,9 @@
         android:layout_height="58dp"
         android:layout_below="@id/playlistTitleTextView"
         android:backgroundTint="#852746"
-        android:hint="Playlist Name"
+        android:hint="Playlist name"
         android:inputType="text"
+        android:paddingStart="20dp"
         android:textColor="#FFAABBCC"
         android:textColorHint="#FFAABBCC"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,30 +36,33 @@
         android:text="@string/addPlayListButton"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:textColorHint="@color/thisWhiteColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837"
+        app:layout_constraintVertical_bias="0.879"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/playlistTitleTextView"
-        android:layout_width="301dp"
-        android:layout_height="54dp"
+        android:layout_width="376dp"
+        android:layout_height="105dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:fontFamily="@font/ios_bold"
+        android:fontFamily="@font/androidassassin"
+        android:gravity="center"
         android:text="@string/add_to_playlist"
-        android:textColor="#852746"
+        android:textColor="@color/thisWhiteColor"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.231" />
+        app:layout_constraintVertical_bias="0.123" />
 
     <ImageButton
         android:id="@+id/playlistBackground"
@@ -69,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632"
+        app:layout_constraintVertical_bias="0.558"
         app:srcCompat="@drawable/baseline_upload_24" />
 
     <TextView
@@ -77,18 +81,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_playList_background"
-        android:textColor="#852746"
+        android:textColor="@color/thisWhiteColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.183"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.453" />
+        app:layout_constraintVertical_bias="0.464" />
 
     <ImageView
         android:id="@+id/editProductImageImageView"
-        android:layout_width="196dp"
-        android:layout_height="203dp"
+        android:layout_width="229dp"
+        android:layout_height="207dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,6 +100,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.647"
-        app:srcCompat="@drawable/head" />
+        app:srcCompat="@drawable/rhythemix" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="900dp"
+        android:layout_marginBottom="600dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.183" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

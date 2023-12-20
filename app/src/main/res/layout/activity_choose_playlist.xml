@@ -9,12 +9,40 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistsRecycleView"
-        android:layout_width="372dp"
-        android:layout_height="585dp"
+        android:layout_width="377dp"
+        android:layout_height="547dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.589"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.857" />
 
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
+        android:background="#E6121111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
+        app:srcCompat="@drawable/arrow_back" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="377dp"
+        android:layout_height="46dp"
+        android:fontFamily="@font/androidassassin"
+        android:text="Pick Your Playlist, Set The Vibe!"
+        android:textColor="@color/thisWhiteColor"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.588"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.096" />
 </androidx.constraintlayout.widget.ConstraintLayout>

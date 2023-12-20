@@ -2,10 +2,13 @@ package com.example.rhythmix.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
+
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
@@ -36,9 +39,7 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
         File emptyFile =new File(getApplicationContext().getFilesDir(),emptyFileName);
         try {
             BufferedWriter emptyFileBufferedWriter= new BufferedWriter(new FileWriter(emptyFile));
-
             emptyFileBufferedWriter.append("Some text here from Farah\nAnother libe from Farah");
-
             emptyFileBufferedWriter.close();
         }catch (IOException ioe){
             Log.i(TAG, "could not write locally with filename: "+ emptyFileName);
@@ -56,6 +57,13 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
                     Log.i(TAG, "S3 upload failed! " + failure.getMessage());
                 }
         );
+        //>>>>>>>>>>>>>>>>Handel BackCase<<<<<<<<<<<<<<<<<<<
+
+        ImageButton backToMain =findViewById(R.id.backButton);
+        backToMain.setOnClickListener(view -> {
+            Intent backToMainG =new Intent(this,MainActivity.class);
+            startActivity(backToMainG);
+        });
 
         //>>>>>>>>>>>>>>>>>>>>>>>CALLING METHODS<<<<<<<<<<<<<<<<<<<<<<<<<
         amplifier();
@@ -94,9 +102,7 @@ public class ChoosePlaylistActivity extends AppCompatActivity implements ChooseP
 
     private void setUpPlayListRecyclerView() {
         RecyclerView playlistRecyclerView = findViewById(R.id.playlistsRecycleView);
-        int numberOfColumns = 2;
-
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         playlistRecyclerView.setLayoutManager(layoutManager);
         choosePlaylistAdapter = new ChoosePlaylistAdapter(playlists, this, this);
         playlistRecyclerView.setAdapter(choosePlaylistAdapter);

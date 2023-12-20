@@ -7,6 +7,7 @@
     <color name="flatOrange">#FF9500</color>
     <color name="background_panel_color">#080808</color>
     <color name="color_aaa">#aaa</color>
+    <color name="thisWhiteColor">#9e9d9d</color>
     <color name="shuffleColor">#A57C03</color>
     <color name="SplashColor">@android:color/black</color>
     <item name="SplashBackground" type ="color">#f0f0f0</item>

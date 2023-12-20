@@ -111,11 +111,9 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
 
     // used so i can set actions in the LibraryActivity for specific events within the adapter
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
-        Log.i(TAG,"insideee setOnItemClickListener");
         this.onItemClickListener = listener;
     }
     public void setOnPlayPauseButtonClickListener(AdapterView.OnItemClickListener listener) {
-        Log.i(TAG,"insideee setOnPlayPauseButtonClickListener");
         this.playPauseButtonClickListener = listener;
     }
 
@@ -153,4 +151,4 @@ public class LibrarySongsAdapter extends RecyclerView.Adapter<LibrarySongsAdapte
             playPauseButton = itemView.findViewById(R.id.preview_button);
         }
     }
-}
+ }

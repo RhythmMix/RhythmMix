@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,8 +12,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.auth.AuthUser;
@@ -60,8 +63,8 @@ public class SearchActivity extends AppCompatActivity {
         navBar();
     }
 
-    private void navBar(){
-        authUser=Amplify.Auth.getCurrentUser();
+    private void navBar() {
+        authUser = Amplify.Auth.getCurrentUser();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
@@ -71,20 +74,40 @@ public class SearchActivity extends AppCompatActivity {
             bottomNavigationView.getMenu().findItem(R.id.Profile).setChecked(false);
 
             if (item.getItemId() == R.id.Home) {
+                // Handle Home click
                 startActivity(new Intent(SearchActivity.this, MainActivity.class));
                 return true;
             } else if (item.getItemId() == R.id.Search) {
+                // Handle Search click
                 return true;
-            } else if (item.getItemId() == R.id.Library  && authUser!=null) {
+            } else if (item.getItemId() == R.id.Library && authUser != null) {
+                // Handle Library click for authenticated user
                 startActivity(new Intent(SearchActivity.this, LibraryActivity.class));
                 return true;
-            } else if (item.getItemId() == R.id.Profile && authUser!=null) {
+            } else if (item.getItemId() == R.id.Profile && authUser != null) {
+                // Handle Profile click for authenticated user
                 startActivity(new Intent(SearchActivity.this, ProfileActivity.class));
                 return true;
-            } else return false;
+            } else {
+                bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(true);
+                showAuthenticationMessage();
+                return false;
+            }
         });
         bottomNavigationView.getMenu().findItem(R.id.Search).setChecked(true);
     }
+
+    private void showAuthenticationMessage() {
+        runOnUiThread(() -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Please log in or sign up to access this feature.")
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+        });
+    }
+
 
     private void setupAutoComplete() {
         ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
@@ -181,8 +204,13 @@ public class SearchActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         List<Track> musicList = response.body().getData();
 
+                        RecyclerView musicListRecyclerView = findViewById(R.id.recyclerView);
+                        TextView emptySearchPage = findViewById(R.id.emptySearchPage);
+
                         if (!musicList.isEmpty()) {
-                            RecyclerView musicListRecyclerView = findViewById(R.id.recyclerView);
+
+                            musicListRecyclerView.setVisibility(View.VISIBLE);
+                            emptySearchPage.setVisibility(View.GONE);
 
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SearchActivity.this);
                             musicListRecyclerView.setLayoutManager(layoutManager);
@@ -192,6 +220,8 @@ public class SearchActivity extends AppCompatActivity {
 
                         } else {
                             Log.e(TAG, "Empty music list");
+                            emptySearchPage.setVisibility(View.VISIBLE);
+                            musicListRecyclerView.setVisibility(View.GONE);
                         }
                     } else {
                         Log.e(TAG, "Unsuccessful response");

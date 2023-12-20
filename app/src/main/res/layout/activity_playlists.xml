@@ -32,7 +32,7 @@
       android:layout_marginStart="32dp"
       android:layout_marginTop="40dp"
       android:layout_marginEnd="32dp"
-      android:background="@android:color/transparent"
+      android:background="@drawable/navbar_background"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +49,12 @@
         android:text="Songs"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        />
 
     <RadioButton
         android:id="@+id/playlistsButton"
@@ -73,7 +79,7 @@
       android:paddingBottom="13dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.132"
+      app:layout_constraintHorizontal_bias="0.066"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.324"
@@ -83,28 +89,29 @@
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/playlistsRecycleView"
-      android:layout_width="350dp"
-      android:layout_height="271dp"
+      android:layout_width="352dp"
+      android:layout_height="235dp"
       app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.475"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/FavoriteSong" />
 
+  <!--Main NavBar-->
+
   <ImageButton
       android:id="@+id/FavoriteImageButton"
-      android:layout_width="155dp"
+      android:layout_width="165dp"
       android:layout_height="137dp"
       android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.875"
+      app:layout_constraintHorizontal_bias="0.873"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.323"
+      app:layout_constraintVertical_bias="0.319"
       app:srcCompat="@drawable/favsongoverly" />
 
-  <!--Main NavBar-->
   <TextView
       android:id="@+id/FavoriteSong"
       android:layout_width="wrap_content"
@@ -116,10 +123,10 @@
       android:textStyle="bold"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.808"
+      app:layout_constraintHorizontal_bias="0.811"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.496" />
+      app:layout_constraintVertical_bias="0.477" />
 
   <include
       android:id="@+id/bottom_navigation"

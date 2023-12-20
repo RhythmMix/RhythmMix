@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/ApiPlayerActivitySongImage"
         android:layout_width="wrap_content"
-        android:layout_height="500dp"
+        android:layout_height="580dp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/cover" />
 
@@ -105,7 +105,6 @@
         android:layout_height="8dp"
         android:layout_below="@id/ApiPlayerActivitySongImage"/>
 
-
     <!-- Designed SeekBar -->
     <SeekBar
         android:id="@+id/ApiSeekBar"
@@ -120,6 +119,19 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp" />
 
+    <!-- Heart Icon -->
+    <ImageView
+        android:id="@+id/heartButton"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/ApiSeekBar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="55dp"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:onClick="onHeartButtonClick"
+        android:src="@drawable/ic_favorite" />
+
     <!-- Media Controls (Play, Previous, Next) -->
     <LinearLayout
         android:id="@+id/layoutMediaControls"
@@ -129,46 +141,32 @@
         android:gravity="center"
         android:layout_below="@id/ApiSeekBar">
 
-        <!-- Shuffle Icon -->
-        <ImageView
-            android:id="@+id/shuffleButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:clickable="true"
-            android:onClick="onShuffleButtonClick"
-            android:src="@drawable/ic_shuffle"
-            app:tint="@color/shuffleColor"/>
-
         <!-- Previous Button -->
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/prevButton"
-            android:layout_toLeftOf="@+id/playButton"
-            android:background="@drawable/ic_skip_previous_24"/>
+            android:layout_toLeftOf="@+id/ApiPlayButton"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_skip_previous_24" />
 
         <!-- Play Button -->
         <Button
             android:id="@+id/ApiPlayButton"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="@drawable/ic_pause_24" />
+            android:background="@drawable/ic_pause_24"
+            android:layout_gravity="center"/>
 
         <!-- Next Button -->
         <Button
             android:id="@+id/nextButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toRightOf="@+id/playButton"
+            android:layout_marginEnd="20dp"
+            android:layout_toRightOf="@+id/ApiPlayButton"
             android:background="@drawable/ic_skip_next_24" />
 
-        <!-- Heart Icon -->
-        <ImageView
-            android:id="@+id/heartButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:clickable="true"
-            android:onClick="onHeartButtonClick"
-            android:src="@drawable/ic_favorite" />
     </LinearLayout>
+
 </RelativeLayout>

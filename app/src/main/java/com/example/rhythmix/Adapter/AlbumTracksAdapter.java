@@ -74,7 +74,7 @@ public class AlbumTracksAdapter extends RecyclerView.Adapter<AlbumTracksAdapter.
 
         // Update the UI based on the current playing position
         holder.trackToggleButton.setImageResource(holder.getAdapterPosition() == playingPosition
-                ? android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play);
+                ? android.R.drawable.ic_media_pause : R.drawable.round_play_circle_24);
     }
 
 
