@@ -72,7 +72,7 @@ public class InsidePlaylistActivity extends AppCompatActivity {
 
         ImageButton backToMain =findViewById(R.id.backButton);
         backToMain.setOnClickListener(view -> {
-            Intent backToMainG =new Intent(this,MainActivity.class);
+            Intent backToMainG =new Intent(this,PlaylistsActivity.class);
             startActivity(backToMainG);
         });
     }

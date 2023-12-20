@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/ApiPlayerActivitySongImage"
         android:layout_width="wrap_content"
-        android:layout_height="500dp"
+        android:layout_height="580dp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/cover" />
 
@@ -126,7 +126,7 @@
         android:layout_height="40dp"
         android:layout_below="@id/ApiSeekBar"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="55dp"
         android:layout_marginTop="15dp"
         android:clickable="true"
         android:onClick="onHeartButtonClick"
@@ -163,7 +163,7 @@
             android:id="@+id/nextButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="20dp"
             android:layout_toRightOf="@+id/ApiPlayButton"
             android:background="@drawable/ic_skip_next_24" />
 
