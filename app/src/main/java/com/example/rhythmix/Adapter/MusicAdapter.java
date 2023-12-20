@@ -36,6 +36,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
         this.callingActivity = context;
         this.recyclerView=recyclerView;
     }
+
+    public MusicAdapter(List<Music> musicList, Context context) {
+        this.musicList = musicList;
+        this.callingActivity = context;
+    }
+
     @NonNull
     @Override
     public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -116,6 +122,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
             deleteMusicButton = itemView.findViewById(R.id.deleteMusicButton);
         }
     }
+
     private void deleteMusicItem(int position) {
         Music musicToDelete = musicList.get(position);
         AlertDialog.Builder builder = new AlertDialog.Builder(callingActivity);

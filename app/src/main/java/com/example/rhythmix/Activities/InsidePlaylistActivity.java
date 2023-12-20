@@ -33,14 +33,17 @@ public class InsidePlaylistActivity extends AppCompatActivity {
     private MusicAdapter musicAdapter;
     private String playlistId;
     private ImageButton deletePlaylist;
+    List<Playlist> playlists =new ArrayList<>();
 
     private PlaylistRecyclerViewAdapter playlistRecyclerViewAdapter;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inside_playlist);
+
+
+        playlistRecyclerViewAdapter = new PlaylistRecyclerViewAdapter(playlists, this);
+
 
         Intent intent = getIntent();
         playlistId = intent.getStringExtra("playlistId");
@@ -57,7 +60,7 @@ public class InsidePlaylistActivity extends AppCompatActivity {
         // Get The Recycler View
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        musicAdapter = new MusicAdapter(musicList, InsidePlaylistActivity.this,recyclerView);
+        musicAdapter = new MusicAdapter(musicList, InsidePlaylistActivity.this);
         recyclerView.setAdapter(musicAdapter);
         // Fetch music data
         fetchMusicForPlaylist(playlistId);
@@ -69,7 +72,7 @@ public class InsidePlaylistActivity extends AppCompatActivity {
 
         ImageButton backToMain =findViewById(R.id.backButton);
         backToMain.setOnClickListener(view -> {
-            Intent backToMainG =new Intent(this,PlaylistsActivity.class);
+            Intent backToMainG =new Intent(this,MainActivity.class);
             startActivity(backToMainG);
         });
     }
@@ -116,7 +119,7 @@ public class InsidePlaylistActivity extends AppCompatActivity {
                                 response -> {
                                     Log.i("InsidePlaylistActivity", "Playlist deleted successfully");
                                     playlistRecyclerViewAdapter.notifyDataSetChanged();
-                                    Intent reloadePage=new Intent(this, InsidePlaylistActivity.class);
+                                    Intent reloadePage=new Intent(this, PlaylistsActivity.class);
                                     startActivity(reloadePage);
                                     finish();
                                 },
